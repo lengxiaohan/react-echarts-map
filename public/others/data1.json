@@ -1,0 +1,779 @@
+{
+    "geoCoordMap": {
+        "四川省": [
+            null,
+            null
+        ],
+        "广东省": [
+            null,
+            null
+        ],
+        "浙江省": [
+            null,
+            null
+        ],
+        "贵州省": [
+            null,
+            null
+        ],
+        "陕西省": [
+            null,
+            null
+        ],
+        "河南省": [
+            null,
+            null
+        ],
+        "江西省": [
+            null,
+            null
+        ],
+        "山东省": [
+            null,
+            null
+        ],
+        "吉林省": [
+            null,
+            null
+        ],
+        "北京市": [
+            null,
+            null
+        ],
+        "内蒙古自治区": [
+            null,
+            null
+        ],
+        "安徽省": [
+            null,
+            null
+        ],
+        "广西壮族自治区": [
+            null,
+            null
+        ],
+        "河北省": [
+            null,
+            null
+        ],
+        "重庆市": [
+            null,
+            null
+        ],
+        "甘肃省": [
+            null,
+            null
+        ],
+        "黑龙江省": [
+            null,
+            null
+        ],
+        "宁夏回族自治区": [
+            null,
+            null
+        ],
+        "云南省": [
+            null,
+            null
+        ],
+        "山西省": [
+            null,
+            null
+        ],
+        "青海省": [
+            null,
+            null
+        ],
+        "江苏省": [
+            null,
+            null
+        ]
+    },
+    "onePointData": [
+        {
+            "name": "宁夏回族自治区",
+            "value": "3358.0145"
+        },
+        {
+            "name": "江西省",
+            "value": "2344.6367"
+        },
+        {
+            "name": "山西省",
+            "value": "3102.9754"
+        },
+        {
+            "name": "广西壮族自治区",
+            "value": "75.6611"
+        },
+        {
+            "name": "内蒙古自治区",
+            "value": "329.5528"
+        },
+        {
+            "name": "重庆市",
+            "value": "415.4323"
+        },
+        {
+            "name": "黑龙江省",
+            "value": "406.3550"
+        },
+        {
+            "name": "贵州省",
+            "value": "1758.7325"
+        },
+        {
+            "name": "吉林省",
+            "value": "388.0004"
+        },
+        {
+            "name": "青海省",
+            "value": "917.9877"
+        },
+        {
+            "name": "甘肃省",
+            "value": "179.1370"
+        },
+        {
+            "name": "陕西省",
+            "value": "498.2466"
+        }
+    ],
+    "twoPointData": [
+        {
+            "name": "安徽省",
+            "value": "7994.9750"
+        },
+        {
+            "name": "河南省",
+            "value": "10510.6046"
+        },
+        {
+            "name": "河北省",
+            "value": "11567.1804"
+        },
+        {
+            "name": "四川省",
+            "value": "14927.8807"
+        },
+        {
+            "name": "云南省",
+            "value": "4523.3772"
+        }
+    ],
+    "threePointData": [
+        {
+            "name": "北京市",
+            "value": "23932.8473"
+        }
+    ],
+    "fourPointData": [],
+    "fivePointData": [
+        {
+            "name": "江苏省",
+            "value": "151737.8484"
+        },
+        {
+            "name": "浙江省",
+            "value": "175511.3978"
+        },
+        {
+            "name": "山东省",
+            "value": "57564.5629"
+        },
+        {
+            "name": "广东省",
+            "value": "223277.7200"
+        }
+    ],
+    "cityOrderList": [
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 44,
+            "areaName": "广东",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 1628174279.8515
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 33,
+            "areaName": "浙江",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 1473183310.4011
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 31,
+            "areaName": "上海",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 803549530.5613
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 32,
+            "areaName": "江苏",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 747795674.8075
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 11,
+            "areaName": "北京",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 445201505.7617
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 37,
+            "areaName": "山东",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 376662232.6219
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 35,
+            "areaName": "福建",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 351894986.2306
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 42,
+            "areaName": "湖北",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 299501800.8112
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 51,
+            "areaName": "四川",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 191476006.3562
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 13,
+            "areaName": "河北",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 165777373.4619
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 43,
+            "areaName": "湖南",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 152691646.9193
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 34,
+            "areaName": "安徽",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 139304164.0388
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 41,
+            "areaName": "河南",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 133108272.414
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 12,
+            "areaName": "天津",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 122216013.4157
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 36,
+            "areaName": "江西",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 84085930.4419
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 50,
+            "areaName": "重庆",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 68764793.2988
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 21,
+            "areaName": "辽宁",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 67377666.9576
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 61,
+            "areaName": "陕西",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 56755525.7834
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 45,
+            "areaName": "广西",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 50917668.7164
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 46,
+            "areaName": "海南",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 48593806.6756
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 53,
+            "areaName": "云南",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 42629002.6876
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 22,
+            "areaName": "吉林",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 36334837.2745
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 15,
+            "areaName": "内蒙古",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 19790599.9237
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 65,
+            "areaName": "新疆",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 19568996.852
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 52,
+            "areaName": "贵州",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 19198660.2122
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 23,
+            "areaName": "黑龙江",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 18315075.9339
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 14,
+            "areaName": "山西",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 17436086.5918
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 62,
+            "areaName": "甘肃",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 16440586.3674
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 63,
+            "areaName": "青海",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 13018121.1554
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 64,
+            "areaName": "宁夏",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 9838234.8594
+        },
+        {
+            "id": null,
+            "areaIds": null,
+            "platName": null,
+            "name": null,
+            "url": null,
+            "commmun": null,
+            "areaId": 54,
+            "areaName": "西藏",
+            "buyTime": null,
+            "buyNum": null,
+            "createTime": null,
+            "address": null,
+            "state": "open",
+            "amount": 1197860.8909
+        }
+    ],
+    "cityTotals": {
+        "11": [
+            "北京市",
+            23932.8473
+        ],
+        "13": [
+            "河北省",
+            11567.1804
+        ],
+        "14": [
+            "山西省",
+            3102.9754
+        ],
+        "15": [
+            "内蒙古自治区",
+            329.5528
+        ],
+        "22": [
+            "吉林省",
+            388.0004
+        ],
+        "23": [
+            "黑龙江省",
+            406.355
+        ],
+        "32": [
+            "江苏省",
+            151737.8484
+        ],
+        "33": [
+            "浙江省",
+            175511.3978
+        ],
+        "34": [
+            "安徽省",
+            7994.975
+        ],
+        "36": [
+            "江西省",
+            2344.6367
+        ],
+        "37": [
+            "山东省",
+            57564.5629
+        ],
+        "41": [
+            "河南省",
+            10510.6046
+        ],
+        "44": [
+            "广东省",
+            223277.72
+        ],
+        "45": [
+            "广西壮族自治区",
+            75.6611
+        ],
+        "50": [
+            "重庆市",
+            415.4323
+        ],
+        "51": [
+            "四川省",
+            14927.8807
+        ],
+        "52": [
+            "贵州省",
+            1758.7325
+        ],
+        "53": [
+            "云南省",
+            4523.3772
+        ],
+        "61": [
+            "陕西省",
+            498.2466
+        ],
+        "62": [
+            "甘肃省",
+            179.137
+        ],
+        "63": [
+            "青海省",
+            917.9877
+        ],
+        "64": [
+            "宁夏回族自治区",
+            3358.0145
+        ]
+    },
+    "todayCollNum": "7620800252.2752",
+    "areaName": "全国"
+}
