@@ -1,0 +1,2 @@
+/*! 项目打包，2016-07-19 zhouxinjian */
+webpackJsonp([4,5],[function(n,t){"use strict";!function(n){n.GetAjax=function(t,u,o,e,c){var t=t||"",o=o||"GET",u=u||"",e=e||!1,f=void 0;return n.ajax({url:t,type:o,data:u,async:e}).done(function(n){return f=n||[],"function"==typeof c&&c(f,!0),!1}).fail(function(n){return f=n||[],"function"==typeof c&&c(f,!1),!1}),f}}(jQuery)}]);

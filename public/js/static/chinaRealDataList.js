@@ -4,7 +4,6 @@ import "ajax-plus";
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
 /**
  * @name HeaderComponent 头部组件
  * @param _getName 头部信息名称
@@ -160,16 +159,62 @@ var GetMapComponent = React.createClass({
 		// var dom = this.refs.JsMap.getDOMNode();
 		var dom = ReactDOM.findDOMNode(this.refs.JsMap);
 
-		this.selectData = [{
-			name: '四川',
-			selected: true
-		}];
 		this.getCanvas({
 			data: that.data,
 			id: dom,
 			size: 25,
 			select: that.selectData
 		});
+	},
+	_setOptionSelection: function() {
+		this.selectData = [{
+			name: '四川',
+			selected: true
+		}];
+
+		this.setState({
+			status: true
+		});
+	},
+	componentWillMount:function(){
+		var that = this;
+		this.selectData = [{
+			name: '四川',
+			selected: true
+		}];
+
+		//监听键盘事件
+	    $(document).keydown(function (event) {
+	        var name=that.selectData[0].name;
+	        var position = ['四川','四川','四川','四川'];
+	        var id = 5101;
+	    	switch (event.keyCode) {
+		    	case 38:
+		    		var name=position[0];
+		    		that._setOptionSelection(name);
+		    		break;
+		    	case 39:
+		    		var name=position[1];
+		    		that._setOptionSelection(name);
+		    		break;
+		    	case 40:
+		    		var name=position[2];
+		    		that._setOptionSelection(name);
+		    		break;
+		    	case 37:
+		    		var name=position[3];
+		    		that._setOptionSelection(name);
+		    		break;
+		     	case 13:
+		     		if(!name){
+		     			return false;
+		     		}
+		     		window.location="/show/TJ1.0-countys/public/cityRealDataList.jsp?areaId="+id;
+		    		break;
+		    	default:
+		    		break;
+		    }
+	    });
 	},
 	getCanvas: function(obj) {
 		var myChart = echarts.init(obj.id);
@@ -253,7 +298,8 @@ var GetMapComponent = React.createClass({
 				mapType: 'china',
 				data: [],
 				markPoint: {
-					symbol: 'image://../public/img/' + (i + 1) + '.png', //diamond
+					// symbol: 'image://../../img/' + (i + 1) + '.png',
+					symbol: 'image://../public/img/' + (i + 1) + '.png',
 					symbolSize: obj.size,
 					itemStyle: {
 						normal: {
@@ -271,13 +317,20 @@ var GetMapComponent = React.createClass({
 	render: function() {
 		return (
 			<div className="map-box" id="JS_map_box">
-				<div className="map-show" ref="JsMap"></div>
+				<div className="map-show" ref="JsMap" ></div>
+				{/*<ul className="map-msg-box">
+					<li><img src="../../img/5.png" width="22" height="22"/>&nbsp;&nbsp;20000元以上</li>
+					<li><img src="../../img/3.png" width="22" height="22"/>&nbsp;&nbsp;15000 元~20000元</li>
+					<li><img src="../../img/2.png" width="22" height="22"/>&nbsp;&nbsp;8000 元~15000元</li>
+				    <li><img src="../../img/4.png" width="22" height="22"/>&nbsp;&nbsp;2000 元~8000元</li>
+					<li><img src="../../img/1.png" width="22" height="22"/>&nbsp;&nbsp;2000元以下</li>
+				</ul>*/}
 				<ul className="map-msg-box">
-					<li><img src="../public/img/5.png" width="22" height="22" />&nbsp;&nbsp;20000元以上</li>
-					<li><img src="../public/img/3.png" width="22" height="22" />&nbsp;&nbsp;15000 元~20000元</li>
-					<li><img src="../public/img/2.png" width="22" height="22" />&nbsp;&nbsp;8000 元~15000元</li>
-				    <li><img src="../public/img/4.png" width="22" height="22" />&nbsp;&nbsp;2000 元~8000元</li>
-					<li><img src="../public/img/1.png" width="22" height="22" />&nbsp;&nbsp;2000元以下</li>
+					<li><img src="../public/img/5.png" width="22" height="22"/>&nbsp;&nbsp;20000元以上</li>
+					<li><img src="../public/img/3.png" width="22" height="22"/>&nbsp;&nbsp;15000 元~20000元</li>
+					<li><img src="../public/img/2.png" width="22" height="22"/>&nbsp;&nbsp;8000 元~15000元</li>
+				    <li><img src="../public/img/4.png" width="22" height="22"/>&nbsp;&nbsp;2000 元~8000元</li>
+					<li><img src="../public/img/1.png" width="22" height="22"/>&nbsp;&nbsp;2000元以下</li>
 				</ul>
 			</div>
 		)
@@ -302,6 +355,8 @@ var Container = React.createClass({
 		var setData = {
 			date: new Date().getTime()
 		};
+		// /public/others/data1.json
+		// /show/rest/info/recentInfoChinaReal
 		$.GetAjax('/public/others/data1.json', setData, 'GET', true, function(data) {
 			that.state.status = true;
 			that.setState({

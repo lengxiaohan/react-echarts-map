@@ -4,19 +4,19 @@ const webpack = require("webpack"),
 //ExtractTextPlugin = require("extract-text-webpack-plugin");// 独立css
 
 // 读取入口文件
-const jsDir = fs.readdirSync('./public/js'), entryFiles = {};
+const jsDir = fs.readdirSync('./public/js/static'), entryFiles = {};
 jsDir.forEach((file) => {
     const fileList = file.split('.');
-    entryFiles[fileList[0]] = __dirname + '/js/static/' + file;
+    entryFiles[fileList[0]] = __dirname + '/public/js/static/' + file;
 });
 
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: "public/js/static/chinaRealDataList", //countyRealtimeOne  chinaRealDataList
+    entry: entryFiles, //countyRealtimeOne  chinaRealDataList cityRealDataList
     output: {
         publicPath: "public/build/",
         path: path.join(__dirname, "build"),
-        filename: "chinaRealDataList.js"
+        filename: "[name].js"
     },
     module: {
         preLoaders: [
@@ -30,7 +30,7 @@ module.exports = {
             // {test: /\.less$/,loader: "style-loader!css-loader!autoprefixer-loader!less-loader?sourceMap"},
             // {test: /\.css$/,loader: "style-loader!css-loader!autoprefixer-loader"},
             // {test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?name=[hash].[ext]'},
-            // {test: /\.(png|jpg)$/, loader: 'url?limit=8192&name=[hash].[ext]'},
+            {test: /\.(png|jpg)$/, loader: 'url?limit=8192&name=[hash].[ext]'},
             {test: /\.js?$/,exclude: /node_modules/, loader: "babel?presets[]=react,presets[]=es2015"}
         ]
     },
@@ -40,8 +40,8 @@ module.exports = {
                warnings: false
            }
         }), // 压缩
-        // new webpack.optimize.CommonsChunkPlugin('common.js'),//提取多个页面之间的公共模块
-        new webpack.BannerPlugin('项目打包，2016-07-19 zhouxinjian'),// 头部注释
+        new webpack.optimize.CommonsChunkPlugin('common.js'),//提取多个页面之间的公共模块
+        new webpack.BannerPlugin('项目打包，2016-07-20 zhouxinjian'),// 头部注释
         //new ExtractTextPlugin("[name].css"),
         
         //全局引入，避免每个页面重复书写

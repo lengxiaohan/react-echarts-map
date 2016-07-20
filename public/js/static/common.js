@@ -144,5 +144,39 @@
 			}
 		});
 	};
+
+	export function initAreaController(name){
+		var t_pos = {};
+		//position:上右下左
+		var data=[
+	      {name:'成都',position:['阿坝','德阳','眉山','雅安'],id:'5101'},
+	      {name:'雅安',position:['阿坝','眉山','凉山','甘孜'],id:'5118'},
+	      {name:'甘孜',position:['阿坝','雅安','凉山',null],id:'5133'},
+	      {name:'凉山',position:['雅安','乐山','攀枝花','甘孜'],id:'5134'},
+	      {name:'攀枝花',position:['凉山','凉山',null,null],id:'5104'},
+	      {name:'阿坝',position:[null,'绵阳','雅安','甘孜'],id:'5132'},
+	      {name:'乐山',position:['眉山','自贡','凉山','雅安'],id:'5111'},
+	      {name:'眉山',position:['成都','内江','乐山','雅安'],id:'5114'},
+	      {name:'德阳',position:['绵阳','遂宁','成都','阿坝'],id:'5106'},
+	      {name:'绵阳',position:['广元','南充','德阳','阿坝'],id:'5107'},
+	      {name:'宜宾',position:['自贡','泸州',null,'乐山'],id:'5115'},
+	      {name:'泸州',position:['内江',null,null,'宜宾'],id:'5105'},
+	      {name:'自贡',position:['内江','泸州','宜宾','乐山'],id:'5103'},
+	      {name:'内江',position:['资阳',null,'自贡','眉山'],id:'5110'},
+	      {name:'资阳',position:['德阳',null,'内江','眉山'],id:'5120'},
+	      {name:'遂宁',position:['绵阳','南充','资阳','成都'],id:'5109'},
+	      {name:'南充',position:['广元','达州','广安','绵阳'],id:'5113'},
+	      {name:'广元',position:[null,'巴中','南充','绵阳'],id:'5108'},
+	      {name:'巴中',position:[null,'达州','南充','广元'],id:'5119'},
+	      {name:'达州',position:['巴中',null,'广安','南充'],id:'5117'},
+	      {name:'广安',position:['南充','达州',null,'遂宁'],id:'5116'},
+	    ];
+		$.each(data,function(i,o){
+			if (o['name'] == name) {
+				t_pos = o;
+			}
+		});
+		return t_pos;
+	};
 	
 
