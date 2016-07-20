@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
  */
 var HeaderComponent = React.createClass({
 	_getName: function() {
-		var name = '网络零售实时监控';
+		const name = '网络零售实时监控';
 		return name;
 	},
 	render: function() {
@@ -29,14 +29,14 @@ var HeaderComponent = React.createClass({
  */
 var SectionComponent = React.createClass({
 	_getTitle: function() {
-		var name = '今日累计网络交易额:';
+		const name = '今日累计网络交易额:';
 		return name;
 	},
 	componentWillMount: function() {
 		this.listType = 1;
 	},
 	componentDidUpdate: function() {
-		var totalNum = this.props.data.todayCollNum;
+		let totalNum = this.props.data.todayCollNum;
 		show_num('.pushAnimateNum',totalNum,1);
 	},
 	render: function() {
@@ -95,7 +95,7 @@ var GetMapComponent = React.createClass({
 		});
 	},
 	componentWillMount:function(){
-		var that = this;
+		const that = this;
 		this.selectData = [{
 			name: '成都',
 			selected: true
@@ -103,24 +103,24 @@ var GetMapComponent = React.createClass({
 
 		//监听键盘事件
 	    $(document).keydown(function (event) {
-	        var name=that.selectData[0].name;
-	        var position = initAreaController(name).position;
-	        var id = initAreaController(name).id;
+	        let name=that.selectData[0].name;
+	        let position = initAreaController(name).position;
+	        let id = initAreaController(name).id;
 	    	switch (event.keyCode) {
 		    	case 38:
-		    		var name=position[0];
+		    		name=position[0];
 		    		that._setOptionSelection(name);
 		    		break;
 		    	case 39:
-		    		var name=position[1];
+		    		name=position[1];
 		    		that._setOptionSelection(name);
 		    		break;
 		    	case 40:
-		    		var name=position[2];
+		    		name=position[2];
 		    		that._setOptionSelection(name);
 		    		break;
 		    	case 37:
-		    		var name=position[3];
+		    		name=position[3];
 		    		that._setOptionSelection(name);
 		    		break;
 		     	case 13:
@@ -128,7 +128,7 @@ var GetMapComponent = React.createClass({
 		     			return false;
 		     		}
 		     		// window.location="/show/TJ1.0-countys/public/countyRealtimeOne.jsp?areaId="+id;
-		     		window.location="countyRealtimeOne.jsp?areaId="+id;
+		     		window.location="countyRealtimeOne.html?areaId="+id;
 		    		break;
 		    	default:
 		    		break;
@@ -136,21 +136,19 @@ var GetMapComponent = React.createClass({
 	    });
 	},
 	componentWillReceiveProps: function(nextProps) {
-		var that = this;
+		const that = this;
 		this.data = nextProps.data;
 		this.setState({
 			status: true
 		});
 	},
 	componentDidUpdate: function() {
-
+		const that = this;
 		if (!this.state.status) {
 			return false;
 		}
-
-		var that = this;
 		// var dom = this.refs.JsMap.getDOMNode();
-		var dom = ReactDOM.findDOMNode(this.refs.JsMap);
+		let dom = ReactDOM.findDOMNode(this.refs.JsMap);
 		this.getCanvas({
 			data: that.data,
 			id: dom,
@@ -159,12 +157,11 @@ var GetMapComponent = React.createClass({
 		});
 	},
 	getCanvas: function(obj) {
-		var myChart = echarts.init(obj.id);
-		myChart.clear();
-		var data = obj.data;
-		var dataAttr = ['onePointData', 'twoPointData', 'threePointData', 'fourPointData', 'fivePointData'];
+		const myChart = echarts.init(obj.id).clear();
+		const dataAttr = ['onePointData', 'twoPointData', 'threePointData', 'fourPointData', 'fivePointData'];
+		let data = obj.data;
 
-		var option = {
+		let option = {
 			series: [{
 	            name: '四川',
 	            type: 'map',
@@ -308,7 +305,7 @@ var GetMapComponent = React.createClass({
                 }
 			}]
 		};
-		for (var i = 0; i < 5; i++) {
+		for (let i = 0; i < 5; i++) {
 			option.series.push({
 				name: dataAttr[i],
 				type: 'map',
@@ -330,9 +327,6 @@ var GetMapComponent = React.createClass({
 			});
 		}
 		myChart.setOption(option);
-	},
-	_OnkeyUp: function(event) {
-		console.log(event);
 	},
 	render: function() {
 		return (
@@ -357,12 +351,13 @@ var Container = React.createClass({
 		};
 	},
 	_getDatas: function() {
-		var that = this;
-		var areaId = $.getUrlParam('areaId');
-		var setData = {
+		const that = this;
+		const areaId = $.getUrlParam('areaId');
+		let setData = {
 			areaId: areaId,
 			date: new Date().getTime()
 		};
+		// /public/others/data2.json
 		// /show/rest/info/recentInfoReal
 		$.GetAjax('/public/others/data2.json', setData, 'GET', true, function(data) {
 			that.state.status = true;

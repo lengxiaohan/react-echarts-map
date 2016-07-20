@@ -11,12 +11,12 @@ jsDir.forEach((file) => {
 });
 
 module.exports = {
-    // devtool: "source-map", // 便于调试
-    entry: entryFiles, //countyRealtimeOne  chinaRealDataList cityRealDataList
+    devtool: "source-map", // 便于调试
+    entry: "public/js/static/cityRealDataList", //countyRealtimeOne  chinaRealDataList cityRealDataList
     output: {
         publicPath: "public/build/",
         path: path.join(__dirname, "build"),
-        filename: "[name].js"
+        filename: "cityRealDataList.js"
     },
     module: {
         preLoaders: [
@@ -40,7 +40,7 @@ module.exports = {
                warnings: false
            }
         }), // 压缩
-        new webpack.optimize.CommonsChunkPlugin('common.js'),//提取多个页面之间的公共模块
+        // new webpack.optimize.CommonsChunkPlugin('common.js'),//提取多个页面之间的公共模块
         new webpack.BannerPlugin('项目打包，2016-07-20 zhouxinjian'),// 头部注释
         //new ExtractTextPlugin("[name].css"),
         

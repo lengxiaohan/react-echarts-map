@@ -1,3 +1,4 @@
+"use strict";
 import {formatPrice,addZero,show_num} from "common";
 import "ajax-plus";
 
@@ -10,7 +11,7 @@ import ReactDOM from 'react-dom';
  */
 var HeaderComponent = React.createClass({
 	_getName: function() {
-		var name = '网络零售实时监控';
+		const name = '网络零售实时监控';
 		return name;
 	},
 	render: function() {
@@ -28,24 +29,8 @@ var HeaderComponent = React.createClass({
 var ListFlexModule = React.createClass({
 
 	componentDidMount: function() {
-		var count=parseInt(this.props.item.amount);
-		var result="";
-		var dom = ReactDOM.findDOMNode(this.refs.list);
-		if(count<10000){
-			result=addZero(count);
-		}else if(count>10000&&count<100000000){
-		    var end=count%10000;
-		    var wan=parseInt(count/10000);
-		    result="<span>"+wan+"</span><span class='short-size-span'>万</span>"+addZero(end)+"<span class='short-size-span'>元</span>";
-		}else if(count>100000000){
-		    var yi=parseInt(count/100000000);
-		    var yiEnd=count%100000000;
-		    var end=yiEnd%10000;
-		    var wan=parseInt(yiEnd/10000);
-		    result="<span>"+yi+"</span><span class='short-size-span'>亿</span>"+addZero(wan)+"<span class='short-size-span'>万</span>"+addZero(end)+"<span class='short-size-span'>元</span>";
-		}else{
-			result=count;
-		}
+		let count = parseInt(this.props.item.amount);
+		let [dom,result] = [ReactDOM.findDOMNode(this.refs.list),formatPrice(count,true)];
 		$(dom).append(result);
 	},
 
@@ -71,17 +56,17 @@ var ListFlexModule = React.createClass({
  */
 var SectionComponent = React.createClass({
 	_getTitle: function() {
-		var name = '今日累计网络交易额:';
+		const name = '今日累计网络交易额:';
 		return name;
 	},
 	componentWillMount: function() {
 		this.listType = 1;
 	},
 	_updateDidMount: function(nextProps) {
-		var that = this;
-		var data = nextProps ? nextProps : false;
+		const that = this;
+		let data = nextProps ? nextProps : false;
 		if (data) {
-			var length = data.length;
+			let length = data.length;
 			this.dom = data.map(function(item, num) {
 				if (num < 12 * that.listType && num >= 12 * that.listType - 12) {
 					return <ListFlexModule item={item} num={num} key={num}/>
@@ -91,19 +76,18 @@ var SectionComponent = React.createClass({
 		};
 	},
 	componentDidUpdate: function() {
-		var state = this.listType + 1;
-		var MAX = Math.ceil(this.nextProps.length / 12);
-		var totalNum = this.props.data.todayCollNum;
+
+		let [state,totalNum,MAX] = [this.listType + 1,this.props.data.todayCollNum,Math.ceil(this.nextProps.length / 12)];
+
 		this.listType = state > MAX ? 1 : state;
 		show_num('.pushAnimateNum',totalNum,1);
 	},
 	componentWillReceiveProps: function(nextProps) {
-		var that = this;
+		const that = this;
 		this.nextProps = nextProps.data.cityOrderList;
-		var MAX = Math.ceil(this.nextProps.length / 12); //最大多少页
-		var state = that.listType + 1;
-		if (this.nextProps.length <= MAX * 12) {
-			for (var i = this.nextProps.length + 1; i <= MAX * 12; i++) {
+		let [state,MAX,length] = [that.listType + 1,Math.ceil(this.nextProps.length / 12),this.nextProps.length];
+		if (length <= MAX * 12) {
+			for (let i = length + 1; i <= MAX * 12; i++) {
 				this.nextProps.push({});
 			}
 		}
@@ -143,21 +127,19 @@ var GetMapComponent = React.createClass({
 		};
 	},
 	componentWillReceiveProps: function(nextProps) {
-		var that = this;
+		const that = this;
 		this.data = nextProps.data;
 		this.setState({
 			status: true
 		});
 	},
 	componentDidUpdate: function() {
-
+		const that = this;
 		if (!this.state.status) {
 			return false;
 		}
-
-		var that = this;
 		// var dom = this.refs.JsMap.getDOMNode();
-		var dom = ReactDOM.findDOMNode(this.refs.JsMap);
+		let dom = ReactDOM.findDOMNode(this.refs.JsMap);
 
 		this.getCanvas({
 			data: that.data,
@@ -177,7 +159,7 @@ var GetMapComponent = React.createClass({
 		});
 	},
 	componentWillMount:function(){
-		var that = this;
+		const that = this;
 		this.selectData = [{
 			name: '四川',
 			selected: true
@@ -185,31 +167,32 @@ var GetMapComponent = React.createClass({
 
 		//监听键盘事件
 	    $(document).keydown(function (event) {
-	        var name=that.selectData[0].name;
-	        var position = ['四川','四川','四川','四川'];
-	        var id = 5101;
+	        let name=that.selectData[0].name;
+	        let position = ['四川','四川','四川','四川'];
+	        let id = 5101;
 	    	switch (event.keyCode) {
 		    	case 38:
-		    		var name=position[0];
+		    		name=position[0];
 		    		that._setOptionSelection(name);
 		    		break;
 		    	case 39:
-		    		var name=position[1];
+		    		name=position[1];
 		    		that._setOptionSelection(name);
 		    		break;
 		    	case 40:
-		    		var name=position[2];
+		    		name=position[2];
 		    		that._setOptionSelection(name);
 		    		break;
 		    	case 37:
-		    		var name=position[3];
+		    		name=position[3];
 		    		that._setOptionSelection(name);
 		    		break;
 		     	case 13:
 		     		if(!name){
 		     			return false;
 		     		}
-		     		window.location="/show/TJ1.0-countys/public/cityRealDataList.jsp?areaId="+id;
+		     		// window.location="/show/TJ1.0-countys/public/cityRealDataList.jsp?areaId="+id;
+		     		window.location="cityRealDataList.html?areaId="+id;
 		    		break;
 		    	default:
 		    		break;
@@ -217,12 +200,12 @@ var GetMapComponent = React.createClass({
 	    });
 	},
 	getCanvas: function(obj) {
-		var myChart = echarts.init(obj.id);
-		myChart.clear();
-		var data = obj.data;
-		var dataAttr = ['onePointData', 'twoPointData', 'threePointData', 'fourPointData', 'fivePointData']
 
-		var option = {
+		const myChart = echarts.init(obj.id).clear();
+		const dataAttr = ['onePointData', 'twoPointData', 'threePointData', 'fourPointData', 'fivePointData']
+		let data = obj.data;
+
+		let option = {
 			series: [{
 				name: '中国',
 				type: 'map',
@@ -291,7 +274,7 @@ var GetMapComponent = React.createClass({
 				}
 			}]
 		};
-		for (var i = 0; i < 5; i++) {
+		for (let i = 0; i < 5; i++) {
 			option.series.push({
 				name: dataAttr[i],
 				type: 'map',
@@ -351,8 +334,8 @@ var Container = React.createClass({
 		};
 	},
 	_getDatas: function() {
-		var that = this;
-		var setData = {
+		const that = this;
+		let setData = {
 			date: new Date().getTime()
 		};
 		// /public/others/data1.json
