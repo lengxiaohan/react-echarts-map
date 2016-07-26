@@ -1,0 +1,80 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: ProvinSingleTime.css
+* createTime: 2016/06/30
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时监控css样式(首页单曲线图)
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+.maxBody(){
+	width: 100%;
+	height: 100%;
+}
+
+html,
+body{
+	.maxBody();
+}
+.container{
+	@bgColor: #000938;
+	.maxBody();
+	background: @bgColor;
+	.d-flex-h();
+	.mapShowBox{
+		height: 100%;
+		padding: 3px;
+		box-sizing: border-box;
+		position: relative;
+		.smallMapDv {
+		  position: absolute;
+		  top: 0;
+		  width: 44%;
+		  height: 44%;
+		  margin: 28%;
+		  z-index: 0;
+		}
+		img{
+			height: 100%;
+			position: relative;
+			z-index: 2;
+		}
+	}
+	.timeLineBox{
+		.flex(1);
+		.d-flex-v();
+
+		.navNameShow{
+			position: relative;
+			img{
+				width: 100%;
+			}
+			.navHeadBox{
+				position: absolute;
+				color: #fff;
+				top: 0;
+				left: 0;
+				.maxBody();
+				.d-flex-h();
+				.flex-hc();
+				.flex-vc();
+				font-size: 1.5vw;
+				text-align: center;
+			}
+		}
+		.sectionBox{
+			.flex(1);
+		}
+	}
+}
+
+

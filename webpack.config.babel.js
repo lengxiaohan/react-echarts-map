@@ -4,19 +4,22 @@ const webpack = require("webpack"),
 //ExtractTextPlugin = require("extract-text-webpack-plugin");// 独立css
 
 // 读取入口文件
-const jsDir = fs.readdirSync('./public/js/static'), entryFiles = {};
+const jsDir = fs.readdirSync('./TJ-province/public/js/static'), entryFiles = {};
 jsDir.forEach((file) => {
     const fileList = file.split('.');
-    entryFiles[fileList[0]] = __dirname + '/public/js/static/' + file;
+    entryFiles[fileList[0]] = __dirname + '/TJ-province/public/js/static/' + file;
 });
 
+const urlList = "TJ-province/public/js";
+
 module.exports = {
-    devtool: "source-map", // 便于调试
-    entry: "public/js/static/cityRealDataList", //countyRealtimeOne  chinaRealDataList cityRealDataList
+    // devtool: "source-map", // 便于调试
+    entry: "TJ-province/public/js/static/chinaMonitor.js", 
+    //countyRealtimeOne  chinaRealDataList cityRealDataList ProvinSingleTime ProvinSingleDouble doubleCanvasLine provinceGoodsList2 chinaMonitor
     output: {
-        publicPath: "public/build/",
-        path: path.join(__dirname, "build"),
-        filename: "cityRealDataList.js"
+        publicPath: "TJ-province/public/build/",
+        path: path.join(__dirname, "TJ-province/build"),
+        filename: "chinaMonitor.min.js"
     },
     module: {
         preLoaders: [
@@ -41,7 +44,7 @@ module.exports = {
            }
         }), // 压缩
         // new webpack.optimize.CommonsChunkPlugin('common.js'),//提取多个页面之间的公共模块
-        new webpack.BannerPlugin('项目打包，2016-07-20 zhouxinjian'),// 头部注释
+        new webpack.BannerPlugin('项目打包，2016-07-26 zhouxinjian'),// 头部注释
         //new ExtractTextPlugin("[name].css"),
         
         //全局引入，避免每个页面重复书写
@@ -57,12 +60,13 @@ module.exports = {
         extensions: ['', '.js', '.jsx', '.less'],
         // 模块别名定义，方便后续直接引用别名
         alias: {
-            'jquery': "public/js/plus/jquery-2.0.3.js",
-            'echarts-all': "public/js/dist/echarts-all.js",
-            'common': "public/js/static/common.js",
-            'echarts-line': "public/js/static/echarts.line.exports.js",
-            'echarts-map': "public/js/static/echarts.map.exports.js",
-            'ajax-plus': "public/js/static/getViewData.js"
+            'jquery': urlList+"/plus/jquery-2.0.3.js",
+            'echarts-all': urlList+"/dist/echarts-all.js",
+            'common': urlList+"/static/common.js",
+            'canvasCommon': urlList+"/static/canvasCommon.js",
+            'echarts-line': urlList+"/static/echarts.line.exports.js",
+            'echarts-map': urlList+"/static/echarts.map.exports.js",
+            'ajax-plus': urlList+"/static/getViewData.js"
         }
     }
 };

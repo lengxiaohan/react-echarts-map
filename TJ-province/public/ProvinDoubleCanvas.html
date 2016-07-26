@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>网商列表</title>
+<style>
+	html,
+	body{
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height:100%;
+	}
+	.container{
+		display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+	    display: -moz-box; /* 老版本语法: Firefox (buggy) */
+	    display: -ms-flexbox;
+	    display: -webkit-flex;
+	    display: flex; 
+	    -webkit-flex-wrap: nowrap;
+	    -ms-flex-wrap: nowrap;
+	    flex-wrap: nowrap;
+		height:100%;
+		overflow: hidden;
+		flex-direction:column;
+		background:rgba(0,9,56,.8);
+	}
+	.head_title{
+		margin:10px 5px;
+		height:15.57%;
+		background:url('img/singleTimeBg.png');
+  		background-size:auto 100%;
+		font-size:4vw;
+		font-family:'微软雅黑';
+		color:#fff;
+		display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+	    display: -moz-box; /* 老版本语法: Firefox (buggy) */
+	    display: -ms-flexbox;
+	    display: -webkit-flex;
+	    display: flex;
+	    -webkit-box-align: center;
+	    -webkit-align-items: center;
+	    -moz-align-items: center;
+	    -ms-align-items: center;
+	    -o-align-items: center;
+	    align-items: center;
+	    -webkit-box-pack: center;
+	    -webkit-justify-content: center;
+	    -moz-justify-content: center;
+	    -ms-justify-content: center;
+	    -o-justify-content: center;
+	    justify-content: center;
+	}
+	.myCanvas{
+		flex:1;
+		-webkit-flex:1;
+	}
+	.head-num{
+		color:#ff3333;
+	}
+</style>
+</head>
+<body>
+	<div class="container">
+		<p class="head_title"><span id="JS_provin_name"></span>&nbsp;网商数量&nbsp;<span class="head-num" id="JS_head_num">0</span></p>
+		<canvas id="myCanvas" class="myCanvas"></canvas>
+	</div>
+	
+</body>
+<script src="../build/doubleCanvasLine.min.js"></script>
+<script type="text/javascript">
+	function setType(type){
+		var type = type ? type : '';
+		var areaId = $.getUrlParam('areaId');
+		window.location.href = "provinceGoodsList.html?areaId="+areaId+"&type="+type;
+	}
+</script>
+</html>

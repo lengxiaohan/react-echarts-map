@@ -1,0 +1,259 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0县域版
+* fileName: countyRealtime.css
+* createTime: 2016/06/21
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时监控css样式
+===================================*/
+body,html {
+	margin: 0;
+	padding: 0;
+	font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial,
+		"Microsoft YaHei", FreeSans, Arimo, "Droid Sans",
+		"wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3",
+		Arial, sans-serif;
+	background: #16172c;
+	overflow: hidden;
+	height: 100%;
+}
+
+.containermy {
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+}
+
+.containermy .titlep {
+	color: #fff;
+	font-size: 2.4vw;
+	margin: 0;
+	height: 13%;
+	display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center; -moz-align-items : center; -ms-align-items
+	: center; -o-align-items : center; align-items : center;
+	-webkit-box-orient: horizontal;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	-moz-align-items: center;
+	-ms-align-items: center;
+	-o-align-items: center;
+	align-items: center;
+}
+
+.psty .t1sty {
+	position: absolute;
+	font-size: 1.6vw;
+	right: 0;
+	top: 25%;
+}
+
+.short-size {
+	font-size: 1.6vw;
+	color: #fff;
+	position: relative;
+	top: -3px;
+	left: -2px;
+}
+
+.short-size-span {
+	font-size: 1.6vw;
+	color: #fff;
+	position: relative;
+	top: -3px;
+	margin: 0 5px;
+}
+
+.trendA {
+	margin: 0 auto;
+	width: 83%;
+	height: 23.6%;
+	display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+}
+
+.allstyleA {
+	display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-moz-align-items: center;
+	-ms-align-items: center;
+	-o-align-items: center;
+	align-items: center;
+	-moz-flex: 0.5;
+	-webkit-flex: 0.5;
+	flex: 0.5;
+}
+
+.allstyleA .bigmap {
+	width: 100%;
+	height: 100%;
+	max-height: 150px;
+}
+
+.allstyleB {
+	-moz-flex: 0.7;
+	-webkit-flex: 0.7;
+	flex: 0.7;
+	display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-moz-align-items: center;
+	-ms-align-items: center;
+	-o-align-items: center;
+	align-items: center;
+}
+
+.allstyleB h2 {
+	font-size: 5.5vw;
+	color: #F1544A;
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+.allstyleC {
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-moz-flex: 1;
+	-webkit-flex: 1;
+	flex: 1;
+}
+
+.allstyleD {
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-moz-flex: 1;
+	-webkit-flex: 1;
+	flex: 1;
+}
+
+.allstyleC .psty {
+	color: #aeb6c1;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.spasty {
+	font-size: 2.5vw;
+	position: absolute;
+	bottom: 20%;
+	right: 0;
+}
+
+.spasty .t_num {
+	color: #F1544A;
+	font-size: 1em;
+}
+
+.spasty2 {
+	font-size: 2.5vw;
+	position: absolute;
+	bottom: 20%;
+	right: 0;
+}
+
+.spasty2 .t_num {
+	color: #FFF4B3;
+	font-size: 1em;
+}
+
+#platname {
+	color: #fff;
+	font-size: 1.5em;
+	position: relative;
+	top: -5px;
+}
+
+.popover {
+	color: #aeb6c1;
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.popover-title {
+	margin: 0;
+	position: absolute;
+	font-size: 1.6vw;
+	right: 0;
+	top: 25%;
+	color: #aeb6c1;
+	font-weight:normal;
+}
+
+.popover-title label {
+	color: #FFF4B3;
+}
+
+.popover-content {
+	width: 100%;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.wgll {
+	text-align: center;
+	color: #fff;
+	font-size: 1.3em;
+	height: 15px;
+}
