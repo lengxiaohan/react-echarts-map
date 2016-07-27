@@ -14,12 +14,13 @@ const urlList = "TJ-province/public/js";
 
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: "TJ-province/public/js/static/chinaMonitor.js", 
-    //countyRealtimeOne  chinaRealDataList cityRealDataList ProvinSingleTime ProvinSingleDouble doubleCanvasLine provinceGoodsList2 chinaMonitor
+    entry: "TJ-province/public/js/static/provinceGoodsList2.js", 
+    //countyRealtimeOne  chinaRealDataList cityRealDataList ProvinSingleTime ProvinSingleDouble doubleCanvasLine provinceGoodsList2 chinaMonitor 
+    // provinceGoodsList2 countyRealtime
     output: {
         publicPath: "TJ-province/public/build/",
         path: path.join(__dirname, "TJ-province/build"),
-        filename: "chinaMonitor.min.js"
+        filename: "provinceGoodsList2.min.js"
     },
     module: {
         preLoaders: [
@@ -39,10 +40,19 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
-           compress: {
+            // mangle: {
+            //    except: ['$super', '$', 'exports', 'require']
+            //    //以上变量‘$super’, ‘$’, ‘exports’ or ‘require’，不会被混淆
+            // },
+            compress: {
                warnings: false
-           }
+            }
         }), // 压缩
+        new webpack.DefinePlugin({
+          "process.env": { 
+             NODE_ENV: JSON.stringify("production") 
+           }
+        }), //去除警告
         // new webpack.optimize.CommonsChunkPlugin('common.js'),//提取多个页面之间的公共模块
         new webpack.BannerPlugin('项目打包，2016-07-26 zhouxinjian'),// 头部注释
         //new ExtractTextPlugin("[name].css"),

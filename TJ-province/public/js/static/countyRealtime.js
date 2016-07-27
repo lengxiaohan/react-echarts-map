@@ -129,14 +129,15 @@ let areaId = $.getUrlParam('areaId');
 
 					var onetodayNum=data[0].todayNum;
 					var onearea=data[0].area;
-					$("#oneTitle").html("");
-					$("#oneTitle").html(onearea.shortName);
+					var name = onearea.shortName;
+					$("#oneTitle").css({
+						fontSize: name.length<=5?4+'vw':4-0.5*(name.length-4)+'vw'
+					}).html(name);
 				   
 					var twox=data[1].x;
 					var twoy=data[1].y;
 					var twotodayNum=data[1].todayNum;
 					var twoarea=data[1].area;
-					$("#twoTitle").html("");
 					$("#twoTitle").html(twoarea.shortName);
 				   
 				   
@@ -145,9 +146,9 @@ let areaId = $.getUrlParam('areaId');
 					
 					var setting = {
 						grid: {
-							x: 100,
+							x: 85,
 							y: 30,
-							x2: 70,
+							x2: 85,
 							y2: 30
 						},
 						tooltip: {
@@ -157,7 +158,7 @@ let areaId = $.getUrlParam('areaId');
 						legend: {
 					    	show: true,
 					        data:[onearea.shortName+'网络零售额(/元)',twoarea.shortName+'网络零售额(/元)'],
-					        x: $(window).width()-380,
+					        x: $(window).width()-360,
 					        textStyle: {
 					        	color:'#6c7b90'
 					        }
@@ -327,7 +328,6 @@ let areaId = $.getUrlParam('areaId');
 			        series : [{
 		                name:'地图',
 		                type:'map',
-		//		                mapType:'countyMap',
 		                data:[],
 		                hoverable: false,
 			            roam:false,
@@ -378,6 +378,12 @@ let areaId = $.getUrlParam('areaId');
 			    if(twoAmount==null){
 				   twoAmount="0";
 			    }
+			    
+			    var oneTodayNum=data[0].todayNum;
+			    var twoTodayNum=data[1].todayNum;
+			    
+			    pushScrollNum(oneTodayNum,"#onetotal"); 
+			    pushScrollNum(twoTodayNum,"#twototal"); 
 			    
 			    ecs.addData([
 	              [1,			// 系列索引

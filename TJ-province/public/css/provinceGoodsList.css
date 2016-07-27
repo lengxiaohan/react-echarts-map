@@ -319,7 +319,6 @@ a {
 .pageA span {
 	margin: auto auto;
 	font-size: 2.4vh;
-	color: #fff;
 	position: relative;
 	-webkit-box-orient: vertical;
 	-webkit-line-clamp: 1; /*限制在一个块元素显示的文本的行数*/
@@ -532,4 +531,11 @@ footer>p {
 	flex-wrap: nowrap;
 	height: 100%;
 	flex-direction: column;
+}
+.normalColor{
+	color:rgba(176, 34, 6, 0.2);
+}
+
+.chooseSelect{
+	color:#fff;
 }

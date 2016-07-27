@@ -59,13 +59,13 @@ body,html {
 
 .psty .t1sty {
 	position: absolute;
-	font-size: 1.6vw;
+	font-size: 1.5vw;
 	right: 0;
-	top: 25%;
+	top: 30%;
 }
 
 .short-size {
-	font-size: 1.6vw;
+	font-size: 1.5vw;
 	color: #fff;
 	position: relative;
 	top: -3px;
@@ -73,7 +73,7 @@ body,html {
 }
 
 .short-size-span {
-	font-size: 1.6vw;
+	font-size: 1.5vw;
 	color: #fff;
 	position: relative;
 	top: -3px;
@@ -82,7 +82,7 @@ body,html {
 
 .trendA {
 	margin: 0 auto;
-	width: 83%;
+	width: 88%;
 	height: 23.6%;
 	display: box;
 	display: -webkit-box;
@@ -116,42 +116,44 @@ body,html {
 	-ms-align-items: center;
 	-o-align-items: center;
 	align-items: center;
-	-moz-flex: 0.5;
-	-webkit-flex: 0.5;
-	flex: 0.5;
+	-moz-flex: 0.7;
+	-webkit-flex: 0.7;
+	flex: 0.7;
+	position: relative;
+	height:80%;
+	top:10%;
 }
 
 .allstyleA .bigmap {
-	width: 100%;
-	height: 100%;
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
 	max-height: 150px;
 }
 
 .allstyleB {
-	-moz-flex: 0.7;
-	-webkit-flex: 0.7;
-	flex: 0.7;
+	-moz-flex: 1;
+	-webkit-flex: 1;
+	flex: 1;
 	display: box;
 	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: -webkit-flex;
 	display: flex;
-	-webkit-box-pack: center;
-	-webkit-justify-content: center;
-	-moz-justify-content: center;
-	-ms-justify-content: center;
-	-o-justify-content: center;
-	-webkit-box-align: center;
 	-webkit-align-items: center;
 	-moz-align-items: center;
 	-ms-align-items: center;
 	-o-align-items: center;
 	align-items: center;
+	font-weight:normal;
 }
 
 .allstyleB h2 {
-	font-size: 5.5vw;
+	font-size: 4vw;
+	font-weight: normal;
 	color: #F1544A;
 	position: relative;
 	margin: 0;
@@ -170,6 +172,7 @@ body,html {
 	-moz-flex: 1;
 	-webkit-flex: 1;
 	flex: 1;
+	position: relative;
 }
 
 .allstyleD {
@@ -184,17 +187,21 @@ body,html {
 	-moz-flex: 1;
 	-webkit-flex: 1;
 	flex: 1;
+	margin-left:5.5%;
+	position: relative;
 }
 
 .allstyleC .psty {
 	color: #aeb6c1;
-	position: relative;
+	position: absolute;
+	left:0;
+	top:0;
 	width: 100%;
 	height: 100%;
 }
 
 .spasty {
-	font-size: 2.5vw;
+	font-size: 2.4vw;
 	position: absolute;
 	bottom: 20%;
 	right: 0;
@@ -206,7 +213,7 @@ body,html {
 }
 
 .spasty2 {
-	font-size: 2.5vw;
+	font-size: 2.4vw;
 	position: absolute;
 	bottom: 20%;
 	right: 0;
@@ -226,7 +233,9 @@ body,html {
 
 .popover {
 	color: #aeb6c1;
-	position: relative;
+	position: absolute;
+	top:0;
+	left:0;
 	width: 100%;
 	height: 100%;
 }
@@ -234,9 +243,9 @@ body,html {
 .popover-title {
 	margin: 0;
 	position: absolute;
-	font-size: 1.6vw;
+	font-size: 1.5vw;
 	right: 0;
-	top: 25%;
+	top: 30%;
 	color: #aeb6c1;
 	font-weight:normal;
 }

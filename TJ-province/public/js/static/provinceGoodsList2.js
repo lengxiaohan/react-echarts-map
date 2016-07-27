@@ -114,13 +114,13 @@ var FooterComponent = React.createClass({
 			<div className="pagelist">
 				<div className="pagecenter">
 					<div className="pageA">
-						<span id="Js_pre_page" className={this.props.currentPage == 1 ? "" : "chooseSelect"} onClick={this.props.prev} disabled={this.props.currentPage == 1 ? "true" : "false"}>&nbsp;&lt;&nbsp;上一页</span>
+						<span id="Js_pre_page" className={this.props.isCurrent == 0 ? "normalColor" : "chooseSelect"} onClick={this.props.prev} disabled={this.props.isCurrent == 0 ? "true" : "false"}>&nbsp;&lt;&nbsp;上一页</span>
 					</div>
 					<div className="pageA">
 						<input type="button" className="page" value={this.props.currentPage}/>
 					</div>
 					<div className="pageA">
-						<span id="Js_next_page" className="chooseSelect"  onClick={this.props.next}>下一页&nbsp;&gt;&nbsp;</span>
+						<span id="Js_next_page" className={this.props.isCurrent == 1 ? "normalColor" : "chooseSelect"}  onClick={this.props.next} disabled={this.props.isCurrent == 0 ? "true" : "false"}>下一页&nbsp;&gt;&nbsp;</span>
 					</div>
 				</div>
 			</div>
@@ -246,7 +246,7 @@ var Container = React.createClass({
 			<div className="content-cp">
 	        	<HeaderComponent/>
 	        	<SectionComponent data={this.data ? this.data : []} getDatas={this._getDatas} />
-	        	<FooterComponent next = {this._nextPage} prev = {this._prevPage} currentPage = {this.state.pageNum} />
+	        	<FooterComponent next = {this._nextPage} prev = {this._prevPage} isCurrent = {this.state.pageNum == this.totalPage ? 1 : this.state.pageNum == 1 ? 0 : 2 } currentPage={this.state.pageNum}/>
         	</div>
 		)
 	}
