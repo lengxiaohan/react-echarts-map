@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>网络零售实时采集监控</title>
+	<link rel="stylesheet" href="css/chinaRealDataList.css">
+</head>
+<body>
+	<div class="container" id="myApp"></div>
+
+	<script src="js/dist/echarts-all.js"></script>
+	<script src="../build/chinaRealDataList.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>区县今日网络零售实时</title>
+<script>
+	var areaId = "<%=areaName%>";
+	var ctx = "${ctx}";
+	var county = "${county}";
+</script>
+<link rel="stylesheet" href="css/ProvinSingleTimeLine.min.css">
+</head>
+<body>
+	<div class="container">
+		<img src="img/head-bg.png" class="header-ng" alt="顶部背景图">
+		<div class="mapShowBox">
+			<img src="img/mapsBg.png" alt="背景图">
+			<div id="JS_smallMap" class="smallMapDv"></div>
+		</div>
+		<div class="timeLineBox">
+			<div class="navNameShow">
+				<div class="navHeadBox">
+					<span id="JS_get_areaName2"></span>&nbsp;
+					<span id="JS_get_aniNum2" class="get-ani-num">0</span>元
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<span id="JS_get_areaName"></span>&nbsp;
+					<span id="JS_get_aniNum" class="get-ani-num2">0</span>元
+				</div>
+			</div>
+			<div class="sectionBox" id="Js_canvas_cont"></div>
+			<div class="xuniBg"></div>
+		</div>
+	</div>
+</body>
+<script src="js/dist/echarts-all.js"></script>
+<script src="../build/ProvinSingleDouble.min.js"></script>
+<script type="text/javascript">
+	function setAreaId(id , name, shortName){
+		if(!id || !name || !shortName){
+			return false;
+		}else{
+			location.href=location.pathname+"?areaId="+id+"&name="+name+"&shortName="+shortName;
+		}
+	}
+</script>
+</html>

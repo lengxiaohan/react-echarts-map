@@ -1,0 +1,146 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0县域版
+* fileName: chinaRealDataList.css
+* createTime: 2016/06/30
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时采集监控
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+.maxBody(){
+	width: 100%;
+	height: 100%;
+}
+
+html,
+body{
+	.maxBody();
+	background: #16172C;
+}
+
+.container{
+	.maxBody();
+}
+
+.container-cp{
+	.maxBody();
+
+	header{
+		width: 100%;
+		height: 14%;
+
+		.d-flex-h();
+		.flex-hc();
+		.flex-vc();
+		.font-fm();
+		color: #ABACB1;
+		font-size: 2.4vw;
+
+	}
+
+	section{
+		width: 100%;
+		height: 86%;
+		
+		.map-box{
+			width: 60%;
+			height: 100%;
+			position: relative;
+			.fl();
+			.map-show{
+				height: 100%;
+			}
+			.map-msg-box{
+				position: absolute;
+				bottom: 5%;
+				left: 5%;
+				color: #6c7b90;
+				font-size: 0.8vw;
+				.font-fm();
+				img{
+					position: relative;
+					top:6px;
+				}
+			}
+		}
+
+		.list-box{
+			width: 35%;
+			height: 100%;
+			margin-left: 5%;
+			.fl();
+			.d-flex-v();
+
+			.list-title{
+				color: #7D8491;
+				margin: 2% 0 0 0;
+				.font-fm();
+				font-size: 1.7vw;
+			}
+
+			.pushAnimateNum{
+				color: #EDB204;
+				font-size:3.3vw;
+				margin: 2% 0;
+				.font-fm();
+				.short-size-span{
+					color: #7D8491;
+					font-size: 1.7vw;
+					margin: 0 5px;
+					.font-fm();
+				}
+				
+			}
+			.pushListBox{
+				margin: 0;
+				.d-flex-v();
+				margin-bottom: 10%;
+  				margin-right: 10%;
+  				.flex(1);
+
+  				li{
+  					.d-flex-h();
+  					.flex-vc();
+  					.flex(1);
+  					background: #1A1C31;
+
+  					&:nth-child(odd){
+  						background: #1F2136;
+  					}
+
+  					p{
+  						text-align: center;
+    					margin: 0;
+    					font-size: 1.7vw;
+    					.font-fm();
+
+    					&.listFlex1{
+	  						.flex(1);
+	  						color: #7D8491;
+	  					}
+
+	  					&.listFlex2{
+	  						.flex(3);
+	  						color: #EDB204;
+	  						.short-size-span{
+		  						color: #7D8491;
+		  					}
+	  					}
+
+  					}
+
+  				}
+			}
+		}
+		
+	}
+}
