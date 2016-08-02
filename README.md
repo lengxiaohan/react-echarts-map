@@ -1,17 +1,17 @@
 #TJ1.0县域版
 ##web前端静态资源、
-*TJ1.0-countys --总项目
-*public前端静态资源目录
-	*css前端静态资源 --css样式表
-	*less前端css模板
-	*img前端静态资源 --图片管理
-	*js前端静态资源js文件存放路径
-		*dist 插件文件夹echarts插件存放路径
-		*plus 插件文件夹 其他常用插件目录
-		*static js文件管理 自定义js文件存放路径
-		*zrender echarts底层插件 zrender插件路径
-		*config.js echarts配置信息
-	*others 其他文件存放路径（备用）
+#####TJ1.0-countys --总项目
+#####public前端静态资源目录
+	#####css前端静态资源 --css样式表
+	#####less前端css模板
+	#####img前端静态资源 --图片管理
+	#####js前端静态资源js文件存放路径
+		#####dist 插件文件夹echarts插件存放路径
+		#####plus 插件文件夹 其他常用插件目录
+		#####static js文件管理 自定义js文件存放路径
+		#####zrender echarts底层插件 zrender插件路径
+		#####config.js echarts配置信息
+	#####others 其他文件存放路径（备用）
 	
 	
 ###/public/js/static/echarts.line.exports.js 自定义echarts插件（2次封装）
