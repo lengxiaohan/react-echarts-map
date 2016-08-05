@@ -1,9 +1,8 @@
-
 import 'common';
 import "canvasCommon";
 import "ajax-plus";
 
-(function($){
+(function($) {
 	/**
 	 * Created by zhouxinjian on 2016/6/28.
 	 * doubleCircle is a 双饼图虚线模块
@@ -44,11 +43,17 @@ import "ajax-plus";
 			this.datas = void 0;
 			this.ROTATENUMS = 0; //从逆时针90开始画圆
 			this.DOMLENGTH = 0;
-			this.fillColor = ['#ff3333', '#6600ff','#0099ff', '#ffcc33', '#ff7800', '#ff3333', '#faa'];
+			this.fillColor = ['#ff3333', '#6600ff', '#0099ff', '#ffcc33', '#ff7800', '#ff3333', '#faa'];
 			this.canvasAttrBox = []; //存放扇形绘制数据
 			this.canvasDashBox = []; //存放虚线绘制数据
-			this.datas = {max: [],min: []};
-			this.canvasFontBox = {max:[],min:[]}; //存放文字说明数据
+			this.datas = {
+				max: [],
+				min: []
+			};
+			this.canvasFontBox = {
+				max: [],
+				min: []
+			}; //存放文字说明数据
 			if (this.canvas.getContext) {
 				//获取对应的CanvasRenderingContext2D对象(画笔)
 				this.ctx = this.canvas.getContext("2d");
@@ -65,22 +70,32 @@ import "ajax-plus";
 		 */
 		getData: function() {
 			var that = this;
-			$.GetAjax($.getCtx()+'/rest/ntworkbusiness/getSumByTypes',{areaId:that.areaId},'GET',true,function(data){
-				callpack(data);
-				window.android ? window.android.setData(JSON.stringify(data)) : '';
+			$.GetAjax($.getCtx() + '/rest/ntworkbusiness/getSumByTypes', {
+				areaId: that.areaId
+			}, 'GET', true, function(data, state) {
+				if (state) {
+					callpack(data);
+					window.android ? window.android.setData(JSON.stringify(data)) : '';
+				} else {
+					setTimeout(function() {
+						that.getData();
+						console.log('主人，刚才服务器出了一下小差');
+					}, 2000);
+				}
+
 			});
-			
-			function callpack(data){
+
+			function callpack(data) {
 				var nums = 0;
-				if( data && data.infos[0] && data.code === 0){
-					for( var k = 0; k < data.infos.length; k++ ){
-						if( data.infos[k].parentId ){
+				if (data && data.infos[0] && data.code === 0) {
+					for (var k = 0; k < data.infos.length; k++) {
+						if (data.infos[k].parentId) {
 							that.datas.min.push({
 								name: data.infos[k].typeName,
 								value: data.infos[k].numbers
 							})
-						}else{
-							nums+=data.infos[k].numbers;
+						} else {
+							nums += data.infos[k].numbers;
 							that.datas.max.push({
 								name: data.infos[k].typeName,
 								value: data.infos[k].numbers
@@ -94,18 +109,18 @@ import "ajax-plus";
 					that.setCicleMsg();
 
 					that.pushAniCircle();
-					
-				}else{
+
+				} else {
 
 					that.ctx.beginPath();
-					that.ctx.font="normal 20px arial"
-					that.ctx.fillStyle='#f00';
-					that.ctx.textAlign="center";
-					that.ctx.fillText('数据异常或无数据',that.c_width/2,that.c_height/2-20);
+					that.ctx.font = "normal 20px arial"
+					that.ctx.fillStyle = '#f00';
+					that.ctx.textAlign = "center";
+					that.ctx.fillText('数据异常或无数据', that.c_width / 2, that.c_height / 2 - 20);
 
 				}
 			}
-			
+
 		},
 
 		/**
@@ -138,7 +153,7 @@ import "ajax-plus";
 			radius_2 = (RSW / 2) - (RSW / 3.5);
 
 			radius_1 = radius_1 <= 0 ? 10 : radius_1 >= RSH ? RSH - 10 : radius_1;
-			radius_2 = radius_2 <= 0 ? 10 : radius_2 >= RSH-10 ? RSH - 20 : radius_2;
+			radius_2 = radius_2 <= 0 ? 10 : radius_2 >= RSH - 10 ? RSH - 20 : radius_2;
 
 			// 大圆圆心
 			central_1 = {
@@ -169,9 +184,9 @@ import "ajax-plus";
 
 			// 此处计算大圆的旋转度数
 			$.each(largeArray, function(i, o) {
-				var t_sq = 0; 
+				var t_sq = 0;
 				t_sq = firstCircle / largeTotal * 360; //计算得出第一个弧度位置的结束位置
-				that.ROTATENUMS = -(t_sq-t_sq/2); //根据最大弧度计算出均分点进行旋转
+				that.ROTATENUMS = -(t_sq - t_sq / 2); //根据最大弧度计算出均分点进行旋转
 			});
 
 			// 求大圆弧度，求比例，绘制圆弧
@@ -199,10 +214,10 @@ import "ajax-plus";
 				var starts = attr.start;
 				var ends = attr.end;
 				var tempHd = 0;
-				tempHd = i == 0 ? ends-(ends-starts)/2 : i == 1 ? ends-starts>15 ? ends-15 : ends-(ends-starts)/2: ends-starts>15 ? starts+15 : ends-(ends-starts)/2;
+				tempHd = i == 0 ? ends - (ends - starts) / 2 : i == 1 ? ends - starts > 15 ? ends - 15 : ends - (ends - starts) / 2 : ends - starts > 15 ? starts + 15 : ends - (ends - starts) / 2;
 				that.canvasFontBox['max'].push({
-					x: attr.x + (attr.r * Math.cos(2*Math.PI/360*tempHd)),
-					y: attr.y + (attr.r * Math.sin(2*Math.PI/360*tempHd)),
+					x: attr.x + (attr.r * Math.cos(2 * Math.PI / 360 * tempHd)),
+					y: attr.y + (attr.r * Math.sin(2 * Math.PI / 360 * tempHd)),
 					deg: tempHd,
 					parentX: attr.x,
 					parentY: attr.y,
@@ -247,11 +262,11 @@ import "ajax-plus";
 				var starts = attr.start;
 				var ends = attr.end;
 				var tempHd = 0;
-				tempHd = i == 0 ? ends-15 : starts+15;
+				tempHd = i == 0 ? ends - 15 : starts + 15;
 
 				that.canvasFontBox['min'].push({
-					x: attr.x + (attr.r * Math.cos(2*Math.PI/360*tempHd)),
-					y: attr.y + (attr.r * Math.sin(2*Math.PI/360*tempHd)),
+					x: attr.x + (attr.r * Math.cos(2 * Math.PI / 360 * tempHd)),
+					y: attr.y + (attr.r * Math.sin(2 * Math.PI / 360 * tempHd)),
 					deg: tempHd,
 					parentX: attr.x,
 					parentY: attr.y,
@@ -359,20 +374,21 @@ import "ajax-plus";
 			var that = this;
 			var num = start;
 			requestAnimationFrame(animate);
-			function animate(time){
-				num+=(end-start<20?(end-start)/5:20);
-				num>=end?num=end:'';
+
+			function animate(time) {
+				num += (end - start < 20 ? (end - start) / 5 : 20);
+				num >= end ? num = end : '';
 
 				that.ctx.fillStyle = color; //填充当前绘制区域颜色
 				that.ctx.sector(x, y, r, start, num).fill();
-				if(num>=end){
+				if (num >= end) {
 					that.DOMLENGTH++;
 					cancelAnimationFrame(animate);
-					if(that.DOMLENGTH == 5){
+					if (that.DOMLENGTH == 5) {
 						that.addEvent();
 						that.pushCircle();
 					}
-				}else{
+				} else {
 					requestAnimationFrame(animate);
 				}
 			}
@@ -437,54 +453,54 @@ import "ajax-plus";
 			var NUMUSS = 20;
 
 			// 大圆中文字线条填充
-			$.each(maxAttr,function(i,o){
+			$.each(maxAttr, function(i, o) {
 				var color = that.fillColor[C_LENGTH];
-				C_LENGTH ++;
+				C_LENGTH++;
 				var values = data['max'][i].value / 10000;
 
 				// 字符串拼接
-				values = values > 1 ? values.toFixed(2)+'万家' : data['max'][i].value+'家';
-				var left = o.parentX - (o.parentX-o.x)/2;
-				var top = o.parentY -5;
+				values = values > 1 ? values.toFixed(2) + '万家' : data['max'][i].value + '家';
+				var left = o.parentX - (o.parentX - o.x) / 2;
+				var top = o.parentY - 5;
 
 				// 线条文字填充
 				if (i == 0) {
-					that.pushFontShow('max',data['max'][i].name,left-20,top,'#fff');
-					that.pushFontShow('max',values,left-20,top+15,'#fff');
-				}else if(i == 1){
-					that.ctx.dashedLineTo(o.x, o.y, o.x-10, o.y+NUMUSS,0.1,color);
-					that.ctx.dashedLineTo(o.x-10, o.y+NUMUSS, 10, o.y+NUMUSS,0.1,color);
-					that.pushFontShow('max',data['max'][i].name,10,o.y,'#fff');
-					that.pushFontShow('max',values,10,o.y+15,'#fff');
-				}else{
-					that.ctx.dashedLineTo(o.x, o.y, o.x-10, o.y-NUMUSS,0.1,color);
-					that.ctx.dashedLineTo(o.x-10, o.y-NUMUSS, 10, o.y-NUMUSS,0.1,color);
-					that.pushFontShow('max',data['max'][i].name,10,o.y-40,'#fff');
-					that.pushFontShow('max',values,10,o.y-25,'#fff');
+					that.pushFontShow('max', data['max'][i].name, left - 20, top, '#fff');
+					that.pushFontShow('max', values, left - 20, top + 15, '#fff');
+				} else if (i == 1) {
+					that.ctx.dashedLineTo(o.x, o.y, o.x - 10, o.y + NUMUSS, 0.1, color);
+					that.ctx.dashedLineTo(o.x - 10, o.y + NUMUSS, 10, o.y + NUMUSS, 0.1, color);
+					that.pushFontShow('max', data['max'][i].name, 10, o.y, '#fff');
+					that.pushFontShow('max', values, 10, o.y + 15, '#fff');
+				} else {
+					that.ctx.dashedLineTo(o.x, o.y, o.x - 10, o.y - NUMUSS, 0.1, color);
+					that.ctx.dashedLineTo(o.x - 10, o.y - NUMUSS, 10, o.y - NUMUSS, 0.1, color);
+					that.pushFontShow('max', data['max'][i].name, 10, o.y - 40, '#fff');
+					that.pushFontShow('max', values, 10, o.y - 25, '#fff');
 				}
 			});
 
 			// 小圆中文字线条填充
-			$.each(minAttr,function(i,o){
-				
+			$.each(minAttr, function(i, o) {
+
 				var color = that.fillColor[C_LENGTH]; //同步饼图颜色
-				C_LENGTH ++;
+				C_LENGTH++;
 
 				var values = data['min'][i].value / 10000; //获取到的value值
 				// 字符串拼接
-				values = values > 1 ? values.toFixed(2)+'万家' : data['min'][i].value+'家';
+				values = values > 1 ? values.toFixed(2) + '万家' : data['min'][i].value + '家';
 
 				// 线条文字填充
 				if (i == 0) {
-					that.ctx.dashedLineTo(o.x, o.y, o.x+10, o.y-NUMUSS,0.1,color);
-					that.ctx.dashedLineTo(o.x+10, o.y-NUMUSS, that.WIDTH-10, o.y-NUMUSS,0.1,color);
-					that.pushFontShow('min',data['min'][i].name,that.WIDTH-10,o.y-40,'#fff');
-					that.pushFontShow('min',values,that.WIDTH-10,o.y-25,'#fff');
-				}else{
-					that.ctx.dashedLineTo(o.x, o.y, o.x+10, o.y+NUMUSS,0.1,color);
-					that.ctx.dashedLineTo(o.x+10, o.y+NUMUSS, that.WIDTH-10, o.y+NUMUSS,0.1,color);
-					that.pushFontShow('min',data['min'][i].name,that.WIDTH-10,o.y,'#fff');
-					that.pushFontShow('min',values,that.WIDTH-10,o.y+15,'#fff');
+					that.ctx.dashedLineTo(o.x, o.y, o.x + 10, o.y - NUMUSS, 0.1, color);
+					that.ctx.dashedLineTo(o.x + 10, o.y - NUMUSS, that.WIDTH - 10, o.y - NUMUSS, 0.1, color);
+					that.pushFontShow('min', data['min'][i].name, that.WIDTH - 10, o.y - 40, '#fff');
+					that.pushFontShow('min', values, that.WIDTH - 10, o.y - 25, '#fff');
+				} else {
+					that.ctx.dashedLineTo(o.x, o.y, o.x + 10, o.y + NUMUSS, 0.1, color);
+					that.ctx.dashedLineTo(o.x + 10, o.y + NUMUSS, that.WIDTH - 10, o.y + NUMUSS, 0.1, color);
+					that.pushFontShow('min', data['min'][i].name, that.WIDTH - 10, o.y, '#fff');
+					that.pushFontShow('min', values, that.WIDTH - 10, o.y + 15, '#fff');
 				}
 			});
 		},
@@ -493,17 +509,17 @@ import "ajax-plus";
 		 * @name pushFontShow
 		 * @param 绘制文本方法
 		 */
-		pushFontShow: function(type,text,x,y,color) {
+		pushFontShow: function(type, text, x, y, color) {
 			var fontSize = this.WIDTH / 50;
 			var textWidth = 0;
 			fontSize = fontSize > 16 ? 16 : fontSize;
 			//设置字体样式
-		    this.ctx.font = fontSize+"px 微软雅黑";
-		    //设置字体填充颜色
-		    this.ctx.fillStyle = color;
-		    textWidth = this.ctx.measureText(text).width;
-		    //从坐标点开始绘制文字
-		    type == 'max' ? this.ctx.fillText(text, x, y) : this.ctx.fillText(text, x-textWidth, y);
+			this.ctx.font = fontSize + "px 微软雅黑";
+			//设置字体填充颜色
+			this.ctx.fillStyle = color;
+			textWidth = this.ctx.measureText(text).width;
+			//从坐标点开始绘制文字
+			type == 'max' ? this.ctx.fillText(text, x, y) : this.ctx.fillText(text, x - textWidth, y);
 
 		},
 
