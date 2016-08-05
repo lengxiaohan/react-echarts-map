@@ -1,5 +1,5 @@
 
-import {getJson,getAreaCp,pushScrollNum,formatPrice,toThousands,addZero} from "common";
+import {pushScrollNum,formatPrice,toThousands,addZero} from "common";
 import "echarts-line";
 import "echarts-map";
 import "ajax-plus";
@@ -74,7 +74,8 @@ class SectionComponent extends React.Component {
 		const that = this;
 		const config = { 
 			areaId: areaId,
-			time: new Date().getTime()
+			time: new Date().getTime(),
+			getParent: true
 		}
 
 		$.GetAjax($.getCtx() + '/rest/info/recentAreaInfoListReal', config, 'GET', true, data => {
@@ -84,13 +85,20 @@ class SectionComponent extends React.Component {
 	callpack(data) {
 		const that = this;
 		let config = [];
-		if(data && data[0]){	
+		if(data && data[0] && data[1] ){	
 			let data_x = data[0].x;
 			let data_y = data[0].y;
 			let onetodayNum = data[0].todayNum;
 			$("#JS_get_areaName").html(data[0].area.shortName);
 		   
 			pushScrollNum(onetodayNum,"#JS_get_aniNum");
+
+			let data_x2 = data[1].x;
+			let data_y2 = data[1].y;
+			let twotodayNum = data[1].todayNum;
+			$("#JS_get_areaName2").html(data[1].area.shortName);
+		   
+			pushScrollNum(twotodayNum,"#JS_get_aniNum2");
 			
 			let setting = {
 				grid: {
@@ -113,7 +121,7 @@ class SectionComponent extends React.Component {
 					splitLine: {
 						show: false,
 						lineStyle: {
-							color: ['rgba(255,255,255,.6)']
+							color: ['rgba(255,255,255,.05)']
 						}
 					},
 					axisLine: { show: false, lineStyle: { color: 'rgba(108,123,144,0.8)' } },
@@ -165,6 +173,11 @@ class SectionComponent extends React.Component {
 			seriesData.pop();
 			seriesData.push({ value: seriesLength, symbol: '', symbolSize: 0, symbolRotate: '' });
 
+			var seriesData2 = data_y2;
+			var seriesLength2 = seriesData2[seriesData2.length - 1];
+			seriesData2.pop();
+			seriesData2.push({ value: seriesLength2, symbol:'', symbolSize:0, symbolRotate: '' });
+
 			let series = [{
 				symbolSize: 0,
 				smooth: true,
@@ -174,7 +187,7 @@ class SectionComponent extends React.Component {
 				data: seriesData,
 				itemStyle: {
 					normal: { label: { show: true, textStyle: { color: '#fff' } },
-						color: "#FFC900",
+						color: "#ff7800",
 						lineStyle: { // 系列级个性化折线样式
 							type: 'solid',
 							width: 5,
@@ -186,17 +199,55 @@ class SectionComponent extends React.Component {
 								return value.value;
 							},
 							textStyle: {
-								fontSize: $(window).width()/60,
+								fontSize: $(window).width()/70,
 								color: '#fff',
-								align:'left'
+								align: 'left'
 							}
 						},
 						areaStyle: {
 							// 区域图，纵向渐变填充
 							type: 'default',
 							color: function () {
-								var zrColor = zrender.tool.color;
-								return zrColor.getLinearGradient(0, 0, 0, $(window).height()/1.2, [[0, 'rgba(239,184,4,.8)'], [0.8, 'rgba(239,184,4,0.1)']]);
+								let zrColor = zrender.tool.color;
+								return zrColor.getLinearGradient(0, 0, 0, $(window).height()/1.2, [[0, 'rgba(255,120,0,.8)'], [0.8, 'rgba(255,120,0,0.1)']]);
+							}()
+						}
+					}
+				}
+			}, {
+				symbolSize: 0,
+				name: '交易额',
+				smooth: true,
+				stack: 'group',
+				type: 'line',
+				data: seriesData2,
+				itemStyle: {
+					normal: {
+
+						color: '#ffcc33',
+						lineStyle: { // 系列级个性化折线样式
+							type: 'solid',
+							width: 5,
+							shadowBlur: 5
+						},
+
+						label: {
+							show: true,
+							formatter: function formatter(value) {
+								return value.value;
+							},
+							textStyle: {
+								fontSize: $(window).width()/70,
+								color: '#fff',
+								align: 'left'
+							}
+						},
+						areaStyle: {
+							// 区域图，纵向渐变填充
+							type: 'default',
+							color: function () {
+								let zrColor = zrender.tool.color;
+								return zrColor.getLinearGradient(0, 0, 0, $(window).height()/1.25, [[0, 'rgba(255,240,51,0.8)'], [0.8, 'rgba(255,240,51,0)']]);
 							}()
 						}
 					}
@@ -207,7 +258,7 @@ class SectionComponent extends React.Component {
 			
 			function callback(ec){
 				that.ECs = ec;
-				that.pushDataSet = setTimeout(function () {
+				that.pushDataSet = setTimeout( () => {
 					that.addDatas(that.ECs);
 				}, 2000);
 			}
@@ -228,41 +279,58 @@ class SectionComponent extends React.Component {
 		}
 		
 		function callpack(data){
-			const one=data[0].infos[0];
-			const oneAmount = one.amount ? one.amount : 0;
+		    const one=data[0].infos[0];
+			const two=data[1].infos[0];
+			const oneAmount=one.amount ? one.amount : 0;
+			const twoAmount=two.amount ? two.amount : 0;
+		    
 		    const oneTodayNum=data[0].todayNum;
+		    const twoTodayNum=data[1].todayNum;
 		    
 		    pushScrollNum(oneTodayNum,"#JS_get_aniNum");
-		    
+		    pushScrollNum(twoTodayNum,"#JS_get_aniNum2");
+
 		    ecs.addData([
-		       [0, // 系列索引
-				{ value: oneAmount, symbol: '', symbolSize: 0 }, // 新增数据
-				false, // 新增数据是否从队列头部插入
-				false, // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
-				h+":"+m+":"+s// 坐标轴标签
-				]
+              [1,			// 系列索引
+               {value:twoAmount, symbol:'',symbolSize:0}, // 新增数据
+               false,    	// 新增数据是否从队列头部插入
+               false,    	// 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
+               h+":"+m+":"+s// 坐标轴标签
+               ],
+               [
+                0,        	// 系列索引
+                {value:oneAmount, symbol:'',symbolSize:0}, // 新增数据
+                false,    	// 新增数据是否从队列头部插入
+                false  		// 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
+                ]
 		    ]);
 		    
-		    that.pushDataSet = setTimeout(function () {
+		    that.pushDataSet = setTimeout( () => {
 				that.addDatas(ecs);
 			}, 5000);
 		}
+
 		const config = { 
 			areaId: areaId,
-			time: new Date().getTime()
+			time: new Date().getTime(),
+			getParent: true
 		}
-		$.GetAjax($.getCtx() + '/rest/info/recentAreaInfoReal', config, 'GET', true, function (data) {
+
+		$.GetAjax($.getCtx() + '/rest/info/recentAreaInfoReal', config, 'GET', true, data => {
 			callpack(data);
 		});
+
 	}
 	render() {
 	    return (
-	    	<div className="timeLineBox">
+			<div className="timeLineBox">
 				<div className="navNameShow">
 					<div className="navHeadBox">
-						<span id="JS_get_areaName"></span>
-						<span>今日累计网络零售额&nbsp;&nbsp;</span>
-						<span id="JS_get_aniNum" className="get-ani-num">0</span>元
+						<span id="JS_get_areaName2"></span>&nbsp;
+						<span id="JS_get_aniNum2" className="get-ani-num">0</span>元
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<span id="JS_get_areaName"></span>&nbsp;
+						<span id="JS_get_aniNum" className="get-ani-num2">0</span>元
 					</div>
 				</div>
 				<div className="sectionBox" id="Js_canvas_cont"></div>
@@ -291,4 +359,3 @@ ReactDOM.render(
 	<Container />,
 	document.getElementById('container')
 );
-
