@@ -1,0 +1,132 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: ProvinSingleTime.css
+* createTime: 2016/06/30
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时监控css样式(首页单曲线图)
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+.maxBody(@width:100%,@height:100%){
+	width: @width;
+	height: @height;
+}
+
+@margin-box-left:65%;
+
+html,
+body{
+	.maxBody();
+}
+.container{
+	.maxBody();
+	background: #191A2F;
+	overflow: hidden;
+}
+.echarts-map-show{
+	.fl();
+	.maxBody(@margin-box-left,100%);
+}
+
+.echarts-list-show{
+	margin-left: @margin-box-left;
+	.maxBody(100%-@margin-box-left,100%);
+	.b-sizing();
+	padding: 2% 10% 4% 0;
+	.list-box{
+		.maxBody();
+		header{
+			.maxBody(100%,24%);
+			@height-tak:34%;
+			@radius:10px;
+			margin-bottom: 2%;
+			.list-title{
+				.maxBody(100%,@height-tak);
+				.d-flex-v();
+				.flex-hc();
+				.flex-vc();
+				.font-fm();
+				border-top-left-radius: @radius;
+				border-top-right-radius: @radius;
+				background:#282A3F;
+				color:#B8BBCB;
+				font-size: 3.5vh;
+			}
+			.list-total-num{
+				.maxBody(100%,100%-@height-tak);
+				.d-flex-v();
+				.flex-hc();
+				.flex-vc();
+				.font-fm();
+				border-bottom-left-radius: @radius;
+				border-bottom-right-radius: @radius;
+				background:#1D1F34;
+				color:#F9FCFE;
+				font-size: 7.5vh;
+			}
+		}
+		section{
+			.maxBody(100%,74%);
+			.d-flex-v();
+			.nav-title{
+				.flex(1);
+				.d-flex-h();
+				.flex-hc();
+				.flex-vc();
+				width: 100%;
+				border-right: 1px solid #eee;
+				border-bottom: 1px solid #eee;
+				span{
+					.d-flex-h();
+					.flex(1);
+					.flex-hc();
+					.flex-vc();
+					height: 100%;
+					.b-sizing();
+					.font-fm();
+					font-size: 3vh;
+					color: #F1F1F3;
+					border-left: 1px solid #eee;
+					border-top: 1px solid #eee;
+				}
+			}
+			ul{
+				.flex(10);
+				.d-flex-v();
+				.flex-hc();
+				.flex-vc();
+				li{
+					.flex(1);
+					width: 100%;
+					height: 10%;
+					.d-flex-h();
+					.flex-hc();
+					.flex-vc();
+					border-right: 1px solid #eee;
+					border-bottom: 1px solid #eee;
+					span{
+						.d-flex-h();
+						.flex(1);
+						.flex-hc();
+						.flex-vc();
+						.font-fm();
+						height: 100%;
+						.b-sizing();
+						color: #A7AABB;
+						font-size: 2.5vh;
+						border-left: 1px solid #eee;
+					}
+				}
+			}
+		}
+	}
+}

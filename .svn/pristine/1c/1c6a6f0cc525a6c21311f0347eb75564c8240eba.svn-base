@@ -1,0 +1,110 @@
+import "common";
+import "ajax-plus";
+import "receiveLess";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PubSub from 'pubsub-js';
+
+
+class MapComponent extends React.Component {
+	render() {
+		return (
+			<div className="echarts-map-show">
+
+			</div>
+		)
+	}
+}
+
+class ListComponent extends React.Component {
+	render() {
+		return (
+			<div className="echarts-list-show">
+				<div className="list-box">
+					<header>
+						<div className="list-title">发出量总计</div>
+						<div className="list-total-num">7116845</div>
+					</header>
+					<section>
+						<div className="nav-title">
+							<span>排行</span>
+							<span>省份</span>
+							<span>接收量</span>
+						</div>
+						<ul>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+							<li>
+								<span>排行</span>
+								<span>省份</span>
+								<span>接收量</span>
+							</li>
+						</ul>
+					</section>
+				</div>
+			</div>
+		)
+	}
+}
+
+class Container extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return (
+			<div className="container">
+	    		<MapComponent />
+	    		<ListComponent />
+	    	</div>
+		)
+	}
+}
+
+ReactDOM.render(
+	<Container />,
+	document.getElementById('myMap')
+);

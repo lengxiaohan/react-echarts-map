@@ -10,17 +10,24 @@ jsDir.forEach((file) => {
     const fileList = file.split('.');
     entryFiles[fileList[0]] = __dirname + '/TJ-province/public/js/static/' + file;
 });
-
-const urlList = "TJ-province/public/js";
+// 省域版
+// const urlList = "TJ-province/public/js";
+// 县域版
+const urlList = "TJ-county/public/js";
+const urlLess = "TJ-county/public/less";
 const TIME = new Date();
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: urlList + "/static/ProvinSingleDouble.js",
+    entry: urlList + "/static/countyMigrateReceive.js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime
+    // 县域版 countyMigrateReceive
     output: {
-        publicPath: "TJ-province/public/build/",
-        path: path.join(__dirname, "TJ-province/build"),
-        filename: "ProvinSingleDouble.min.js"
+        // publicPath: "TJ-province/public/build/",
+        // path: path.join(__dirname, "TJ-province/build"),
+
+        publicPath: "TJ-county/public/build/",
+        path: path.join(__dirname, "TJ-county/build"),
+        filename: "countyMigrateReceive.min.js"
     },
     module: {
         preLoaders: [
@@ -31,8 +38,8 @@ module.exports = {
             //    test: /\.less$/,
             //    loader: ExtractTextPlugin.extract('style-loader',  "css-loader!less-loader")
             //},
-            // {test: /\.less$/,loader: "style-loader!css-loader!autoprefixer-loader!less-loader?sourceMap"},
-            // {test: /\.css$/,loader: "style-loader!css-loader!autoprefixer-loader"},
+            {test: /\.less$/,loader: "style-loader!css-loader!autoprefixer-loader!less-loader?sourceMap"},
+            {test: /\.css$/,loader: "style-loader!css-loader!autoprefixer-loader"},
             // {test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?name=[hash].[ext]'},
             {
                 test: /\.(png|jpg)$/,
@@ -86,7 +93,8 @@ module.exports = {
             'canvasCommon': urlList + "/static/canvasCommon.js",
             'echarts-line': urlList + "/static/echarts.line.exports.js",
             'echarts-map': urlList + "/static/echarts.map.exports.js",
-            'ajax-plus': urlList + "/static/getViewData.js"
+            'ajax-plus': urlList + "/static/getViewData.js",
+            'receiveLess': urlLess + "/countyMigrateReceive.less"
         }
     }
 };
