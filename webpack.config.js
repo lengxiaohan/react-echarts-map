@@ -18,16 +18,16 @@ const urlLess = "TJ-county/public/less";
 const TIME = new Date();
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: urlList + "/static/countyMigrateReceive.js",
+    entry: urlList + "/static/countyMigrateIssue.js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime
-    // 县域版 countyMigrateReceive
+    // 县域版 countyMigrateReceive  countyMigrateIssue
     output: {
         // publicPath: "TJ-province/public/build/",
         // path: path.join(__dirname, "TJ-province/build"),
 
         publicPath: "TJ-county/public/build/",
         path: path.join(__dirname, "TJ-county/build"),
-        filename: "countyMigrateReceive.min.js"
+        filename: "countyMigrateIssue.min.js"
     },
     module: {
         preLoaders: [
@@ -94,7 +94,9 @@ module.exports = {
             'echarts-line': urlList + "/static/echarts.line.exports.js",
             'echarts-map': urlList + "/static/echarts.map.exports.js",
             'ajax-plus': urlList + "/static/getViewData.js",
-            'receiveLess': urlLess + "/countyMigrateReceive.less"
+            'receiveLess': urlLess + "/countyMigrateReceive.less",
+            'issueLess': urlLess + "/countyMigrateIssue.less",
+            'jsons': urlList + "/static/json.js"
         }
     }
 };
