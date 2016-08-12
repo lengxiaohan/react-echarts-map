@@ -1,0 +1,114 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: training_structure.css
+* createTime: 2016/08/10
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 电商培训课程人员结构css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+.maxBody(@width:100%,@height:100%){
+	width: @width;
+	height: @height;
+}
+
+@margin-box-left:65%;
+
+html,
+body{
+	.maxBody();
+	background: #191A2F;
+}
+.con{
+	.maxBody();
+	.header{
+		height: 40%;
+		.topPie{
+			width:50%;
+			height:100%;
+			.fl();
+		}
+		.topTitle{
+			width:50%;
+			height:100%;
+			.fl();
+			 display: block;
+			.table{
+				.maxBody(45%,70%);
+			    .bc();
+			    .d-flex-v();
+			    .tc();
+			    margin-top: 6%;
+			    margin-left: 10%;
+			    border-spacing: 0px;
+			    webkit-flex: 1;
+			    display: -webkit-flex;
+			    display: flex;
+			    flex-direction: column;
+			    display: -webkit-flex;
+			    .title{
+				    font-size: 1.3em;
+				    color: #e8dbdb;
+				    background: #be2b0f;
+				    border-radius: 8px 8px 0px 0px;
+				    font-weight: normal;
+				    display: -webkit-flex;
+				    display: flex;
+				    -webkit-flex: 1;
+				    flex: 1;
+				    -webkit-flex-direction: column;
+				    flex-direction: column;
+				    .flex(1);
+				    .flex-hc();
+				    .flex-vc();
+			    }
+			    .personData{
+			    	.flex(2);
+			    	.flex-hc();
+			    	.flex-vc();
+			    	border-radius: 0 0 8px 8px;
+			    	color: #fff;
+			    	display: -webkit-flex;
+				    display: flex;
+				    -webkit-flex-direction: row;
+				    flex-direction: row;
+				    border-radius: 0px 0px 8px 8px;
+				    background: #7d1908;
+				    display: -webkit-flex;
+				    display: flex;
+				    -webkit-flex-direction: column;
+				    flex-direction: column;
+			    	.personSum{
+			    		.flex-hc();
+			    		.flex-vc();
+			    		display: flex;
+					   	font-size: 7vh;
+					   	display: -webkit-flex;
+					    display: flex;
+					    -webkit-flex: 1;
+					    flex: 1;
+					    -webkit-flex-direction: column;
+					    flex-direction: column;
+					    .unit{
+				    		font-size: 3vh;
+						    .flex-vc();
+						    .flex-hc();
+						  
+						   
+				    	}
+			    	}
+			    	
+			    }
+			}
+		}
+	};
+}

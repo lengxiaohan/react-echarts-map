@@ -1,12 +1,12 @@
 @charset "utf-8";
 /*===================================
 * copyRight: TJ县域正式版
-* fileName: countyMigrateIssue.less
+* fileName: countyDistributionService.less
 * createTime: 2016/08/20
 * author : zhouxinjian
 * version: 1.0
 * modify: {}
-* description: 快递接收页面
+* description: 电商服务站分布页面
 ===================================*/
 
 // 引入z.less库
@@ -29,7 +29,7 @@ body{
 }
 .container{
 	.maxBody();
-	background: #191A2F;
+	background: #16172C;
 	overflow: hidden;
 }
 .echarts-map-show{
@@ -57,8 +57,8 @@ body{
 				.font-fm();
 				border-top-left-radius: @radius;
 				border-top-right-radius: @radius;
-				background:#282A3F;
-				color:#B8BBCB;
+				background:#2C3346;
+				color:#6F778A;
 				font-size: 3.5vh;
 			}
 			.list-total-num{
@@ -69,37 +69,39 @@ body{
 				.font-fm();
 				border-bottom-left-radius: @radius;
 				border-bottom-right-radius: @radius;
-				background:#1D1F34;
-				color:#F9FCFE;
+				background:#262B3F;
+				color:#FDFEF9;
 				font-size: 7.5vh;
 				span{
 					font-size: 4.5vh;
+					color:#697186;
 				}
 			}
 		}
 		section{
 			.maxBody(100%,74%);
 			.d-flex-v();
+			border: 1px solid #1B1C31;
+			border-radius: 10px;
 			.nav-title{
 				.flex(1);
 				.d-flex-h();
 				.flex-hc();
 				.flex-vc();
 				width: 100%;
-				border-right: 1px solid #eee;
-				border-bottom: 1px solid #eee;
 				span{
 					.d-flex-h();
-					.flex(1);
+					.flex(2);
 					.flex-hc();
 					.flex-vc();
 					height: 100%;
 					.b-sizing();
 					.font-fm();
 					font-size: 3vh;
-					color: #F1F1F3;
-					border-left: 1px solid #eee;
-					border-top: 1px solid #eee;
+					color: #FDFEFF;
+					&:first-child{
+						.flex(1);
+					}
 				}
 			}
 			ul{
@@ -114,21 +116,25 @@ body{
 					.d-flex-h();
 					.flex-hc();
 					.flex-vc();
-					border-right: 1px solid #eee;
-					border-bottom: 1px solid #eee;
 					span{
 						.d-flex-h();
-						.flex(1);
+						.flex(2);
 						.flex-hc();
 						.flex-vc();
 						.font-fm();
 						height: 100%;
 						.b-sizing();
-						color: #A7AABB;
+						color: #AEB2BE;
 						font-size: 2.5vh;
-						border-left: 1px solid #eee;
+						&:first-child{
+							.flex(1);
+						}
+					}
+					&:nth-child(odd){
+						background: #1A1C31;
 					}
 				}
+				
 			}
 		}
 	}
