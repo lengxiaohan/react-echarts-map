@@ -1,0 +1,346 @@
+import "common";
+import "ajax-plus";
+import "BusinessLess";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PubSub from 'pubsub-js';
+import {coordinates} from "coordinates";
+
+// 获取区域id
+let areaId = $.getUrlParam('areaId');
+
+class MapComponent extends React.Component {
+	componentDidMount() {
+		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
+			switch(data && data.buysells || 0 ) {
+				case 0:
+					alert('buysells 字段丢失');
+					return false;
+				default:
+					break;
+			}
+				
+			let setJson = {
+				date: [],
+				buyData: [],
+				sellData: []
+			};
+			for (let i = 0; i < data.buysells.length; i++) {
+				setJson.date.push(data.buysells[i] && data.buysells[i].date || '无数据');
+				setJson.buyData.push(data.buysells[i] && data.buysells[i].samount || 0);
+				setJson.sellData.push(data.buysells[i] && data.buysells[i].bamount || 0);
+			};
+			this._showMap(setJson);
+		});
+	}
+	componentWillUnmount() {
+		PubSub.unsubscribe(this.pubsub_token);
+	}
+	_showMap(JSONDATA) {
+		const myChart = echarts.init(document.getElementById('echarts-map'));
+		let config = {
+			MaxBuyData: Math.max.apply(Math, JSONDATA.buyData)*2,
+			MaxSellData: Math.max.apply(Math, JSONDATA.sellData)*2,
+			LINEWITH: 5,
+			symbolSize: 6,
+			splitNumber: 5
+		};
+		let option = {
+			color: '#fff',
+			legend: {
+		    	show: true,
+		        data:['代买','代卖'],
+		        x: $(window).width()*0.65-190,
+		        y: $(window).height()*0.05,
+		        textStyle: {
+		        	color:'#6c7b90'
+		        }
+		    },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'line' // 默认为直线，可选为：'line' | 'shadow'
+                },
+                formatter: params => {
+                    return params[0].name + '<br/>' + params[0].seriesName + ' : ' + params[0].value  +'元'+ '<br/>' + params[1].seriesName + ' : ' + -params[1].value +'元';
+                }
+            },
+            xAxis: [{
+                show: true,
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#2a2f42',
+                        width: 1,
+                        type: 'solid'
+                    },
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#adb3c0'
+                    }
+                },
+                type: 'category',
+                boundaryGap: false,
+                axisLine: {
+                    onZero: false
+                },
+                data: JSONDATA.date
+            }],
+            yAxis: [{
+                type: 'value',
+                max: config.MaxBuyData,
+                splitLine: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#adb3c0'
+                    }
+                },
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['#14192c', '#161B2E']
+                    }
+                },
+                splitNumber: config.splitNumber
+            }, {
+                type: 'value',
+                min: -config.MaxSellData,
+                axisLabel: {
+                    textStyle: {
+                        color: '#adb3c0'
+                    },
+                    formatter: v => {
+                        return -v;
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['#14192c', '#161B2E']
+                    },
+                },
+                splitNumber: config.splitNumber
+            }],
+            series: [{
+                name: '代买',
+                type: 'line',
+                smooth: true, //平滑曲线显示
+                symbol: 'emptyCircle',
+                symbolSize: config.symbolSize,
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            color: (() => {
+                                let zrColor = zrender.tool.color;
+                                return zrColor.getLinearGradient(
+                                    0, 100, 0, 200, [
+                                        [0, 'rgba(114,50,44,0.8)'],
+                                        [0.8, 'rgba(108,54,39,0.8)']
+                                    ]
+                                )
+                            })(),
+                            type: 'default'
+                        },
+                        lineStyle: { //上面线条样式
+                            color: '#EB6A1B',
+                            width: config.LINEWITH
+                        },
+                        color: '#EB6A1B'
+                    }
+                },
+                data: JSONDATA.buyData
+            }, {
+                name: '代卖',
+                type: 'line',
+                smooth: true, //平滑曲线显示
+                yAxisIndex: 1,
+                symbol: 'emptyCircle',
+                symbolSize: config.symbolSize,
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            type: 'default',
+                            color: (() => {
+                                let zrColor = zrender.tool.color;
+                                return zrColor.getLinearGradient(
+                                    0, 0, 0, 100, [
+                                        [0, 'rgba(14,34,82,0.9)'],
+                                        [0.8, 'rgba(12,70,107,0.9)']
+                                    ]
+                                )
+                            })(),
+                            type: 'default'
+                        },
+                        lineStyle: { //上面线条样式
+                            color: '#1f7fe6',
+                            width: config.LINEWITH
+                        },
+                        color: '#1f7fe6'
+                    }
+                },
+                data: (() => {
+                    const oriData = JSONDATA.sellData;
+                    let len = oriData.length;
+                    while (len--) {
+                        oriData[len] *= -1;
+                    }
+                    return oriData;
+                })()
+            }]
+        };
+        // 为echarts对象加载数据
+	    myChart.setOption(option);
+	}
+	render() {
+		return (
+			<div className="echarts-map-show" id="echarts-map"></div>
+		)
+	}
+}
+
+class ListComponent extends React.Component {
+	state = {
+		show: false
+	}
+	constructor(props) {
+		super(props);
+		this.superData = [];
+		this.arrayGroup = []; //拉取数据回来进行分组的转换数组
+		this.totalPage = 0;
+		this.currentPage = 1;
+	}
+	componentDidMount() {
+		this._getDataList();
+	}
+	_pushListComponent(data = []) {
+		let listArray = data; //获取数据进行遍历赋值
+		let LENGTH = listArray.length;
+		if (LENGTH < 10) {
+			for(let i = 0;i<10-LENGTH;i++){
+				listArray.push([]);
+			}
+		}
+		this.listShowDom = listArray.map((item, list) => {
+			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list}/>
+		});
+	}
+	_getDataList() {
+		let [PAGEERS,totalNums] = [10,0];
+		let setData = {
+			"areaId": areaId
+		};
+		$.GetAjax($.getCtx() + '/rest/site/findAllTBServiceSumAmount', setData, 'GET', true, (data, state) => {
+			if (state && data.tables[0]) {
+				// 进行数据组装
+				for (let i = 0; i < data.tables.length / PAGEERS; i++) {
+					let attr = []; //该数组用于缓存当前循环的数据信息（最多存10条数据），赋给缓存session
+					for (let k = i * PAGEERS; k < i * PAGEERS + PAGEERS; k++) {
+						attr.push(data.tables[k]);
+					}
+
+					// 赋值
+					this.arrayGroup[i] = attr;
+					// 缓存
+					sessionStorage.setItem('DATALIST_PAGE' + (i+1), JSON.stringify(this.arrayGroup[i]));
+
+					// 初始化数据渲染
+					if (i == 0) {
+						this.superData = this.arrayGroup[i];
+						this.totalPage = data.tables.length / PAGEERS;
+						
+					}
+
+				}
+				this.setState({
+					show: true
+				});
+
+				PubSub.publish('showMap',data);
+
+			} else if (!state) {
+				setTimeout(() => {
+					this._getDataList();
+					console.log('主人，刚才服务器出了一下小差');
+				}, 2000);
+			}
+		});
+	}
+	componentDidUpdate() {
+		setTimeout(() => {
+			if (this.currentPage < this.totalPage) {
+				this.currentPage ++;
+			} else {
+				this.currentPage = 1;
+			}
+			this.superData = JSON.parse(sessionStorage.getItem('DATALIST_PAGE' + this.currentPage));
+			this.setState({
+				show: true
+			});
+		},2000);
+	}
+	render() {
+		this._pushListComponent(this.superData);
+		return (
+			<div className="echarts-list-show">
+				<div className="list-box">
+					<section>
+						<div className="nav-title">
+							<span>排名</span>
+							<span>站点名称</span>
+							<span>服务数</span>
+							<span>所属乡镇</span>
+						</div>
+						<ul>
+							{this.listShowDom}
+						</ul>
+					</section>
+				</div>
+			</div>
+		)
+	}
+}
+
+class ListLiComponent extends React.Component {
+	constructor(props) {
+		super(props);
+		this.listData = props;
+	}
+	componentWillReceiveProps(nextProps) {
+		this.listData = nextProps;
+	}
+	render() {
+		return (
+			<li>
+				<span>{this.listData.item && this.listData.item.tradeNumber ? (this.listData.list+1 < 10 ? "0"+(this.listData.list+1) : this.listData.list+1) : '-' || '-'}</span>
+				<span>{this.listData.item && this.listData.item.siteName || '-'}</span>
+				<span>{this.listData.item && this.listData.item.tradeNumber || '-'}</span>
+				<span>{this.listData.item && this.listData.item.region || '-'}</span>
+			</li>
+		)
+	}
+}
+
+class Container extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return (
+			<div className="container">
+	    		<MapComponent />
+	    		<ListComponent />
+	    	</div>
+		)
+	}
+}
+
+ReactDOM.render(
+	<Container />,
+	document.getElementById('myMap')
+);

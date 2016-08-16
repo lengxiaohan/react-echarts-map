@@ -39,7 +39,7 @@ var SectionComponent = React.createClass({
 		this.CHECKCURRENT = $.cookie('NUMS') || 0;//初始化默认选中第一个元素
 		let listArray = data ? data : []; //获取数据进行遍历赋值
 		this.dom = listArray.map(function(item,list){
-			return <SectionListComponent item={item} list={list} key={list} />
+			return <SectionListComponent item={item} list={list} key={list} listCurrent = {that.CHECKCURRENT}/>
 		});
 	},
 	componentDidMount: function () {
@@ -86,10 +86,10 @@ var SectionComponent = React.createClass({
 	},
 	_EventClickMe: function () {
 		let t_this = $('.active-show').click();
-		/*let localName = t_this[0].localName;
+		let localName = t_this[0].localName;
 		if ( localName === 'ul' ) {
 			window.android ? window.android.getMouse() : '';
-		}*/
+		}
 	},
 	_ppxx: function (c) {
 		$('.chooseSelect').removeClass('active-show');
@@ -167,12 +167,12 @@ var SectionListComponent = React.createClass({
 	},
 	render: function() {
 		return (
-			<ul>
-				<li className="lione datanum" >{this.listData.item ? this.listData.item.studentNum : ''}</li>
+			<ul className={this.listData.list == this.props.listCurrent ? 'contentBox chooseSelect active-show' : this.listData.item ? 'contentBox chooseSelect' : 'contentBox'} onClick={this._getListDataClick} >
+				<li className="lione" >{this.listData.item ? this.listData.item.studentNum : ''}</li>
 				<li className="litwo" >{this.listData.item ? this.listData.item.create : ''}</li>
 				<li className="lithreen">{this.listData.item ? this.listData.item.lessionName : ''}</li>
 				<li className="lione textOverflow lilast" ref="list">
-				{this._getImage()}<span>{this.listData.item ? this.listData.item.lessionEvaluate : ''}</span>
+				{this._getImage()}
 				</li>
 			</ul>
 		)
@@ -189,19 +189,14 @@ var FooterComponent = React.createClass({
 			<div className="pagelist">
 				<div className="pagecenter">
 					<div className="pagecon">
-						<div ></div>
-						<div >
-							<div className="page">
-							<span >{this.props.currentPage}/{this.props.totalPage}</span>
+						<div className="page">
+							<span className="page">{this.props.currentPage}/{this.props.totalPage}</span>
 						</div>
-						</div>
-						<div >
-							<div className="pageP">
+						<div className="pageP">
 							<span className={this.props.isCurrent == 0 ? "normalColor" : "chooseSelect"} onClick={this.props.prev} data-page="pager">&nbsp;&lt;&nbsp;上一页</span>
 						</div>
 						<div className="pageP">
 							<span className={this.props.isCurrent == 1 ? "normalColor" : "chooseSelect"}  onClick={this.props.next} data-page="pager">下一页&nbsp;&gt;&nbsp;</span>
-						</div>
 						</div>
 					</div>
 				</div>
@@ -396,7 +391,7 @@ var Container = React.createClass({
 
 			// 当前页数数据
 			this._getDatas(this.state.pageNum);
-			/*$.cookie('NUMS',0);*/
+			$.cookie('NUMS',0);
 			this._ppxxss(0);
 			$.cookie('PAGE',this.state.pageNum);
 		}

@@ -12,23 +12,24 @@ let areaId = $.getUrlParam('areaId');
 
 class MapComponent extends React.Component {
 	componentDidMount() {
-		// =>函数可以省略.bind(this)来绑定当前this值，否则为undefined
-		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
-			this._showMap(data);
-		});
+		const that = this;
+		this.pubsub_token = PubSub.subscribe('showMap', function(topic, data) {
+			that._showMap(data);
+		}.bind(this));
 	}
 	componentWillUnmount() {
 		PubSub.unsubscribe(this.pubsub_token);
 	}
-	_showMap(data = []) {
+	_showMap(data) {
+		const that = this;
 		let config = {
 			msymbol : 'image://../public/img/Disservice.png',
-			mdata : data
+			mdata : data || []
 		}
 
 		const objMsg = {
 			id:'echarts-map',
-			areaName: data[0] && data[0].areaName || ''
+			areaName:'资中县'
 		};
 		
 		var setting = {
@@ -37,7 +38,7 @@ class MapComponent extends React.Component {
                 type: 'map',
                 data: [],
                 roam: false, //不允许缩放
-                hoverable: false,// 不允许hover
+                hoverable: false,//非数值显示（如仅用于显示标注标线时），可以通过hoverable:false关闭区域悬浮高亮
                 itemStyle: {
                     normal: {
                     	show: true,
@@ -71,6 +72,9 @@ class MapComponent extends React.Component {
 					}
                 },
                 geoCoord: coordinates(),
+                textFixed: {
+                	'双龙镇': [0, -$(window).height() / 15]
+                },
                 markPoint: {
                     symbol: config.msymbol,
                     symbolSize: $(window).height() / 16,
@@ -115,33 +119,38 @@ class ListComponent extends React.Component {
 	}
 	constructor(props) {
 		super(props);
-		this.superData = [];  // 用于存储请求回来的数据
-		this.arrayGroup = []; // 拉取数据回来进行分组的转换数组
-		this.totalPage = 0;   // 用于细分请求回来的数据的总页数
-		this.currentPage = 1; // 当前页面上展示的某页的数据(默认第一页)
+		this.superData = [];
+		this.arrayGroup = []; //拉取数据回来进行分组的转换数组
+		this.setPage = 1;
+		this.totalPage = 0;
+		this.currentPage = 1;
 	}
 	componentDidMount() {
 		this._getDataList();
 	}
-	_pushListComponent(data = []) {
-		let listArray = data; // 获取数据进行遍历赋值
+	_pushListComponent(data) {
+		const that = this;
+		let listArray = data ? data : []; //获取数据进行遍历赋值
 		let LENGTH = listArray.length;
 		if (LENGTH < 10) {
-			for( let i = 0; i < 10 - LENGTH; i++ ) {
-				listArray.push([]); // 无数据的置空
+			for(let i = 0;i<10-LENGTH;i++){
+				listArray.push([]);
 			}
 		}
-		this.listShowDom = listArray.map((item, list) => {
-			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list}/>
+		this.dom = listArray.map(function(item, list) {
+			return <ListLiComponent item={item} list={list+10*(that.currentPage-1)} key={list}/>
 		});
 	}
 	_getDataList() {
-		let [PAGEERS,totalNums] = [10,0];
+		const that = this;
+		const PAGEERS = 10; //每页总个数
+		let totalNums = 0;
 		let setData = {
 			"areaId": areaId
 		};
-		$.GetAjax($.getCtx() + '/rest/site/findAllTBServiceRegisterRanking', setData, 'GET', true, (data, state) => {
+		$.GetAjax($.getCtx() + '/rest/site/findAllTBServiceRegisterRanking', setData, 'GET', true, function(data, state) {
 			if (state && data[0]) {
+
 				// 进行数据组装
 				for (let i = 0; i < data.length / PAGEERS; i++) {
 					let attr = []; //该数组用于缓存当前循环的数据信息（最多存10条数据），赋给缓存session
@@ -151,41 +160,43 @@ class ListComponent extends React.Component {
 					}
 
 					// 赋值
-					this.arrayGroup[i] = attr;
+					that.arrayGroup[i] = attr;
 					// 缓存
-					sessionStorage.setItem('DATALIST_PAGE' + (i+1), JSON.stringify(this.arrayGroup[i]));
+					sessionStorage.setItem('DATALIST_PAGE' + (i+1), JSON.stringify(that.arrayGroup[i]));
 
 					// 初始化数据渲染
-					if ( i == 0 ) {
-						this.superData = this.arrayGroup[i];
-						this.totalPage = data.length / PAGEERS;
+					if (i == 0) {
+						that.superData = that.arrayGroup[i];
+						that.totalPage = data.length / PAGEERS;
+						
 					}
+
 				}
-				// 更新
-				this.setState({
+				that.setState({
 					show: true,
 					totalNum: totalNums
 				});
-				// 传参
+
 				PubSub.publish('showMap',data);
 
 			} else if (!state) {
 				setTimeout(() => {
-					this._getDataList();
+					that._getDataList();
 					console.log('主人，刚才服务器出了一下小差');
 				}, 2000);
 			}
 		});
 	}
 	componentDidUpdate() {
+		const that = this;
 		setTimeout(() => {
-			if ( this.currentPage < this.totalPage ) {
-				this.currentPage ++;
-			} else {
-				this.currentPage = 1;
+			if (that.currentPage<that.totalPage) {
+				that.currentPage++;
+			}else{
+				that.currentPage = 1;
 			}
-			this.superData = JSON.parse(sessionStorage.getItem('DATALIST_PAGE' + this.currentPage));
-			this.setState({
+			that.superData = JSON.parse(sessionStorage.getItem('DATALIST_PAGE'+that.currentPage));
+			that.setState({
 				show: true
 			});
 		},2000);
@@ -196,21 +207,17 @@ class ListComponent extends React.Component {
 			<div className="echarts-list-show">
 				<div className="list-box">
 					<header>
-						<div className="list-title">电商服务站总计</div>
-						<div className="list-total-num">
-							<p>
-								{this.state.totalNum || 0}<span>个</span>
-							</p>
-						</div>
+						<div className="list-title">接收量总计</div>
+						<div className="list-total-num"><p>{this.state.totalNum || 0}<span>个</span></p></div>
 					</header>
 					<section>
 						<div className="nav-title">
 							<span>排名</span>
-							<span>所属乡镇</span>
-							<span>站点数</span>
+							<span>城市</span>
+							<span>注册个数</span>
 						</div>
 						<ul>
-							{this.listShowDom}
+							{this.dom}
 						</ul>
 					</section>
 				</div>
@@ -225,6 +232,7 @@ class ListLiComponent extends React.Component {
 		this.listData = props;
 	}
 	componentWillReceiveProps(nextProps) {
+		const that = this;
 		this.listData = nextProps;
 	}
 	render() {
