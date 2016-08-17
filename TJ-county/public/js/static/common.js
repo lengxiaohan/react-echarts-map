@@ -45,7 +45,7 @@ $.extend({
 		});
 		return value;
 	}
-	,
+	/*,
 	//线上路径
 	getCtx: function() {
 		var webroot=document.location.href;
@@ -54,10 +54,10 @@ $.extend({
 		webroot=webroot.substring(0,webroot.indexOf('/'));
 		var rootpath="/"+webroot;
 		return rootpath;
-	}
+	}*/
 });
 //本地路径
-/*$.onloadJavascript("./js/static/publicCommon.js", false, true);*/
+$.onloadJavascript("./js/static/publicCommon.js", false, true);
 
 export function getJson(areaid) {
 	var value;

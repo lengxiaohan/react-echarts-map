@@ -18,7 +18,7 @@ const urlLess = "TJ-county/public/less";
 const TIME = new Date();
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: urlList + "/static/countyBusinessService.js",
+    entry: urlList + "/static/countyMigrateIssue.js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime
     // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService
     output: {
@@ -27,7 +27,7 @@ module.exports = {
 
         publicPath: "TJ-county/public/build/",
         path: path.join(__dirname, "TJ-county/build"),
-        filename: "countyBusinessService.min.js"
+        filename: "countyMigrateIssue.min.js"
     },
     module: {
         preLoaders: [
