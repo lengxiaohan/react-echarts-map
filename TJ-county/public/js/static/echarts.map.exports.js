@@ -92,35 +92,37 @@
 	}
 	
 	$.getSmallMap = function(config,setting,id){
-		
 		var setting = setting ? setting : {};
 		//全国所有省市县的轮廓图
 		if(!id){
 			id = $.getUrlParam("areaId");
 		}
+
 		if(!config.id || !setting.series){
 			return false;
 		}
+
 	    // 基于准备好的dom，初始化echarts图表
 	    var myChart = echarts.init(document.getElementById(config.id));
-		var name = $.getUrlParam('name') || config.areaName;
-		
-		$.each(setting.series,function(o,c){
-			this.mapType = 'countyMap';
+		$.getAreaName(name => {
+			$.each(setting.series,function(o,c){
+				this.mapType = 'countyMap';
+			});
+	    	echarts.util.mapData.params.params.countyMap = {
+		        getGeoJson: function (callback) {
+		            $.getJSON('/mapJson/'+ name +'.json', data => {
+		                // 压缩后的地图数据必须使用 decode 函数转换
+		                callback(echarts.util.mapData.params.decode(data));
+		            });
+		            // $.getJSON($.getCtx() + '/TJ1.0-countys/guizhoujson/'+ name +'.json', function (data) {
+		            //     // 压缩后的地图数据必须使用 decode 函数转换
+		            //     callback(echarts.util.mapData.params.decode(data));
+		            // });
+
+		        }
+		    }
+		    myChart.setOption(setting);
 		});
-	    
-	    echarts.util.mapData.params.params.countyMap = {
-	        getGeoJson: function (callback) {
-	            $.getJSON('/mapJson/'+ name +'.json', function (data) {
-	                // 压缩后的地图数据必须使用 decode 函数转换
-	                callback(echarts.util.mapData.params.decode(data));
-	            });
-	            // $.getJSON($.getCtx() + '/TJ1.0-countys/guizhoujson/'+ name +'.json', function (data) {
-	            //     // 压缩后的地图数据必须使用 decode 函数转换
-	            //     callback(echarts.util.mapData.params.decode(data));
-	            // });
-	        }
-	    };
-	    myChart.setOption(setting);
 	}
+
 })(jQuery);

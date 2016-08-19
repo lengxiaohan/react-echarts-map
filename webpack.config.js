@@ -15,10 +15,11 @@ jsDir.forEach((file) => {
 // 县域版
 const urlList = "TJ-county/public/js";
 const urlLess = "TJ-county/public/less";
+const urlCss = "TJ-county/public/css";
 const TIME = new Date();
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: urlList + "/static/countyMigrateIssue.js",
+    entry: urlList + "/static/countyMigrateReceive.js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime
     // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService
     output: {
@@ -27,7 +28,7 @@ module.exports = {
 
         publicPath: "TJ-county/public/build/",
         path: path.join(__dirname, "TJ-county/build"),
-        filename: "countyMigrateIssue.min.js"
+        filename: "countyMigrateReceive.min.js"
     },
     module: {
         preLoaders: [
@@ -98,7 +99,8 @@ module.exports = {
             'issueLess': urlLess + "/countyMigrateIssue.less",
             'DisSeverLess': urlLess + "/countyDistributionService.less",
             'BusinessLess': urlLess + "/countyBusinessService.less",
-            'coordinates': urlList + "/static/coordinates.js"
+            'coordinates': urlList + "/static/coordinates.js",
+            'animateCss': urlCss+ "/plus/animate.css"
         }
     }
 };

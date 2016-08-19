@@ -1,6 +1,7 @@
-import "common";
+import {GetAnimateNum} from "common";
 import "ajax-plus";
 import "BusinessLess";
+import "animateCss";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
@@ -16,7 +17,6 @@ class MapComponent extends React.Component {
 			buyData: [],
 			sellData: []
 		};
-		this._showMap(setJson);
 		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
 			switch(data && data.buysells || 0 ) {
 				case 0:
@@ -238,7 +238,7 @@ class ListComponent extends React.Component {
 			}
 		}
 		this.listShowDom = listArray.map((item, list) => {
-			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list}/>
+			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list} key2={list} total={this.totalPage}/>
 		});
 	}
 	_getDataList() {
@@ -263,8 +263,7 @@ class ListComponent extends React.Component {
 					// 初始化数据渲染
 					if (i == 0) {
 						this.superData = this.arrayGroup[i];
-						this.totalPage = data.tables.length / PAGEERS;
-						
+						this.totalPage = Math.ceil(data.tables.length / PAGEERS);
 					}
 
 				}
@@ -283,6 +282,9 @@ class ListComponent extends React.Component {
 		});
 	}
 	componentDidUpdate() {
+		if (this.totalPage <= 1) {
+			return false;
+		};
 		setTimeout(() => {
 			if (this.currentPage < this.totalPage) {
 				this.currentPage ++;
@@ -293,7 +295,7 @@ class ListComponent extends React.Component {
 			this.setState({
 				show: true
 			});
-		},2000);
+		},5000);
 	}
 	render() {
 		this._pushListComponent(this.superData);
@@ -318,20 +320,46 @@ class ListComponent extends React.Component {
 }
 
 class ListLiComponent extends React.Component {
+	state = {
+		start: false,
+		classNamed: ''
+	}
 	constructor(props) {
 		super(props);
 		this.listData = props;
 	}
 	componentWillReceiveProps(nextProps) {
 		this.listData = nextProps;
+		this.timeoutEnd();
+	}
+	timeoutEnd(){
+		setTimeout(()=>{
+			let classNamed = 'animated bounceIn showList';
+			this.setState({
+				start: true,
+				classNamed: classNamed
+			});
+		},this.listData.key2*100);
+
+		if (this.listData.total <= 1) {
+			return false;
+		}
+
+		setTimeout(()=>{
+			let classNamed = 'animated bounceOut';
+			this.setState({
+				start: true,
+				classNamed: classNamed
+			});
+		},this.listData.key2*100+4000);
 	}
 	render() {
 		return (
 			<li>
-				<span>{this.listData.item && this.listData.item.tradeNumber ? (this.listData.list+1 < 10 ? "0"+(this.listData.list+1) : this.listData.list+1) : '-' || '-'}</span>
-				<span>{this.listData.item && this.listData.item.siteName || '-'}</span>
-				<span>{this.listData.item && this.listData.item.tradeNumber || '-'}</span>
-				<span>{this.listData.item && this.listData.item.region || '-'}</span>
+				<span className={this.state.classNamed}>{this.listData.item && this.listData.item.tradeNumber ? (this.listData.list+1 < 10 ? "0"+(this.listData.list+1) : this.listData.list+1) : '' || ''}</span>
+				<span className={this.state.classNamed}>{this.listData.item && this.listData.item.siteName || ''}</span>
+				<span className={this.state.classNamed}>{this.listData.item && this.listData.item.tradeNumber || ''}</span>
+				<span className={this.state.classNamed}>{this.listData.item && this.listData.item.region || ''}</span>
 			</li>
 		)
 	}

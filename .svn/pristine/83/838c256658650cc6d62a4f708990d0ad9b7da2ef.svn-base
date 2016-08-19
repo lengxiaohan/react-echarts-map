@@ -1,37 +1,28 @@
 "use strict";
+
 import "common";
 import "ajax-plus";
 import "cookie";
-
+import "trainingStructureDetails";
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 // 获取区域id
 let areaId = $.getUrlParam('areaId');
+// 获取type
+let type = $.getUrlParam('type'); 
 
-/**
- * @name HeaderComponent 头部组件
- * @param _getName 头部信息名称
- */
 var HeaderComponent = React.createClass({
-	_getName: function() {
-		const name = '网商列表';
-		return name;
-	},
+	componentDidUpdate:function(){ 
+        $(".type").html(type);
+    },
 	render: function() {
 		return (
-			<div className="containA">
-				<p>{this._getName()}</p>
-			</div>
-		)
-	}
-});
-
-var HeaderComponent2 = React.createClass({
-	render: function() {
-		return (
-			<div className="containB">
-				<img alt="header" src="../public/img/shop.png" />
+			<div className="header">
+				<p>
+					<label className="type"></label>
+					<label>&nbsp;&nbsp;课程详情列表</label>
+				</p>
 			</div>
 		)
 	}
@@ -48,7 +39,7 @@ var SectionComponent = React.createClass({
 		this.CHECKCURRENT = $.cookie('NUMS') || 0;//初始化默认选中第一个元素
 		let listArray = data ? data : []; //获取数据进行遍历赋值
 		this.dom = listArray.map(function(item,list){
-			return <SectionListComponent item={item} list={list} key={list} listCurrent = {that.CHECKCURRENT}/>
+			return <SectionListComponent item={item} list={list} key={list} />
 		});
 	},
 	componentDidMount: function () {
@@ -95,14 +86,14 @@ var SectionComponent = React.createClass({
 	},
 	_EventClickMe: function () {
 		let t_this = $('.active-show').click();
-		let localName = t_this[0].localName;
+		/*let localName = t_this[0].localName;
 		if ( localName === 'ul' ) {
 			window.android ? window.android.getMouse() : '';
-		}
+		}*/
 	},
 	_ppxx: function (c) {
-		$('#listContainer').find('.chooseSelect').removeClass('active-show');
-		$('#listContainer').find('.chooseSelect').eq(c).addClass('active-show');
+		$('.chooseSelect').removeClass('active-show');
+		$('.chooseSelect').eq(c).addClass('active-show');
 	},
 	_up: function () {
 		this.CHECKCURRENT > 0 ? this.CHECKCURRENT-- : 0;
@@ -120,16 +111,15 @@ var SectionComponent = React.createClass({
 		// 渲染列表数据
 		this._pushListComponent(this.props.data);
 		return (
-			<div className="containC">
-				<div id="plattable" className="divtable">
-					<ul className="goodsListHeader">
-						<li className="contentBox-lione">网商名称</li>
-						<li className="contentBox-litwo" >归属地</li>
-						<li className="contentBox-lithreen">所属平台</li>
-						<li className="contentBox-litwo">主营范围</li>
-						<li className="contentBox-lithreen listHeader_lilast">类型</li>					
+			<div className=" conList">
+				<div id="plattable" className=" table">
+					<ul className=" tableHeader">
+						<li className="lione">学员人数</li>
+						<li className="litwo" >培训日期</li>
+						<li className="lithreen">课程名称</li>
+						<li className="litwo lilast">培训评价</li>
 					</ul>
-					<div className="goodsListContent">
+					<div className=" tableContent">
 						{this.dom}
 					</div>
 				</div>
@@ -149,53 +139,41 @@ var SectionListComponent = React.createClass({
 		this.interval = false;
 		this.listData = this.props.list;
 	},
+	componentWillReceiveProps: function(nextProps) {
+		const that = this;
+		this.listData = nextProps;
+	},
 	_getListDataClick: function (event) {
 		event.preventDefault();
 		const url = this.props.item && this.props.item.url || "javascript:;"
 		window.location.href = url;
 	},
-	_marquee: function () {
-		const that = this;
-		let dom = ReactDOM.findDOMNode(this.refs.list);
-		clearInterval(this.interval);
-		dom.scrollLeft = 0;
-		dom.lastChild.innerHTML = '';
-		this.interval = setTimeout(function(){
-			let lengthParent = dom.offsetWidth;
-			let lengthChild = dom.firstChild.offsetWidth;
-			if( lengthChild >= lengthParent ) {
-				that._scroll(dom);
-			}
-		},5000);
-
-	},
-	_scroll: function (obj) {
-		var tmp = obj.scrollLeft;
-        obj.lastChild.innerHTML += obj.firstChild.innerHTML;
-    	this.interval = setInterval(function(){
-        	obj.scrollLeft++;
-	        //当滚动条滚动了初始内容的宽度时滚动条回到最左端
-	        if (obj.scrollLeft>=obj.firstChild.offsetWidth+30) {
-	        	obj.scrollLeft=0;
-	        }
-        },50);
-	},
-	componentDidUpdate: function () {
-		this._marquee();
-	},
-	componentWillReceiveProps: function(nextProps) {
-		const that = this;
-		this.listData = nextProps;
+	_getImage:function(){//根据评价加载不同的图标
+		if(this.listData.item != "" && this.listData.item != null){
+			let photo;
+			if(this.listData.item.lessionEvaluate=="非常满意"){
+		    	 photo=<img src="../public/img/best.png" />;
+		    }else if(this.listData.item.lessionEvaluate=="满意"){
+		    	 photo=<img src="../public/img/good.png" />;
+		    }else if(this.listData.item.lessionEvaluate=="一般"){
+		    	 photo=<img src="../public/img/soso.png" />;
+		    }else if(this.listData.item.lessionEvaluate=="差"){
+		    	 photo=<img src="../public/img/bad.png" />;
+		    }else{
+		    	photo='';
+		    }
+		    return photo;
+		}
 	},
 	render: function() {
-		
 		return (
-			<ul className={this.listData.list == this.props.listCurrent ? 'contentBox chooseSelect active-show' : this.listData.item ? 'contentBox chooseSelect' : 'contentBox'} onClick={this._getListDataClick} >
-				<li className="contentBox-lione" >{this.listData.item ? this.listData.item.name : ''}</li>
-				<li className="contentBox-litwo" >{this.listData.item ? this.listData.item.area : ''}</li>
-				<li className="contentBox-lithreen">{this.listData.item ? this.listData.item.platName : ''}</li>
-				<li className="contentBox-litwo textOverflow" ref="list"><span>{this.listData.item ? this.listData.item.mainAreas : ''}</span><span></span></li>
-				<li className="contentBox-lithreen listHeader_lilast">{this.listData.item ? this.listData.item.type : ''}</li>
+			<ul>
+				<li className="lione datanum" >{this.listData.item ? this.listData.item.studentNum : ''}</li>
+				<li className="litwo datatwo" >{this.listData.item ? this.listData.item.create : ''}</li>
+				<li className="lithreen">{this.listData.item ? this.listData.item.lessionName : ''}</li>
+				<li className="litwo textOverflow lilast" ref="list">
+				{this._getImage()}<span>{this.listData.item ? this.listData.item.lessionEvaluate : ''}</span>
+				</li>
 			</ul>
 		)
 	}
@@ -210,19 +188,122 @@ var FooterComponent = React.createClass({
 		return (
 			<div className="pagelist">
 				<div className="pagecenter">
-					<div ></div>
-					<div >
-						<div className="pageP">
-							<span className="page">{this.props.currentPage}/{this.props.totalPage}</span>
+					<div className="pagecon">
+						<div ></div>
+						<div >
+							<div className="page">
+							<span >{this.props.currentPage}/{this.props.totalPage}</span>
 						</div>
-					</div>
-					<div >
-						<div className="pageA">
+						</div>
+						<div >
+							<div className="pageP">
 							<span className={this.props.isCurrent == 0 ? "normalColor" : "chooseSelect"} onClick={this.props.prev} data-page="pager">&nbsp;&lt;&nbsp;上一页</span>
 						</div>
-						<div className="pageA">
+						<div className="pageP">
 							<span className={this.props.isCurrent == 1 ? "normalColor" : "chooseSelect"}  onClick={this.props.next} data-page="pager">下一页&nbsp;&gt;&nbsp;</span>
 						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		)
+	}
+});
+
+/**
+ * @name RightComponent 右部统计组件
+ * @param
+ */
+var RightComponent = React.createClass({
+	getInitialState: function() {
+        return {
+            data: []
+        };
+    },
+    componentDidMount: function() {//加载数据。
+        this._getDatas();
+    },
+    _getDatas: function() {//加载数据方法
+        const that = this;
+        let setData = {
+            "areaId": areaId ? areaId : '',
+            searchLessionType:type,
+            dataType:'json',
+            type:'GET'
+        };
+        $.GetAjax($.getCtx()+'/rest/ectrain/getTBTrainCount', setData, 'GET', true, function(data) {
+           if (data!=null&null!=data) {
+                that.setState({
+                    data:data
+                });
+            } else {
+                setTimeout(function() {//数据没有请求成功，就一直请求
+                    that._getDatas();
+                    console.log('主人，刚才服务器出了一下小差');
+                }, 2000);
+                that.setState({
+                    data:''
+                });
+            };
+        });
+       
+    },
+	render: function() {
+		return (
+			<div className="right">
+				<CountComponent data={this.state.data ? this.state.data : []} getDatas={this._getDatas}/>
+			</div>
+		)
+	}
+});
+
+/**
+ * @name RightComponent 培训学员累计人数组件
+ * @param
+ */
+var CountComponent = React.createClass({
+	componentDidUpdate:function(){ 
+        $(".titleType").html(type);
+        if(type=="讲座"){
+        	$(".countData").css('color','#7df343');
+		    $(".personData").css('color','#7df343');	
+        }else if(type=="授课"){
+        	$(".countData").css('color','#ff5f00');
+		    $(".personData").css('color','#ff5f00');	
+        }else if(type=="实操"){
+        	$(".countData").css('color','#fcff00');
+		    $(".personData").css('color','#fcff00');	
+        }else if(type=="沙龙"){
+        	$(".countData").css('color','#01d7ac');
+		    $(".personData").css('color','#01d7ac');
+        }else{
+        	$(".countData").css('color','#0cb0e6');
+		    $(".personData").css('color','#0cb0e6');
+        }
+    },
+	render: function() {
+		return (
+			<div className="con">
+				<div className="count">
+					<div className="title">
+						<div className="titleDiv">
+							<p className="titleType"></p>
+							<p>累计次数</p>
+						</div>
+					</div>
+					<div className="data">
+						<p className="countData">{this.props.data?this.props.data.count:''}</p>
+					</div>
+				</div>
+				<div className="person">
+					<div className="title">
+						<div className="titleDiv">
+							<p>培训学员</p>
+							<p>累计人数</p>
+						</div>
+					</div>
+					<div className="data">
+						<p className="personData">{this.props.data?this.props.data.persons:''}</p>
 					</div>
 				</div>
 			</div>
@@ -251,7 +332,7 @@ var Container = React.createClass({
 		this.arrayGroup = []; //拉取数据回来进行分组的转换数组
 		this.nextPagerNum = 1; //当前请求的页数（现在按照每页100条数据拉取，分10组）
 		this.totalDataPage = $.cookie('totalDataPage') || 0;
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < 10; i++) { 
 			this.data.push(''); //初始化添加空数据
 		}
 	},
@@ -259,14 +340,15 @@ var Container = React.createClass({
 		const that = this;
 		let session = sessionStorage.getItem('sessionPage'+nums); //判断当前页是否有用户的缓存数据
 		const PAGEERS = 10;   //每页总个数
-		const PAGESIZE = 100; //请求每页数据
+		const PAGESIZE = 100; //请求每页数据 
 		if (!session) {
 			let setData = {
 				"page":page,
 				"pageSize":PAGESIZE,
-				"areaId": areaId ? areaId : ''
+				"areaId": areaId ? areaId : '',
+				"searchLessionType":type
 			};
-			$.GetAjax($.getCtx()+'/rest/index/getBusinessPage', setData, 'GET', true, function(data) {
+			$.GetAjax($.getCtx()+'/rest/ectrain/getEcTrainPage', setData, 'GET', true, function(data) {
 				if ( data && data.rows ) {
 
 					// 进行数据组装
@@ -311,8 +393,8 @@ var Container = React.createClass({
 		
 	},
 	_ppxxss: function (c) {
-		$('#listContainer').find('.chooseSelect').removeClass('active-show');
-		$('#listContainer').find('.chooseSelect').eq(c).addClass('active-show');
+		$('.chooseSelect').removeClass('active-show');
+		$('.chooseSelect').eq(c).addClass('active-show');
 	},
 	_nextPage: function(event){
 		event.preventDefault();
@@ -330,7 +412,7 @@ var Container = React.createClass({
 
 			// 当前页数数据
 			this._getDatas(this.state.pageNum);
-			$.cookie('NUMS',0);
+			/*$.cookie('NUMS',0);*/
 			this._ppxxss(0);
 			$.cookie('PAGE',this.state.pageNum);
 		}
@@ -350,10 +432,10 @@ var Container = React.createClass({
 	},
 	render: function() {
 		return (
-			<div className="containermy">
+			<div className="con">
 	        	<HeaderComponent/>
-	        	<HeaderComponent2/>
 	        	<SectionComponent data={this.data ? this.data : []} getDatas={this._getDatas}/>
+	        	<RightComponent/>
 	        	<FooterComponent next = {this._nextPage} prev = {this._prevPage} isCurrent = {this.state.pageNum == this.totalPage ? 1 : this.state.pageNum == 1 ? 0 : 2 } currentPage={this.state.pageNum} totalPage={this.totalDataPage}/>
         	</div>
 		)
@@ -365,5 +447,5 @@ var Container = React.createClass({
  */
 ReactDOM.render(
 	<Container />,
-	document.getElementById('listContainer')
+	document.body
 );

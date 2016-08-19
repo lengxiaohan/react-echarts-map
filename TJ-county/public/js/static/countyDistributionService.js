@@ -1,7 +1,8 @@
-import "common";
+import {GetAnimateNum} from "common";
 import "ajax-plus";
 import "echarts-map";
 import "DisSeverLess";
+import "animateCss";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
@@ -16,6 +17,7 @@ class MapComponent extends React.Component {
 		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
 			this._showMap(data);
 		});
+		
 	}
 	componentWillUnmount() {
 		PubSub.unsubscribe(this.pubsub_token);
@@ -35,8 +37,8 @@ class MapComponent extends React.Component {
 			legend: {
 		        x: $(window).width()*0.08,
 		        y: $(window).height() - $(window).height()*0.12,
-		        itemHeight: $(window).width()*0.03,
-		        itemWidth: $(window).width()*0.03,
+		        itemHeight: $(window).height()*0.05,
+		        itemWidth: $(window).height()*0.05,
 				data: [{
 					name : '服务站数量', 
 					textStyle : {
@@ -101,7 +103,8 @@ class MapComponent extends React.Component {
                 }
             }]
 	    };
-		$.getSmallMap(objMsg,setting);
+	    $.getSmallMap(objMsg,setting);
+		
 	}
 	render() {
 		return (
@@ -111,15 +114,13 @@ class MapComponent extends React.Component {
 }
 
 class ListComponent extends React.Component {
-	state = {
-		show: false
-	}
 	constructor(props) {
 		super(props);
 		this.superData = [];  // 用于存储请求回来的数据
 		this.arrayGroup = []; // 拉取数据回来进行分组的转换数组
 		this.totalPage = 0;   // 用于细分请求回来的数据的总页数
 		this.currentPage = 1; // 当前页面上展示的某页的数据(默认第一页)
+		this.listShowDom = '';
 	}
 	componentDidMount() {
 		this._getDataList();
@@ -132,8 +133,12 @@ class ListComponent extends React.Component {
 				listArray.push([]); // 无数据的置空
 			}
 		}
-		this.listShowDom = listArray.map((item, list) => {
-			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list}/>
+	  	this.listShowDom = listArray.map((item, list) => {
+			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list} key2={list} total={this.totalPage}/>
+		});
+
+		this.setState({
+			show: true
 		});
 	}
 	_getDataList() {
@@ -159,15 +164,14 @@ class ListComponent extends React.Component {
 					// 初始化数据渲染
 					if ( i == 0 ) {
 						this.superData = this.arrayGroup[i];
-						this.totalPage = data.length / PAGEERS;
+						this.totalPage = Math.ceil(data.length / PAGEERS);
+
+						this._pushListComponent(this.superData);
 					}
 				}
-				// 更新
-				this.setState({
-					show: true,
-					totalNum: totalNums
-				});
-				// 传参
+
+				let ReactGetAniNumId = ReactDOM.findDOMNode(this.refs.ReactGetAniNumId);
+				GetAnimateNum(ReactGetAniNumId,totalNums,'个');
 				PubSub.publish('showMap',data);
 
 			} else if (!state) {
@@ -179,6 +183,9 @@ class ListComponent extends React.Component {
 		});
 	}
 	componentDidUpdate() {
+		if (this.totalPage <= 1) {
+			return false;
+		};
 		setTimeout(() => {
 			if ( this.currentPage < this.totalPage ) {
 				this.currentPage ++;
@@ -189,19 +196,17 @@ class ListComponent extends React.Component {
 			this.setState({
 				show: true
 			});
-		},2000);
+		},5000);
 	}
 	render() {
-		this._pushListComponent(this.superData);
+		console.log(this.listShowDom);
 		return (
 			<div className="echarts-list-show">
 				<div className="list-box">
 					<header>
 						<div className="list-title">电商服务站总计</div>
 						<div className="list-total-num">
-							<p>
-								{this.state.totalNum || 0}<span>个</span>
-							</p>
+							<p ref="ReactGetAniNumId"><span>数据获取中...</span></p>
 						</div>
 					</header>
 					<section>
@@ -211,7 +216,7 @@ class ListComponent extends React.Component {
 							<span>站点数</span>
 						</div>
 						<ul>
-							{this.listShowDom}
+							{this.listShowDom || ''}
 						</ul>
 					</section>
 				</div>
@@ -224,16 +229,36 @@ class ListLiComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.listData = props;
+		this.classNamed = '';
 	}
 	componentWillReceiveProps(nextProps) {
 		this.listData = nextProps;
+		this.timeoutEnd();
+	}
+	componentDidMount() {
+		this.timeoutEnd();
+	}
+	timeoutEnd(){
+		let listId = "list"+this.listData.key2;
+		let listDom = ReactDOM.findDOMNode(this.refs[listId]);
+		setTimeout(()=>{
+			$(listDom).find('span').addClass('animated bounceIn showList');
+		},this.listData.key2*100);
+
+		if (this.listData.total <= 1) {
+			return false;
+		}
+
+		setTimeout(()=>{
+			$(listDom).find('span').addClass('animated bounceOut');
+		},this.listData.key2*100+4000);
 	}
 	render() {
 		return (
-			<li>
-				<span>{this.listData.item && this.listData.item.value ? (this.listData.list+1 < 10 ? "0"+(this.listData.list+1) : this.listData.list+1) : '-' || '-'}</span>
-				<span>{this.listData.item && this.listData.item.name || '-'}</span>
-				<span>{this.listData.item && this.listData.item.value || '-'}</span>
+			<li ref={"list"+this.listData.key2}>
+				<span>{this.listData.item && this.listData.item.value ? (this.listData.list+1 < 10 ? "0"+(this.listData.list+1) : this.listData.list+1) : '' || ''}</span>
+				<span>{this.listData.item && this.listData.item.name || ''}</span>
+				<span>{this.listData.item && this.listData.item.value || ''}</span>
 			</li>
 		)
 	}

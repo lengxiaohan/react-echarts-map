@@ -1,10 +1,10 @@
-import "common";
+import {GetAnimateNum,RegExpThatName} from "common";
 import "ajax-plus";
 import "receiveLess";
+import "animateCss";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
-import {coordinates} from "coordinates";
 
 // 获取区域id
 let areaId = $.getUrlParam('areaId');
@@ -13,30 +13,38 @@ class MapComponent extends React.Component {
 	componentDidMount() {
 		this._showMap({});
 		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
+			const callBackJson = data && data.list;
+			const startArea = data.areaShortName.replace(RegExpThatName(data.areaShortName), "" );
 			let ObjectTokenData = {
 				data1:[],
 				data2:[{
-					name: data[0].areaShortName && data[0].areaShortName.replace( "县" || "区" || "市" || "省" , "" ),
+					name: startArea,
 					value: 0
 				}],
+				pos: {},
 				dataRangeMax:0,
 				dataRangeMin:0
 			};
-			for (var i = 0; i < data.length; i++) {
-                if (i == data.length - 1) {
-                	ObjectTokenData.dataRangeMax = Math.ceil(data[0].receiveNum);
-                    ObjectTokenData.dataRangeMin = Math.ceil(data[i].receiveNum);
+			ObjectTokenData.pos[startArea] = data.location;
+			for (var i = 0; i < callBackJson.length; i++) {
+				const endArea = callBackJson[i].regionName && callBackJson[i].regionName.replace(RegExpThatName(callBackJson[i].regionName), "");
+				const receiveNum = callBackJson[i].receiveNum;
+                if (i == callBackJson.length - 1) {
+                	ObjectTokenData.dataRangeMax = Math.ceil(callBackJson[0].receiveNum);
+                    ObjectTokenData.dataRangeMin = Math.ceil(callBackJson[i].receiveNum);
                 }
                 ObjectTokenData.data1.push([{
-                	name: data[i].areaShortName && data[i].areaShortName.replace( "县" || "区" || "市" || "省" , "" )
+                	name: startArea
                 },{
-                	name: data[i].regionName,
-                	value: data[i].receiveNum
+                	name: endArea,
+                	value: receiveNum
                 }]);
                 ObjectTokenData.data2.push({
-                	name: data[i].regionName,
-                	value: data[i].receiveNum
+                	name: endArea,
+                	value: receiveNum
                 });
+                ObjectTokenData.pos[endArea] = callBackJson[i].location;
+
             }
 			this._showMap(ObjectTokenData);
 		});
@@ -128,16 +136,14 @@ class MapComponent extends React.Component {
 					  	},
 					    data: []
 					},
-					geoCoord: {}
+					geoCoord: obj.pos
                 },
                 {
-	                zlevel: 1,
 	                name: '',
 	                type: 'map',
 	                mapType: 'china',
 	                roam:false,//是否开启滚轮缩放和拖拽漫游，默认为false（关闭）
 	                data: [],
-	                geoCoord: coordinates(),
 	                markLine: { //运输迁徙效果
 	                    smooth: true,
 	                    symbol: 'arrow',
@@ -164,9 +170,6 @@ class MapComponent extends React.Component {
 	                },
 	                markPoint: { //气泡效果(不断显示隐藏交替)
 	                    symbol: 'emptyCircle',
-	                    symbolSize: v => {
-	                        return 10 + v / 800000
-	                    },
 	                    effect: {
 	                        show: true,
 	                        shadowBlur: 0
@@ -200,7 +203,6 @@ class MapComponent extends React.Component {
 			                        },
 			                        textStyle: {
 			                        	align: 'left',
-			                        	// baseline: 'top',
 			                        	color: '#fff',
 			                        	fontSize: ($(window).height() / 50 > 20 ? 20 : $(window).height() / 50),
 										fontFamily: 'Microsoft Yahei ui'
@@ -233,6 +235,7 @@ class ListComponent extends React.Component {
 		this.arrayGroup = []; //拉取数据回来进行分组的转换数组
 		this.totalPage = 0;
 		this.currentPage = 1;
+		this.listShowDom = '';
 	}
 	componentDidMount() {
 		this._getDataList();
@@ -246,7 +249,7 @@ class ListComponent extends React.Component {
 			}
 		}
 		this.listShowDom = listArray.map((item, list) => {
-			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list}/>
+			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list} key2={list} total={this.totalPage}/>
 		});
 	}
 	_getDataList() {
@@ -256,13 +259,14 @@ class ListComponent extends React.Component {
 			"areaId": areaId
 		};
 		$.GetAjax($.getCtx() + '/rest/logistics/getTbLogisticsList', setData, 'GET', true, (data, state) => {
-			if (state && data[0]) {
+			if (state && data.list[0]) {
+				const callBackJson = data.list;
 				// 进行数据组装
-				for (let i = 0; i < data.length / PAGEERS; i++) {
+				for (let i = 0; i < callBackJson.length / PAGEERS; i++) {
 					let attr = []; //该数组用于缓存当前循环的数据信息（最多存10条数据），赋给缓存session
 					for (let k = i * PAGEERS; k < i * PAGEERS + PAGEERS; k++) {
-						attr.push(data[k]);
-						totalNums += data[k] && data[k].receiveNum || 0;
+						attr.push(callBackJson[k]);
+						totalNums += callBackJson[k] && callBackJson[k].receiveNum || 0;
 					}
 
 					// 赋值
@@ -273,15 +277,19 @@ class ListComponent extends React.Component {
 					// 初始化数据渲染
 					if (i == 0) {
 						this.superData = this.arrayGroup[i];
-						this.totalPage = data.length / PAGEERS;
+						this.totalPage = Math.ceil(callBackJson.length / PAGEERS);
+
+						this.setState({
+							show: true
+						});
 					}
 
 				}
-				this.setState({
-					show: true,
-					totalNum: totalNums
-				});
 
+				// 2016-8-18日新增，动态加载数字，并处理在页面上，封装了新方法ReactGetAniNumId
+				// ReactGetAniNumId可传虚拟dom的节点,或者jquery的id,如'#id'
+				let ReactGetAniNumId = ReactDOM.findDOMNode(this.refs.ReactGetAniNumId);
+				GetAnimateNum(ReactGetAniNumId,totalNums,'单');
 				PubSub.publish('showMap',data);
 
 			} else if (!state) {
@@ -293,6 +301,9 @@ class ListComponent extends React.Component {
 		});
 	}
 	componentDidUpdate() {
+		if (this.totalPage <= 1) {
+			return false;
+		};
 		setTimeout(() => {
 			if (this.currentPage < this.totalPage) {
 				this.currentPage ++;
@@ -303,7 +314,8 @@ class ListComponent extends React.Component {
 			this.setState({
 				show: true
 			});
-		},2000);
+		},5000);
+
 	}
 	render() {
 		this._pushListComponent(this.superData);
@@ -312,7 +324,7 @@ class ListComponent extends React.Component {
 				<div className="list-box">
 					<header>
 						<div className="list-title">发出量总计</div>
-						<div className="list-total-num"><p>{this.state.totalNum || 0}<span>单</span></p></div>
+						<div className="list-total-num"><p ref="ReactGetAniNumId"><span>数据获取中...</span></p></div>
 					</header>
 					<section>
 						<div className="nav-title">
@@ -321,7 +333,7 @@ class ListComponent extends React.Component {
 							<span>包裹发出量</span>
 						</div>
 						<ul>
-							{this.listShowDom}
+							{this.listShowDom || ''}
 						</ul>
 					</section>
 				</div>
@@ -337,13 +349,32 @@ class ListLiComponent extends React.Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		this.listData = nextProps;
+		this.timeoutEnd();
+	}
+	componentDidMount() {
+		this.timeoutEnd();
+	}
+	timeoutEnd(){
+		let listId = "list"+this.listData.key2;
+		let listDom = ReactDOM.findDOMNode(this.refs[listId]);
+		setTimeout(()=>{
+			$(listDom).find('span').removeClass().addClass('animated bounceIn showList');
+		},this.listData.key2*100);
+
+		if (this.listData.total <= 1) {
+			return false;
+		}
+
+		setTimeout(()=>{
+			$(listDom).find('span').removeClass().addClass('animated bounceOut');
+		},this.listData.key2*100+4000);
 	}
 	render() {
 		return (
-			<li>
-				<span>{this.listData.item && this.listData.item.receiveNum ? (this.listData.list+1 < 10 ? "0"+(this.listData.list+1) : this.listData.list+1) : '-'}</span>
-				<span>{this.listData.item && this.listData.item.regionName || '-'}</span>
-				<span>{this.listData.item && this.listData.item.receiveNum || '-'}</span>
+			<li ref={"list"+this.listData.key2}>
+				<span>{this.listData.item && this.listData.item.receiveNum ? (this.listData.list+1 < 10 ? "0"+(this.listData.list+1) : this.listData.list+1) : ''}</span>
+				<span>{this.listData.item && this.listData.item.regionName || ''}</span>
+				<span>{this.listData.item && this.listData.item.receiveNum || ''}</span>
 			</li>
 		)
 	}

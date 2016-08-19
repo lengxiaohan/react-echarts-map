@@ -40,10 +40,9 @@ $.extend({
 			type: "GET",
 			success: function(data) {
 				value = data;
-				typeof(callback) === 'function' ? callback(data): '';
+				typeof(callback) === 'function' ? callback(data.name): '';
 			}
 		});
-		return value;
 	}
 	/*,
 	//线上路径
@@ -90,7 +89,7 @@ export function getAreaCp(areaid) {
 export function pushScrollNum(value, tag) {
 	var num = $(tag);
 	num.animate({
-		count: value
+		count: value || 0
 	}, {
 		duration: 800,
 		step: function() {
@@ -103,7 +102,7 @@ export function pushScrollNum(value, tag) {
 };
 
 //将数字转化成 亿万文字分开
-export function formatPrice(count, isShowEnd) {
+export function formatPrice(count, isShowEnd, unit) {
 	if (!count) {
 		return false;
 	}
@@ -122,10 +121,9 @@ export function formatPrice(count, isShowEnd) {
 		var wan = parseInt(yiEnd / 10000);
 		result = "" + yi + "<span class='short-size-span'>亿</span>" + addZero(wan) + "<span class='short-size-span'>万</span>" + addZero(end);
 	} else {
-		result = count;
+		result = isNaN(count) ? 0 : count;
 	}
-
-	return isShowEnd ? result + "<span class='short-size-span'>元</span>" : result;
+	return isShowEnd ? result + "<span class='short-size-span'>"+(unit || "元")+"</span>" : result;
 };
 
 //补零
@@ -156,20 +154,40 @@ export function toThousands(num) {
 	return result.join('');
 };
 
-export function show_num(type, value, isShowEnd) {
+export function show_num(type, value, isShowEnd, unit) {
 	var num = $(type);
 	num.animate({
+		count: value || 0
+	}, {
+		duration: 800,
+		step: function() {
+			num.html(formatPrice(String(parseInt(this.count)), isShowEnd, unit));
+		},
+		complete: function() {
+			num.html(formatPrice(String(parseInt(value)), isShowEnd, unit));
+		}
+	});
+};
+
+
+// 数字动态化 无单位 无千分符
+export function GetAnimateNum(t_dom, value = 0, unit = false) {
+	const dom = $(t_dom);
+	dom.animate({
 		count: value
 	}, {
 		duration: 800,
 		step: function() {
-			num.html(formatPrice(String(parseInt(this.count)), isShowEnd));
+			let result = unit && parseInt(this.count || 0) + "<span>"+unit+"</span>" || parseInt(this.count);
+			dom.html(result);
 		},
 		complete: function() {
-			num.html(formatPrice(String(parseInt(value)), isShowEnd));
+			let result = unit && parseInt(value) + "<span>"+unit+"</span>" || parseInt(value);
+			dom.html(result);
 		}
 	});
 };
+
 //位数不够补零
 export function addPlaceHolder(number) {
 	var len = ("" + number).length;
@@ -180,6 +198,23 @@ export function addPlaceHolder(number) {
 	};
 	return number;
 };
+
+export function RegExpThatName(value) {
+	if (value.search(/省/) != -1){
+		return '省';
+	} else if (value.search(/市/) != -1){
+		return '市';
+	} else if (value.search(/自治区/) != -1){
+		return '自治区';
+	} else if (value.search(/县/) != -1){
+		return '县';
+	} else if (value.search(/区/) != -1){
+		return '区';
+	} else {
+		return null;
+	}
+	
+}
 
 export function Maps() {
 	this.keys = new Array();

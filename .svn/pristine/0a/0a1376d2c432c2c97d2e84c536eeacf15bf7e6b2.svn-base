@@ -30,21 +30,21 @@ var TopComponent = React.createClass({
             dataType:'json',
             type:'GET'
         };
-        $.GetAjax($.getCtx()+'/rest/ectrain/getTBLearnTimeTypeCount', setData,'GET', true, function(data,state) {
-            if (state && data != '' && null != data) {
+        $.GetAjax($.getCtx()+'/rest/ectrain/getTBLearnTimeTypeCount', setData,'GET', true, function(data) {
+           if (data != '' && null != data) {
                 that.setState({
                     data:data
                 });
             } else {
                 setTimeout(function() {//数据没有请求成功，就一直请求
                     that._getDatas();
-                    console.log('链接服务器失败');
+                    console.log('主人，刚才服务器出了一下小差');
                 }, 4000);
                 that.setState({
                     data:''
                 });
             };
-       });
+        });
     },
     render: function(){
         return(
@@ -55,7 +55,50 @@ var TopComponent = React.createClass({
         )
     }
 });
+/**
+ * @name TopLeftComponent 头部饼图组件
+ * @param _getDatas 获取饼图数据
+ */
+/*var TopLeftComponent = React.createClass({
+    getInitialState: function() {
+        return {
+            data: []
+        };
+    },
+    componentWillMount: function() {//加载数据。
+        this._getDatas();
+    },
+    _getDatas: function() {
+        const that = this;
+        let setData = {
+            "areaId": areaId ? areaId : '',
+            dataType:'json',
+            type:'GET'
+        };
+        
+        $.GetAjax($.getCtx()+'/rest/ectrain/getLearnTypeCount', setData,'GET', true, function(data) {
+           if (data.length>0) {
+                that.setState({
+                    data:data
+                });
+            } else {
+                setTimeout(function() {//数据没有请求成功，就一直请求
+                    that._getDatas();
+                    console.log('主人，刚才服务器出了一下小差');
+                }, 2000);
+                that.setState({
+                    data:''
+                });
+            };
+        });
+    },
 
+    render: function(){
+        return(
+            <PieComponent data={this.state.data ? this.state.data : []} getDatas={this._getDatas} />
+        )
+    }
+});*/
 
 /**
  * @name PieComponent 饼图组件
@@ -87,29 +130,32 @@ var PieComponent = React.createClass({
                         position : 'outer',/* （外部） */
                         textStyle : {
                             color : lineColors[i],
+                            /* align: 'left', */
                             baseline : 'middle',
                             fontFamily : '微软雅黑',
                             fontSize : 15,
                             fontWeight : 'bolder'
                         }
-                    }
-                }
+                    },
+                },
             });
+            console.log(itemStyles);
         };
         let dom = that.refs['JsPie '];//findDOMNode从组件获取真实 DOM 的节点
         if(that.data != '' && null != that.data){
+            let row;
             let sdatas = [];
             for ( let i in that.data ) {
-                let row = that.data[i];
+                row = that.data[i];
                 let sdata = {
                     value : row,
-                    name : i+" "+row 
+                    name : i + "" + row,
+                    itemStyle : itemStyles[i],
                 }
                 sdatas.push(sdata);
             };
             this.getCanvas({
                 data: sdatas,
-                itemStyles:itemStyles,
                 id: dom
             });
         }else{
@@ -121,19 +167,6 @@ var PieComponent = React.createClass({
     },
     getCanvas:function(obj){
         const myChart = echarts.init(obj.id).clear();
-        var datas=[];
-        if(obj.data.length>0){
-            for(let i=0;i<obj.data.length;i++){
-                let value = obj.data[i].value;
-                let name = obj.data[i].name;
-                datas.push({
-                    value: value,
-                    name: name,
-                    itemStyle : obj.itemStyles[i]
-                })
-            }
-        }
-        
         let option = { 
                 tooltip : {
                     trigger: 'item',
@@ -145,9 +178,8 @@ var PieComponent = React.createClass({
                         name:'培训人员结构',
                         type:'pie',
                         selectedMode: 'single',
-                       /* radius : [0, 90],*/
-                       radius : [0, "92%"],
-                        center:['50%','54%'],
+                        radius : [0, 90],
+                        center:['50%','50%'],
                         x: '20%',
                         width: '40%',
                         funnelAlign: 'right',
@@ -163,7 +195,7 @@ var PieComponent = React.createClass({
                                 }
                             }
                         },
-                        data:datas
+                        data:obj.data
                     }
                 ]
         };
@@ -181,7 +213,7 @@ var PieComponent = React.createClass({
 
 /**
  * @name topRightComponent 头部累计培训人数组件
- * @param getSesstion 处理信息
+ * @param _getName 头部信息名称
  */
 var TopRightComponent = React.createClass({
     componentWillReceiveProps: function(nextProps) {
@@ -190,6 +222,7 @@ var TopRightComponent = React.createClass({
     },
     getSesstion() {
         const that = this;
+        let dom = that.refs['JsPie '];//findDOMNode从组件获取真实 DOM 的节点
         if(that.data != '' && null != that.data){
             let dataPersons = 0;
             let value;
@@ -197,10 +230,7 @@ var TopRightComponent = React.createClass({
                 value = that.data[i];
                 dataPersons+=value;
             };
-
             $(".personSum").html(dataPersons);
-        }else{
-            $(".personSum").html("");
         };
     },
     componentDidUpdate: function() {
@@ -242,15 +272,15 @@ var ConComponent = React.createClass({
             type:'GET'  
         };
         
-        $.GetAjax($.getCtx()+'/rest/ectrain/getTBTrainTimeList', setData,'GET', true, function(data,state) {
-           if (state && data != " " && null != data) {
+        $.GetAjax($.getCtx()+'/rest/ectrain/getTBTrainTimeList', setData,'GET', true, function(data) {
+           if (data && data != "{}") {
                 that.setState({
                     data:data
                 });
             } else {
                 setTimeout(function() {//数据没有请求成功，就一直请求
                     that._getDatas();
-                    console.log('链接服务器失败');
+                    console.log('主人，刚才服务器出了一下小差');
                 }, 4000);
                 that.setState({
                     data:''
@@ -334,30 +364,30 @@ var LineComponent = React.createClass({
             });
         };
         let dom = this.refs['JsLine'];//findDOMNode从组件获取真实 DOM 的节点
-        if(that.data !=' '&& null != that.data ){
-              let array=[];           
-              for(let index in that.data){
-                    let key=index; //电商课程分类名字 
-                    let value=that.data[index];//电商课程列表
-                    let x=[];
-                    let y=[];
-                    for(let i=0;i<value.length;i++){
-                         let dataTime=value[i].dataTime;
-                         let persion=value[i].persons;
-                         x.push(dataTime);
-                         y.push(persion);
-                    }
-                    let obj=new Object();
-                    obj.x=x;//x轴名称
-                    obj.y=y;//对应数值
-                    obj.name=key;//类型名称
-                    array.push(obj);
+        if(that.data!=' '&& null != that.data){
+            let sdata = [],sdatas = [],xdata = [],xdatas = [];
+            var myData = that.data;
+            for ( let x in myData){
+                for (let y in myData[x]){
+                    sdata.push(myData[x][y].persons);
+                    xdata.push(myData[x][y].dataTime);
+                }
             };
+            for(var i=0,len=sdata.length;i<len;i+=3){
+               sdatas.push(sdata.slice(i,i+3));
+               xdatas.push(xdata.slice(i,i+3));
+            }
             this.getCanvas({
                 id: dom,
-                data:array,
-                itemStyles:itemStyles,
-                xdata:array[0].x
+                data1:sdatas[0],
+                data2:sdatas[1],
+                data3:sdatas[2],
+                data4:sdatas[3],
+                itemStyles1:itemStyles[0],
+                itemStyles2:itemStyles[1],
+                itemStyles3:itemStyles[2],
+                itemStyles4:itemStyles[3],
+                xdata:xdatas[0]
             });
         }else{
             this.getCanvas({
@@ -368,23 +398,6 @@ var LineComponent = React.createClass({
     },
     getCanvas:function(obj){
         const myChart = echarts.init(obj.id).clear();
-        let datas=obj.data;
-        let itemStyles=obj.itemStyles;
-        let series=[];
-        for(let i=0;i<datas.length;i++){
-            let data=datas[i];
-            series.push( {
-                 name: 'name',
-                 type: 'line',
-                 stack: '总量',
-                 barWidth: 55,
-                 smooth:true,
-                 symbol: 'circle',
-                 symbolSize: 2,
-                 itemStyle: itemStyles[i],
-                 data: data.y
-             });
-        }             
         let option = { 
              grid: {
                  borderWidth: 0,
@@ -439,20 +452,11 @@ var LineComponent = React.createClass({
                  fillerColor: '#1C2134',
                  handleColor: '#3e5d75',
              },
-             grid: {
-               height:'85%',
-               width:'90%',
-               x:'5%',
-               y:'3%',
-               x2:'95%',
-               y2:'88%',
-               borderColor:'rgba(125,0,222,0.0)'
-             },
              calculable: false,
              xAxis: [{
                  type: 'category',
                  boundaryGap : false,
-                 //boundaryGap:  false,[0,0],
+                 /*boundaryGap:  false,[0,0],*/
                  axisLine: { //坐标轴线，默认显示
                      show: true,
                      lineStyle: {
@@ -500,7 +504,46 @@ var LineComponent = React.createClass({
                      },
                  },
              }],
-             series: series
+             series: [{
+                 name: 'name',
+                 type: 'line',
+                 stack: '总量',
+                 barWidth: 55,
+                 symbol: 'circle',
+                 symbolSize: 2,
+                 itemStyle: obj.itemStyles1,
+                 data: obj.data1
+             },{
+                 name: 'name',
+                 type: 'line',
+                 stack: '总量',
+                 barWidth: 55,
+                 symbol: 'circle',
+                 symbolSize: 2,
+                 itemStyle: obj.itemStyles2,
+                 data: obj.data2
+             },
+             {
+                 name: 'name',
+                 type: 'line',
+                 stack: '总量',
+                 barWidth: 55,
+                 symbol: 'circle',
+                 symbolSize: 2,
+                 itemStyle: obj.itemStyles3,
+                 data: obj.data3
+             },
+             {
+                 name: 'name',
+                 type: 'line',
+                 stack: '总量',
+                 barWidth: 55,
+                 symbol: 'circle',
+                 symbolSize: 2,
+                 itemStyle: obj.itemStyles4,
+                 data: obj.data4
+             }
+             ]
         };
         myChart.setOption(option);
     },
