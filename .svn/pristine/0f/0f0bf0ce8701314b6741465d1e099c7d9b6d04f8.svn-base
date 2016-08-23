@@ -11,7 +11,7 @@ let areaId = $.getUrlParam('areaId');
 
 class MapComponent extends React.Component {
 	componentDidMount() {
-		this._showMap(false);
+		this._showMap({});
 		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
 			const callBackJson = data && data.list;
 			const startArea = data.areaShortName.replace(RegExpThatName(data.areaShortName), "" );
@@ -60,21 +60,6 @@ class MapComponent extends React.Component {
 			quertFont: 1,
 			shadowBlur: 5
 		};
-		if ( !obj ) {
-			myChart.showLoading({
-			    text : '数据读取中...',
-			    effect : 'spin',
-			    backgroundColor: 'none',
-			    textStyle : {
-			        fontSize : 20
-			    }
-			});
-			return false;
-		}else{
-			setTimeout(() => {
-			    myChart.hideLoading();
-			},2200);
-		}
         var option = {
 				color: ['gold','aqua','lime'],
 				tooltip : {
@@ -151,7 +136,7 @@ class MapComponent extends React.Component {
 					  	},
 					    data: []
 					},
-					geoCoord: obj.pos || {}
+					geoCoord: obj.pos
                 },
                 {
 	                name: '',
@@ -274,7 +259,7 @@ class ListComponent extends React.Component {
 			"areaId": areaId
 		};
 		$.GetAjax($.getCtx() + '/rest/logistics/getTbLogisticsList', setData, 'GET', true, (data, state) => {
-			if (state && data.list && data.list[0]) {
+			if (state && data.list[0]) {
 				const callBackJson = data.list;
 				// 进行数据组装
 				for (let i = 0; i < callBackJson.length / PAGEERS; i++) {
@@ -329,7 +314,7 @@ class ListComponent extends React.Component {
 			this.setState({
 				show: true
 			});
-		},7000);
+		},5000);
 
 	}
 	render() {
@@ -374,7 +359,7 @@ class ListLiComponent extends React.Component {
 		let listDom = ReactDOM.findDOMNode(this.refs[listId]);
 		setTimeout(()=>{
 			$(listDom).find('span').removeClass().addClass('animated bounceIn showList');
-		},this.listData.key2*200);
+		},this.listData.key2*100);
 
 		if (this.listData.total <= 1) {
 			return false;
@@ -382,7 +367,7 @@ class ListLiComponent extends React.Component {
 
 		setTimeout(()=>{
 			$(listDom).find('span').removeClass().addClass('animated bounceOut');
-		},this.listData.key2*200+5000);
+		},this.listData.key2*100+4000);
 	}
 	render() {
 		return (

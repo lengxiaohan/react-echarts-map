@@ -86,10 +86,14 @@ var SectionComponent = React.createClass({
 	},
 	_EventClickMe: function () {
 		let t_this = $('.active-show').click();
+		/*let localName = t_this[0].localName;
+		if ( localName === 'ul' ) {
+			window.android ? window.android.getMouse() : '';
+		}*/
 	},
 	_ppxx: function (c) {
-		$('.chooseSelect').removeClass('active-show');
-		$('.chooseSelect').eq(c).addClass('active-show');
+		$('.choose').removeClass('active-show');
+		$('.choose').eq(c).addClass('active-show');
 	},
 	_up: function () {
 		this.CHECKCURRENT > 0 ? this.CHECKCURRENT-- : 0;
@@ -168,7 +172,7 @@ var SectionListComponent = React.createClass({
 				<li className="litwo datatwo" >{this.listData.item ? this.listData.item.dataTime : ''}</li>
 				<li className="lithreen">{this.listData.item ? this.listData.item.lessionName : ''}</li>
 				<li className="litwo textOverflow lilast" ref="list">
-					{this._getImage()}<span>{this.listData.item ? this.listData.item.lessionEvaluate : ''}</span>
+				{this._getImage()}<span>{this.listData.item ? this.listData.item.lessionEvaluate : ''}</span>
 				</li>
 			</ul>
 		)
@@ -193,10 +197,10 @@ var FooterComponent = React.createClass({
 						</div>
 						<div >
 							<div className="pageP">
-								<span className={this.props.isCurrent == 0 ? "normalColor" : this.props.totalPage == 1 ? "normalColor" : "chooseSelect active-show"} onClick={this.props.prev} data-page="pager">&nbsp;&lt;&nbsp;上一页</span>
+								<span className={this.props.isCurrent == 0 ? "normalColor choose" : "chooseSelect choose"} onClick={this.props.prev} data-page="pager">&nbsp;&lt;&nbsp;上一页</span>
 							</div>
 							<div className="pageP">
-								<span className={this.props.isCurrent == 1 ? "normalColor" : this.props.totalPage == 1 ? "normalColor" : "chooseSelect active-show"} onClick={this.props.next} data-page="pager">下一页&nbsp;&gt;&nbsp;</span>
+								<span className={this.props.isCurrent == 1 ? "normalColor choose" : "chooseSelect choose"}  onClick={this.props.next} data-page="pager">下一页&nbsp;&gt;&nbsp;</span>
 							</div>
 						</div>
 					</div>
@@ -320,6 +324,7 @@ var Container = React.createClass({
 	getInitialState: function () {
 		return {
 			pageNum: $.cookie('PAGE') || 1,  //当前用户所在页
+
 			status: false //当前组件的状态，当为true时更新组件
 		}
 	},
@@ -384,15 +389,13 @@ var Container = React.createClass({
 			that.data = session;
 			that.setState({
 				status: true
-			},() => {
-				this._ppxxss($.cookie('NUMS') || 0);
 			});
 		}
 		
 	},
 	_ppxxss: function (c) {
-		$('.chooseSelect').removeClass('active-show');
-		$('.pagecenter').find('.chooseSelect').eq(c).addClass('active-show');
+		$('.choose').removeClass('active-show');
+		$('.choose').eq(c).addClass('active-show');
 	},
 	_nextPage: function(event){
 		event.preventDefault();
@@ -410,8 +413,8 @@ var Container = React.createClass({
 
 			// 当前页数数据
 			this._getDatas(this.state.pageNum);
-			const nextSelectPager = this.state.pageNum >= this.totalPage ? 0 : 1;
-			$.cookie('NUMS',nextSelectPager);
+			$.cookie('NUMS',1);//下一页依然默认选中“下一页”按钮
+			this._ppxxss(1);
 			$.cookie('PAGE',this.state.pageNum);
 		}
 	},
@@ -422,8 +425,8 @@ var Container = React.createClass({
 		} else {
 			this.state.pageNum--; //依次递减
 			this._getDatas(this.state.pageNum);
-			const nextSelectPager = 0;
-			$.cookie('NUMS',nextSelectPager);
+			$.cookie('NUMS',0);//上一页依然默认选中“上一页”按钮
+			this._ppxxss(0);
 			$.cookie('PAGE',this.state.pageNum);
 		}
 		

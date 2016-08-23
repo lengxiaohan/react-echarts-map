@@ -1,6 +1,6 @@
 import {GetAnimateNum,RegExpThatName} from "common";
 import "ajax-plus";
-import "receiveLess";
+import "issueLess";
 import "animateCss";
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -11,7 +11,7 @@ let areaId = $.getUrlParam('areaId');
 
 class MapComponent extends React.Component {
 	componentDidMount() {
-		this._showMap(false);
+		this._showMap({});
 		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
 			const callBackJson = data && data.list;
 			const startArea = data.areaShortName.replace(RegExpThatName(data.areaShortName), "" );
@@ -34,10 +34,10 @@ class MapComponent extends React.Component {
                     ObjectTokenData.dataRangeMin = Math.ceil(callBackJson[i].receiveNum);
                 }
                 ObjectTokenData.data1.push([{
-                	name: startArea
-                },{
                 	name: endArea,
                 	value: receiveNum
+                },{
+                	name: startArea
                 }]);
                 ObjectTokenData.data2.push({
                 	name: endArea,
@@ -60,21 +60,6 @@ class MapComponent extends React.Component {
 			quertFont: 1,
 			shadowBlur: 5
 		};
-		if ( !obj ) {
-			myChart.showLoading({
-			    text : '数据读取中...',
-			    effect : 'spin',
-			    backgroundColor: 'none',
-			    textStyle : {
-			        fontSize : 20
-			    }
-			});
-			return false;
-		}else{
-			setTimeout(() => {
-			    myChart.hideLoading();
-			},2200);
-		}
         var option = {
 				color: ['gold','aqua','lime'],
 				tooltip : {
@@ -86,9 +71,9 @@ class MapComponent extends React.Component {
 					y:$(window).height()-$(window).height()*0.15,
 					orient: 'horizontal',
 					min : 0,
-					max : obj && obj.dataRangeMax || 'MAX',
+					max : obj && obj.dataRangeMax || "MAX",
 					calculable : false,
-					splitNumber:0,
+					splitNumber:0,   // 主要配置，可以将各个色系合并，不是单独分开的
 					text:['高','低'],
 					itemWidth: $(window).width() / 100,
 					color: config.dataRangeColor,
@@ -105,11 +90,14 @@ class MapComponent extends React.Component {
 					mapType: 'china',
 					itemStyle:{
 						normal:{
-							borderColor:'#000738',
-							borderWidth:1,
+							label: { 
+                            	show: false
+                            },
 							areaStyle:{
 								color: '#122756'
-							}
+							},
+							borderColor:'#000738',
+							borderWidth:1
 						},
 						emphasis: {
 							label: {
@@ -151,7 +139,7 @@ class MapComponent extends React.Component {
 					  	},
 					    data: []
 					},
-					geoCoord: obj.pos || {}
+					geoCoord: obj.pos
                 },
                 {
 	                name: '',
@@ -172,8 +160,8 @@ class MapComponent extends React.Component {
 	                    itemStyle: {
 	                        normal: {
 	                            borderWidth: 1,
-	                            label:{
-	                                show:false
+	                            label: { 
+	                            	show: false
 	                            },
 	                            lineStyle: {
 	                                type: 'solid',
@@ -220,7 +208,7 @@ class MapComponent extends React.Component {
 			                        	align: 'left',
 			                        	color: '#fff',
 			                        	fontSize: ($(window).height() / 50 > 20 ? 20 : $(window).height() / 50),
-										fontFamily: 'Microsoft Yahei ui'
+			                        	fontFamily: 'Microsoft Yahei ui'
 			                        }
 	                            }
 	                        }
@@ -259,7 +247,7 @@ class ListComponent extends React.Component {
 		let listArray = data; //获取数据进行遍历赋值
 		let LENGTH = listArray.length;
 		if (LENGTH < 10) {
-			for(let i = 0;i<10-LENGTH;i++){
+			for(let i = 0; i < 10 - LENGTH; i++){
 				listArray.push([]);
 			}
 		}
@@ -274,7 +262,7 @@ class ListComponent extends React.Component {
 			"areaId": areaId
 		};
 		$.GetAjax($.getCtx() + '/rest/logistics/getTbLogisticsList', setData, 'GET', true, (data, state) => {
-			if (state && data.list && data.list[0]) {
+			if (state && data.list[0]) {
 				const callBackJson = data.list;
 				// 进行数据组装
 				for (let i = 0; i < callBackJson.length / PAGEERS; i++) {
@@ -329,8 +317,7 @@ class ListComponent extends React.Component {
 			this.setState({
 				show: true
 			});
-		},7000);
-
+		},5000);
 	}
 	render() {
 		this._pushListComponent(this.superData);
@@ -338,14 +325,14 @@ class ListComponent extends React.Component {
 			<div className="echarts-list-show">
 				<div className="list-box">
 					<header>
-						<div className="list-title">发出量总计</div>
+						<div className="list-title">接收量总计</div>
 						<div className="list-total-num"><p ref="ReactGetAniNumId"><span>数据获取中...</span></p></div>
 					</header>
 					<section>
 						<div className="nav-title">
 							<span>排名</span>
 							<span>地域</span>
-							<span>包裹发出量</span>
+							<span>包裹接收量</span>
 						</div>
 						<ul>
 							{this.listShowDom || ''}
@@ -374,7 +361,7 @@ class ListLiComponent extends React.Component {
 		let listDom = ReactDOM.findDOMNode(this.refs[listId]);
 		setTimeout(()=>{
 			$(listDom).find('span').removeClass().addClass('animated bounceIn showList');
-		},this.listData.key2*200);
+		},this.listData.key2*100);
 
 		if (this.listData.total <= 1) {
 			return false;
@@ -382,7 +369,7 @@ class ListLiComponent extends React.Component {
 
 		setTimeout(()=>{
 			$(listDom).find('span').removeClass().addClass('animated bounceOut');
-		},this.listData.key2*200+5000);
+		},this.listData.key2*100+4000);
 	}
 	render() {
 		return (

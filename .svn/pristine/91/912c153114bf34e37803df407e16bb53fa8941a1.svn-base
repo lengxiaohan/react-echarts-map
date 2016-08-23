@@ -5,6 +5,7 @@ import "animateCss";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
+import {coordinates} from "coordinates";
 
 // 获取区域id
 let areaId = $.getUrlParam('areaId');
@@ -295,7 +296,7 @@ class ListComponent extends React.Component {
 			this.setState({
 				show: true
 			});
-		},7000);
+		},5000);
 	}
 	render() {
 		this._pushListComponent(this.superData);
@@ -336,7 +337,7 @@ class ListLiComponent extends React.Component {
 		let listDom = ReactDOM.findDOMNode(this.refs[listId]);
 		setTimeout(()=>{
 			$(listDom).find('span').removeClass().addClass('animated bounceIn showList');
-		},this.listData.key2*200);
+		},this.listData.key2*100);
 
 		if (this.listData.total <= 1) {
 			return false;
@@ -344,7 +345,7 @@ class ListLiComponent extends React.Component {
 
 		setTimeout(()=>{
 			$(listDom).find('span').removeClass().addClass('animated bounceOut');
-		},this.listData.key2*200+5000);
+		},this.listData.key2*100+4000);
 	}
 	render() {
 		return (

@@ -22,7 +22,7 @@ class MapComponent extends React.Component {
 				pos : {},
 				mdata: []
 			};
-			for (let i = 0; i < data.length; i++) {
+			for (var i = 0; i < data.length; i++) {
 				const endArea = data[i].name && data[i].name.replace(RegExpThatName(data[i].name), "");
                 ObjectMap.pos[endArea] = data[i].location;
                 ObjectMap.mdata.push({
@@ -42,7 +42,7 @@ class MapComponent extends React.Component {
 			id:'echarts-map',
 			areaName: obj.areaName
 		};
-		let setting = {
+		var setting = {
 			legend: {
 		        x: $(window).width()*0.08,
 		        y: $(window).height() - $(window).height()*0.12,
@@ -155,7 +155,7 @@ class ListComponent extends React.Component {
 			"areaId": areaId
 		};
 		$.GetAjax($.getCtx() + '/rest/site/findAllTBServiceRegisterRanking', setData, 'GET', true, (data, state) => {
-			if (state && data && data[0]) {
+			if (state && data[0]) {
 				// 进行数据组装
 				for (let i = 0; i < data.length / PAGEERS; i++) {
 					let attr = []; //该数组用于缓存当前循环的数据信息（最多存10条数据），赋给缓存session
@@ -206,7 +206,7 @@ class ListComponent extends React.Component {
 			this.setState({
 				show: true
 			});
-		},7000);
+		},5000);
 	}
 	render() {
 		this._pushListComponent(this.superData);
@@ -252,7 +252,7 @@ class ListLiComponent extends React.Component {
 		let listDom = ReactDOM.findDOMNode(this.refs[listId]);
 		setTimeout(()=>{
 			$(listDom).find('span').removeClass().addClass('animated bounceIn showList');
-		},this.listData.key2*200);
+		},this.listData.key2*100);
 
 		if (this.listData.total <= 1) {
 			return false;
@@ -260,7 +260,7 @@ class ListLiComponent extends React.Component {
 
 		setTimeout(()=>{
 			$(listDom).find('span').removeClass().addClass('animated bounceOut');
-		},this.listData.key2*200+5000);
+		},this.listData.key2*100+4000);
 	}
 	render() {
 		return (

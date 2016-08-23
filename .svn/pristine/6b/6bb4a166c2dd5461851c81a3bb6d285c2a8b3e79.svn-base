@@ -1,12 +1,12 @@
 @charset "utf-8";
 /*===================================
 * copyRight: TJ县域正式版
-* fileName: countyMigrateReceive.less
+* fileName: countyBusinessService.less
 * createTime: 2016/08/15
 * author : zhouxinjian
 * version: 1.0
 * modify: {}
-* description: 快递发送页面
+* description: 电商服务站服务情况页面
 ===================================*/
 
 // 引入z.less库
@@ -34,58 +34,24 @@ body{
 }
 .echarts-map-show{
 	.fl();
-	.maxBody(@margin-box-left,100%);
+	.maxBody(@margin-box-left,94%);
+	padding: 2% 0 4% 0;
 }
 
 .echarts-list-show{
 	margin-left: @margin-box-left;
 	.maxBody(100%-@margin-box-left,100%);
 	.b-sizing();
-	padding: 2% 10% 4% 0;
+	padding: 2% 5% 2% 0;
 	.list-box{
 		.maxBody();
-		header{
-			.maxBody(100%,24%);
-			@height-tak:34%;
-			@radius:10px;
-			margin-bottom: 2%;
-			.list-title{
-				.maxBody(100%,@height-tak);
-				.d-flex-v();
-				.flex-hc();
-				.flex-vc();
-				.font-fm();
-				border-top-left-radius: @radius;
-				border-top-right-radius: @radius;
-				background:#2C3346;
-				color:#6c7b90;
-				font-size: 3.5vh;
-			}
-			.list-total-num{
-				.maxBody(100%,100%-@height-tak);
-				.d-flex-v();
-				.flex-hc();
-				.flex-vc();
-				.font-fm();
-				border-bottom-left-radius: @radius;
-				border-bottom-right-radius: @radius;
-				background:#262B3F;
-				color:#fff;
-				font-size: 7.5vh;
-				span{
-					font-size: 4.5vh;
-					color:#697186;
-				}
-			}
-		}
 		section{
-			.maxBody(100%,74%);
+			.maxBody();
 			.d-flex-v();
 			border: 1px solid #1B1C31;
 			border-radius: 10px;
 			.nav-title{
 				.flex(1);
-				height: 10%;
 				.d-flex-h();
 				.flex-hc();
 				.flex-vc();
@@ -96,7 +62,6 @@ body{
 					.flex-hc();
 					.flex-vc();
 					height: 100%;
-					padding: 0 5%;
 					.b-sizing();
 					.font-fm();
 					font-size: 3vh;
@@ -105,41 +70,39 @@ body{
 					&:first-child{
 						.flex(1);
 					}
+					&:nth-child(3){
+						.flex(1);
+					}
 				}
 			}
 			ul{
 				.flex(10);
-				height: 90%;
 				.d-flex-v();
 				.flex-hc();
 				.flex-vc();
 				li{
-					width: 100%;
-					height: 10%;
+					.flex(1);
+					.maxBody(100%,10%);
 					.d-flex-h();
 					.flex-hc();
 					.flex-vc();
 					span{
 						.d-flex-h();
 						.flex(2);
+						.flex-hc();
 						.flex-vc();
 						.font-fm();
 						height: 100%;
 						.b-sizing();
-						padding: 0 5%;
 						color: #aeb6c1;
 						font-size: 2.5vh;
 						.txt-overflowed();
 						opacity: 0;
-						&:nth-child(1){
+						&:first-child{
 							.flex(1);
-							.flex-hc();
-						}
-						&:nth-child(2){
-							.flex-hc(flex-start);
 						}
 						&:nth-child(3){
-							.flex-hc(flex-end);
+							.flex(1);
 						}
 					}
 					.showList{

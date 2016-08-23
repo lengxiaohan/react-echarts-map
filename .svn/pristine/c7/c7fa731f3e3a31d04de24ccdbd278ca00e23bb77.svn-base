@@ -168,7 +168,7 @@ var SectionListComponent = React.createClass({
 				<li className="litwo datatwo" >{this.listData.item ? this.listData.item.dataTime : ''}</li>
 				<li className="lithreen">{this.listData.item ? this.listData.item.lessionName : ''}</li>
 				<li className="litwo textOverflow lilast" ref="list">
-					{this._getImage()}<span>{this.listData.item ? this.listData.item.lessionEvaluate : ''}</span>
+				{this._getImage()}<span>{this.listData.item ? this.listData.item.lessionEvaluate : ''}</span>
 				</li>
 			</ul>
 		)

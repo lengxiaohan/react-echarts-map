@@ -6,7 +6,7 @@
 * author : zhouxinjian
 * version: 1.0
 * modify: {}
-* description: 快递发送页面
+* description: 快递发出页面
 ===================================*/
 
 // 引入z.less库
@@ -85,7 +85,6 @@ body{
 			border-radius: 10px;
 			.nav-title{
 				.flex(1);
-				height: 10%;
 				.d-flex-h();
 				.flex-hc();
 				.flex-vc();
@@ -96,7 +95,6 @@ body{
 					.flex-hc();
 					.flex-vc();
 					height: 100%;
-					padding: 0 5%;
 					.b-sizing();
 					.font-fm();
 					font-size: 3vh;
@@ -109,11 +107,11 @@ body{
 			}
 			ul{
 				.flex(10);
-				height: 90%;
 				.d-flex-v();
 				.flex-hc();
 				.flex-vc();
 				li{
+					.flex(1);
 					width: 100%;
 					height: 10%;
 					.d-flex-h();
@@ -122,24 +120,17 @@ body{
 					span{
 						.d-flex-h();
 						.flex(2);
+						.flex-hc();
 						.flex-vc();
 						.font-fm();
 						height: 100%;
 						.b-sizing();
-						padding: 0 5%;
 						color: #aeb6c1;
 						font-size: 2.5vh;
 						.txt-overflowed();
 						opacity: 0;
-						&:nth-child(1){
+						&:first-child{
 							.flex(1);
-							.flex-hc();
-						}
-						&:nth-child(2){
-							.flex-hc(flex-start);
-						}
-						&:nth-child(3){
-							.flex-hc(flex-end);
 						}
 					}
 					.showList{

@@ -21,7 +21,7 @@ module.exports = {
     // devtool: "source-map", // 便于调试
     entry: urlList + "/static/countyMigrateReceive.js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime
-    // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService
+    // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService trainingStructureDetails.js
     output: {
         // publicPath: "TJ-province/public/build/",
         // path: path.join(__dirname, "TJ-province/build"),
@@ -100,7 +100,10 @@ module.exports = {
             'DisSeverLess': urlLess + "/countyDistributionService.less",
             'BusinessLess': urlLess + "/countyBusinessService.less",
             'coordinates': urlList + "/static/coordinates.js",
-            'animateCss': urlCss+ "/plus/animate.css"
+            'animateCss': urlCss+ "/plus/animate.css",
+            'migrateCommon': urlList + "/static/countyMigrateCommon.js",
+            'trainingStructureDetails': urlLess + "/trainingStructureDetails.less",
+            'cookie': urlList + "/plus/cookie.js"
         }
     }
 };
