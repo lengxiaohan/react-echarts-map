@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>网络零售实时监控</title>
+<link href="./css/countyRealtimeOne.css" rel="stylesheet">
+</head>
+<body class="page-bodys">
+	<div class="containermy" id="zishimap">
+		<p class="titlep">网络零售额实时采集</p>
+		<div class="trendA">
+			<div class="allstyleA">
+				<div id="countyMap" class="bigmap"></div>
+			</div>
+			<div class="allstyleB">
+				<h2 id="oneTitle" class="areasty"></h2>
+			</div>
+			<div class="allstyleC">
+				<div class="psty">
+					<div class="t1sty">今日累计网络零售额</div>
+					<div class="spasty">
+						<span id="onetotal" class="t_num">0</span>
+						<span class="short-size">元</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div id="main" class="trendB"></div>
+	</div>
+	<div class="echarts-loding">
+		<img src="img/svg/bar.svg"/>
+		<p class="puffLoading">正在从云端获取数据</p>
+	</div>
+</body>
+<script src="./js/dist/echarts-all.js"></script>
+<script src="../build/countyRealtimeOne.min.js"></script>
+</html>

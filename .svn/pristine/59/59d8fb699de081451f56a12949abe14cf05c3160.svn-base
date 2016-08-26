@@ -1,0 +1,205 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0县域版
+* fileName: countyRealtime.css
+* createTime: 2016/06/21
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时监控css样式
+===================================*/
+
+body,
+html{
+	margin: 0;
+	padding: 0;
+	font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial,
+		"Microsoft YaHei", FreeSans, Arimo, "Droid Sans",
+		"wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3",
+		Arial, sans-serif;
+	background: #16172c;
+	overflow: hidden;
+	height:100%;
+}
+.containermy{
+	margin: 0 auto;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+.containermy .titlep{
+	color: #fff;
+	text-align: center;
+	font-size: 2rem;
+	margin:0;
+	margin-bottom:15px;
+	height:70px;
+	line-height:100px;
+	}
+.psty .t1sty{font-size:1.6vw;}
+.short-size{
+	font-size: 1.6vw;
+	color: #fff;
+	position:relative;
+	top:-3px;
+	left:-2px;
+}
+.short-size-span{
+	font-size: 1.6vw;
+	color: #fff;
+	position:relative;
+	top:-3px;
+	margin:0 5px;
+}
+.trendA{
+	width:93%;
+	height: 160px;
+	display: -webkit-box; /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
+    display: -moz-box; /* 老版本语法: Firefox (buggy) */
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex; 
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+
+    flex-direction:row;
+	}
+.allstyleA{
+	display: -webkit-box;
+    -webkit-box-orient: vertical;
+    box-orient:vertical;
+
+    display: -webkit-flex;
+    flex-direction:column;
+    text-align: center;
+    -moz-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.allstyleA .bigmap{
+	display: -webkit-flex;
+    flex-direction:column;
+	height: 150px;
+}
+.allstyleB{
+	display: -webkit-box;
+    -webkit-box-orient: vertical;
+    box-orient:vertical;
+
+	-moz-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+
+    display: -webkit-flex;
+    flex-direction:column;
+    text-align: center;
+}
+.allstyleB h2 {
+	font-size: 5vw;
+	color: #F1544A;
+	position:relative;
+	margin:0;
+	padding:0;
+	line-height:160px;
+}
+.allstyleC{
+	display: -webkit-flex;   
+	display: flex;   
+	-webkit-box-align: center;   
+	-webkit-align-items: center;   
+	align-items: center;   
+	-webkit-box-pack: center;   
+	-webkit-justify-content: center;   
+	justify-content: center;
+	-moz-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+
+.allstyleC .psty{
+	color: #aeb6c1; 
+	position: relative;
+    width: 90%;
+    text-align:right;
+}
+
+.spasty{
+	margin:0 auto;
+	font-size: 2.5vw;
+	position: relative;
+	top:5px;
+}
+.spasty .t_num{
+	color: #F1544A;
+	font-weight: bold;
+	font-size: 1.4em;
+	}
+
+.spasty2{
+	margin:0 auto;
+	font-size: 2.5vw;
+	position: relative;
+	top:5px;
+}
+.spasty2 .t_num{color: #703343;font-weight: bold;font-size: 1.3em;}
+
+#platname{color: #fff;font-size: 1.5em;position: relative;top:-5px;}
+.popover {
+    position: relative;
+    width: 90%;
+    text-align: right;
+    /* border: 1px solid #15182B; */
+}
+.popover-title {
+    margin: 0;
+    font-weight: normal;
+	font-size: 1.6vw;
+    color: #aeb6c1;
+    /* background-color: #262B3F;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0; */
+}
+.popover-title label{
+	color:#703343;
+}
+.popover-content {
+    /* background-color: #1D1F34;
+    padding: 12px 0; */
+    width:100%;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+}
+.wgll{
+	text-align: center;
+	color: #fff;
+	font-size: 1.3em;
+	height: 15px;
+}
+
+.echarts-loding{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	
+}
+.echarts-loding img{
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	top:50%;
+	left: 50%;
+	margin-top:-20px;
+	margin-left: -20px;
+}
+.echarts-loding .puffLoading{
+	position: relative;
+	text-align: center;
+	color: #fff;
+	top: 50%;
+	margin-top: 30px;
+	font-size: 15px;
+}

@@ -97,15 +97,11 @@ var PieComponent = React.createClass({
         let dom = that.refs['JsPie '];//findDOMNode从组件获取真实 DOM 的节点
         if(that.data != '' && null != that.data){
             let sdatas = [];
-            let totalNums = 0;
-            for ( let k in that.data ) {
-                totalNums+=that.data[k];
-            };
             for ( let i in that.data ) {
                 let row = that.data[i];
                 let sdata = {
                     value : row,
-                    name : i+" "+Math.floor(row/totalNums*10000)/100+'%'
+                    name : i+row +"人次"
                 }
                 sdatas.push(sdata);
             };
@@ -212,7 +208,7 @@ var TopRightComponent = React.createClass({
         return(
             <div id="topTitle" className="topTitle" >
                 <div className="table">
-                    <div className="title">累计培训人次</div>
+                    <div className="title">累计培训人数</div>
                     <div className="personData">
                         <p className="personSum"> 
                         </p>
@@ -304,7 +300,7 @@ var LineComponent = React.createClass({
         };
         let dom = this.refs['JsLine'];//findDOMNode从组件获取真实 DOM 的节点
         if(that.data !=' '&& null != that.data ){
-              let array=[];
+              let array=[];           
               for(let index in that.data){
                     let key=index; //电商课程分类名字 
                     let value=that.data[index];//电商课程列表

@@ -19,17 +19,17 @@ const urlCss = "TJ-county/public/css";
 const TIME = new Date();
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: urlList + "/static/countyMigrateReceive.js",
+    entry: urlList + "/static/trainingStructure.js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
     // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService trainingStructureDetails.js
-    // countyRealtimeOne  countyRealtime
+    // countyRealtimeOne  countyRealtime countyGoodsList trainingStructure
     output: {
         // publicPath: "TJ-province/public/build/",
         // path: path.join(__dirname, "TJ-province/build"),
 
         publicPath: "TJ-county/public/build/",
         path: path.join(__dirname, "TJ-county/build"),
-        filename: "countyMigrateReceive.min.js"
+        filename: "trainingStructure.min.js"
     },
     module: {
         preLoaders: [
@@ -100,6 +100,7 @@ module.exports = {
             'issueLess': urlLess + "/countyMigrateIssue.less",
             'DisSeverLess': urlLess + "/countyDistributionService.less",
             'BusinessLess': urlLess + "/countyBusinessService.less",
+            'trainingStructure': urlLess + "/trainingStructure.less",
             'coordinates': urlList + "/static/coordinates.js",
             'animateCss': urlCss+ "/plus/animate.css",
             'migrateCommon': urlList + "/static/countyMigrateCommon.js",
