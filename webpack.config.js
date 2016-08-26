@@ -19,17 +19,17 @@ const urlCss = "TJ-county/public/css";
 const TIME = new Date();
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: urlList + "/static/trainingStructure.js",
+    entry: urlList + "/static/trainingStructureDetails.js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
     // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService trainingStructureDetails.js
-    // countyRealtimeOne  countyRealtime countyGoodsList trainingStructure
+    // countyRealtimeOne  countyRealtime countyGoodsList trainingStructure trainingStructureDetails
     output: {
         // publicPath: "TJ-province/public/build/",
         // path: path.join(__dirname, "TJ-province/build"),
 
         publicPath: "TJ-county/public/build/",
         path: path.join(__dirname, "TJ-county/build"),
-        filename: "trainingStructure.min.js"
+        filename: "trainingStructureDetails.min.js"
     },
     module: {
         preLoaders: [
