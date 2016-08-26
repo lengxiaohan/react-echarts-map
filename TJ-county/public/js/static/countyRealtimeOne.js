@@ -99,7 +99,11 @@ let areaId = $.getUrlParam('areaId');
 					$("#oneTitle").html("");
 					$("#oneTitle").html(areaName.shortName);
 				   
-					pushScrollNum(onetodayNum,"#onetotal");
+					setTimeout(function(){
+						$('.echarts-loding').hide();
+						$('.containermy').css("opacity",1);
+						pushScrollNum(onetodayNum,"#onetotal");
+					},1200);
 					
 					var setting = {
 						grid: {
@@ -234,7 +238,6 @@ let areaId = $.getUrlParam('areaId');
 			        series : [{
 		                name:'地图',
 		                type:'map',
-		//		                mapType:'countyMap',
 		                data:[],
 		                hoverable: false,
 			            roam:false,
@@ -300,7 +303,7 @@ let areaId = $.getUrlParam('areaId');
 			    
 			}
 			
-			$.GetAjax($.getCtx() + '/rest/info/recentAreaInfoReal', { areaId: areaId, time: that.getCurrenTime() }, 'GET', true, function (data) {
+			$.GetAjax($.getCtx() + '/rest/info/recentAreaInfoReal', { areaId: areaId, time: that.getCurrenTime() }, 'GET', true, function (data,state) {
 				if (state) {
 					callpack(data);
 				}else{

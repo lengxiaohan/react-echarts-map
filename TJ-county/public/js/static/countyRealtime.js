@@ -140,9 +140,12 @@ let areaId = $.getUrlParam('areaId');
 					var twoarea=data[1].area;
 					$("#twoTitle").html(twoarea.shortName);
 				   
-				   
-					pushScrollNum(onetodayNum,"#onetotal");
-					pushScrollNum(twotodayNum,"#twototal");
+					setTimeout(function(){
+						$('.echarts-loding').hide();
+						$('.containermy').css("opacity",1);
+						pushScrollNum(onetodayNum,"#onetotal");
+						pushScrollNum(twotodayNum,"#twototal");
+					},1200);
 					
 					var setting = {
 						grid: {
@@ -406,16 +409,6 @@ let areaId = $.getUrlParam('areaId');
 			    
 			}
 			
-/*			$.GetAjax(
-				ctx+'/rest/info/recentAreaInfoDoubleNew',
-				{areaId:areaId,time:that.getCurrenTime()},
-				'GET',
-				true,
-				function(data){
-					callpack(data);
-				}
-			)*/
-			
 			$.GetAjax($.getCtx() + '/rest/info/recentAreaInfoReal', { areaId: areaId, time: that.getCurrenTime(),getParent :true }, 'GET', true, function (data,state) {
 				if (state) {
 					callpack(data);
@@ -423,7 +416,7 @@ let areaId = $.getUrlParam('areaId');
 					setTimeout(function () {
 						that.addDatas(ecs);
 						console.log('主人，刚才服务器出了一下小差');
-					}, 1000);
+					}, 3000);
 				}
 			});
 			

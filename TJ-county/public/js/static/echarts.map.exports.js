@@ -110,14 +110,23 @@
 			});
 	    	echarts.util.mapData.params.params.countyMap = {
 		        getGeoJson: function (callback) {
-		            $.getJSON('/mapJson/'+ name +'.json', data => {
-		                // 压缩后的地图数据必须使用 decode 函数转换
-		                callback(echarts.util.mapData.params.decode(data));
-		            });
-		            // $.getJSON($.getCtx() + '/TJ1.0-countys/guizhoujson/'+ name +'.json', function (data) {
-		            //     // 压缩后的地图数据必须使用 decode 函数转换
-		            //     callback(echarts.util.mapData.params.decode(data));
-		            // });
+		        	if (sessionStorage.getItem(name+'MAPJSON')) {
+		        		var data = JSON.parse(sessionStorage.getItem(name+'MAPJSON'));
+		        		callback(echarts.util.mapData.params.decode(data));
+		        	}else{
+		        		$.getJSON('/mapJson/'+ name +'.json', data => {
+			                // 压缩后的地图数据必须使用 decode 函数转换
+			                callback(echarts.util.mapData.params.decode(data));
+			                sessionStorage.setItem(name+'MAPJSON', JSON.stringify(data));
+			            });
+			            // $.getJSON($.getCtx() + '/TJ1.0-countys/guizhoujson/'+ name +'.json', data => {
+			            //     // 压缩后的地图数据必须使用 decode 函数转换
+			            //     callback(echarts.util.mapData.params.decode(data));
+			            // 	sessionStorage.setItem(name+'MAPJSON', JSON.stringify(data));
+			            // });
+		        	}
+
+		            
 
 		        }
 		    }

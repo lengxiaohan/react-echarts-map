@@ -1,7 +1,6 @@
 import {GetAnimateNum,RegExpThatName} from "common";
 import "ajax-plus";
 import "receiveLess";
-import "animateCss";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
@@ -11,7 +10,6 @@ let areaId = $.getUrlParam('areaId');
 
 class MapComponent extends React.Component {
 	componentDidMount() {
-		this._showMap(false);
 		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
 			const callBackJson = data && data.list;
 			const startArea = data.areaShortName.replace(RegExpThatName(data.areaShortName), "" );
@@ -56,25 +54,10 @@ class MapComponent extends React.Component {
 		const myChart = echarts.init(document.getElementById('echarts-map'));
 		let config = {
 			dataRangeColor: ['#ff3333', 'orange', 'yellow','lime','aqua'],
-			period: 30,
+			period: 80,
 			quertFont: 1,
 			shadowBlur: 5
 		};
-		if ( !obj ) {
-			myChart.showLoading({
-			    text : '数据读取中...',
-			    effect : 'spin',
-			    backgroundColor: 'none',
-			    textStyle : {
-			        fontSize : 20
-			    }
-			});
-			return false;
-		}else{
-			setTimeout(() => {
-			    myChart.hideLoading();
-			},2200);
-		}
         var option = {
 				color: ['gold','aqua','lime'],
 				tooltip : {
@@ -268,52 +251,70 @@ class ListComponent extends React.Component {
 		});
 	}
 	_getDataList() {
-		let [PAGEERS,totalNums] = [10,0];
-		let setData = {
-			"type":1,
-			"areaId": areaId
-		};
-		$.GetAjax($.getCtx() + '/rest/logistics/getTbLogisticsList', setData, 'GET', true, (data, state) => {
-			if (state && data.list && data.list[0]) {
-				const callBackJson = data.list;
-				// 进行数据组装
-				for (let i = 0; i < callBackJson.length / PAGEERS; i++) {
-					let attr = []; //该数组用于缓存当前循环的数据信息（最多存10条数据），赋给缓存session
-					for (let k = i * PAGEERS; k < i * PAGEERS + PAGEERS; k++) {
-						attr.push(callBackJson[k]);
-						totalNums += callBackJson[k] && callBackJson[k].receiveNum || 0;
-					}
 
-					// 赋值
-					this.arrayGroup[i] = attr;
-					// 缓存
-					sessionStorage.setItem('DATALIST_PAGE' + (i+1), JSON.stringify(this.arrayGroup[i]));
-
-					// 初始化数据渲染
-					if (i == 0) {
-						this.superData = this.arrayGroup[i];
-						this.totalPage = Math.ceil(callBackJson.length / PAGEERS);
-
-						this.setState({
-							show: true
-						});
-					}
-
+		if(sessionStorage.getItem('DATALIST_PAGERECEIVEALL')){
+			const data = JSON.parse(sessionStorage.getItem('DATALIST_PAGERECEIVEALL'));
+			this.showMapComponent(data,true);
+		}else{
+			let setData = {
+				"type":1,
+				"areaId": areaId
+			};
+			$.GetAjax($.getCtx() + '/rest/logistics/getTbLogisticsList', setData, 'GET', true, (data, state) => {
+				if (state && data.list && data.list[0]) {
+					// 缓存全部数据到本地
+					sessionStorage.setItem('DATALIST_PAGERECEIVEALL', JSON.stringify(data));
+					this.showMapComponent(data,false);
+				} else if (!state) {
+					setTimeout(() => {
+						this._getDataList();
+						console.log('主人，刚才服务器出了一下小差');
+					}, 2000);
 				}
-
-				// 2016-8-18日新增，动态加载数字，并处理在页面上，封装了新方法ReactGetAniNumId
-				// ReactGetAniNumId可传虚拟dom的节点,或者jquery的id,如'#id'
-				let ReactGetAniNumId = ReactDOM.findDOMNode(this.refs.ReactGetAniNumId);
-				GetAnimateNum(ReactGetAniNumId,totalNums,'单');
-				PubSub.publish('showMap',data);
-
-			} else if (!state) {
-				setTimeout(() => {
-					this._getDataList();
-					console.log('主人，刚才服务器出了一下小差');
-				}, 2000);
+			});
+		};
+		
+	}
+	showMapComponent(data,state) {
+		let [PAGEERS,totalNums] = [10,0];
+		$.onloadJavascript("./js/dist/echarts-all.js", false, true);
+		const callBackJson = data.list;
+		// 进行数据组装
+		for (let i = 0; i < callBackJson.length / PAGEERS; i++) {
+			let attr = []; //该数组用于缓存当前循环的数据信息（最多存10条数据），赋给缓存session
+			for (let k = i * PAGEERS; k < i * PAGEERS + PAGEERS; k++) {
+				attr.push(callBackJson[k]);
+				totalNums += callBackJson[k] && callBackJson[k].receiveNum || 0;
 			}
-		});
+
+			// 赋值
+			this.arrayGroup[i] = attr;
+			// 缓存
+			sessionStorage.setItem('DATALIST_PAGERECEIVE' + (i+1), JSON.stringify(this.arrayGroup[i]));
+
+			// 初始化数据渲染
+			if (i == 0) {
+				this.superData = this.arrayGroup[i];
+				this.totalPage = Math.ceil(callBackJson.length / PAGEERS);
+
+				this.setState({
+					show: true
+				});
+			}
+
+		}
+
+		const setTimeDates = state ? 0 : 2000;
+		PubSub.publish('showMap',data);
+		setTimeout(() => {
+			$('.echarts-loding').hide();
+			$('.echarts-map-show').css("opacity",1);
+			$('.echarts-list-show').css("opacity",1);
+			// 2016-8-18日新增，动态加载数字，并处理在页面上，封装了新方法ReactGetAniNumId
+			// ReactGetAniNumId可传虚拟dom的节点,或者jquery的id,如'#id'
+			let ReactGetAniNumId = ReactDOM.findDOMNode(this.refs.ReactGetAniNumId);
+			GetAnimateNum(ReactGetAniNumId,totalNums,'单');
+		},setTimeDates);
 	}
 	componentDidUpdate() {
 		if (this.totalPage <= 1) {
@@ -325,11 +326,11 @@ class ListComponent extends React.Component {
 			} else {
 				this.currentPage = 1;
 			}
-			this.superData = JSON.parse(sessionStorage.getItem('DATALIST_PAGE' + this.currentPage));
+			this.superData = JSON.parse(sessionStorage.getItem('DATALIST_PAGERECEIVE' + this.currentPage));
 			this.setState({
 				show: true
 			});
-		},7000);
+		},5000);
 
 	}
 	render() {
@@ -364,26 +365,26 @@ class ListLiComponent extends React.Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		this.listData = nextProps;
-		this.timeoutEnd();
+		// this.timeoutEnd();
 	}
-	componentDidMount() {
-		this.timeoutEnd();
-	}
-	timeoutEnd(){
-		let listId = "list"+this.listData.key2;
-		let listDom = ReactDOM.findDOMNode(this.refs[listId]);
-		setTimeout(()=>{
-			$(listDom).find('span').removeClass().addClass('animated bounceIn showList');
-		},this.listData.key2*200);
+	// componentDidMount() {
+	// 	this.timeoutEnd();
+	// }
+	// timeoutEnd(){
+	// 	let listId = "list"+this.listData.key2;
+	// 	let listDom = ReactDOM.findDOMNode(this.refs[listId]);
+	// 	setTimeout(()=>{
+	// 		$(listDom).find('span').removeClass().addClass('animated bounceIn showList');
+	// 	},this.listData.key2*200);
 
-		if (this.listData.total <= 1) {
-			return false;
-		}
+	// 	if (this.listData.total <= 1) {
+	// 		return false;
+	// 	}
 
-		setTimeout(()=>{
-			$(listDom).find('span').removeClass().addClass('animated bounceOut');
-		},this.listData.key2*200+5000);
-	}
+	// 	setTimeout(()=>{
+	// 		$(listDom).find('span').removeClass().addClass('animated bounceOut');
+	// 	},this.listData.key2*200+5000);
+	// }
 	render() {
 		return (
 			<li ref={"list"+this.listData.key2}>
@@ -391,6 +392,17 @@ class ListLiComponent extends React.Component {
 				<span>{this.listData.item && this.listData.item.regionName || ''}</span>
 				<span>{this.listData.item && this.listData.item.receiveNum || ''}</span>
 			</li>
+		)
+	}
+}
+
+class LodingComponent extends React.Component {
+	render() {
+		return (
+			<div className= {sessionStorage.getItem('DATALIST_PAGERECEIVEALL') ? "echarts-loding hide" : "echarts-loding"}>
+				<img src="img/svg/bar.svg"/>
+				<p className="puffLoading">正在从云端获取数据</p>
+			</div>
 		)
 	}
 }
@@ -404,6 +416,7 @@ class Container extends React.Component {
 			<div className="container">
 	    		<MapComponent />
 	    		<ListComponent />
+	    		<LodingComponent />
 	    	</div>
 		)
 	}

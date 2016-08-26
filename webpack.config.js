@@ -20,8 +20,9 @@ const TIME = new Date();
 module.exports = {
     // devtool: "source-map", // 便于调试
     entry: urlList + "/static/countyMigrateReceive.js",
-    // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime
+    // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
     // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService trainingStructureDetails.js
+    // countyRealtimeOne  countyRealtime
     output: {
         // publicPath: "TJ-province/public/build/",
         // path: path.join(__dirname, "TJ-province/build"),
