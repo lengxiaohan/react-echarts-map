@@ -1,9 +1,12 @@
 import {formatPrice,addZero,show_num,initAreaController} from "common";
 import "ajax-plus";
-
+import "cityRealDataListLess";
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+
+// 获取区域id
+let areaId = $.getUrlParam('areaId');
 /**
  * @name HeaderComponent 头部组件
  * @param _getName 头部信息名称
@@ -28,16 +31,57 @@ var HeaderComponent = React.createClass({
  * @param _getTitle 添加标题数据
  */
 var SectionComponent = React.createClass({
+	getInitialState: function() {
+		return {
+			status: false
+		};
+	},
 	_getTitle: function() {
 		const name = '今日累计网络交易额:';
 		return name;
 	},
 	componentWillMount: function() {
 		this.listType = 1;
+		this.ALLDATA = {};
 	},
-	componentDidUpdate: function() {
-		let totalNum = this.props.data.todayCollNum;
+	componentDidMount: function() {
+		this._getDatas(true,data => {
+			setTimeout(() => {
+				$('.echarts-loding').hide();
+				$('header').css("opacity",1);
+				$('section').css("opacity",1);
+				this.start(data);
+			},1200);
+			
+		});
+	},
+	start: function(data = []) {
+		let totalNum = data.todayCollNum;
 		show_num('.pushAnimateNum',totalNum,1);
+		this.setState({
+			status: true
+		});
+		setTimeout(() => {
+			this._getDatas();
+		}, 2000);
+	},
+	_getDatas: function(state = false, callback) {
+		let setData = {
+			areaId: areaId,
+			date: new Date().getTime()
+		};
+		$.GetAjax($.getCtx()+'/rest/info/recentInfoReal', setData, 'GET', true, (data,t_state) => {
+			if (t_state) {
+				this.ALLDATA = data;
+				state ? callback(data) : this.start(data)
+			}else{
+				setTimeout(() => {
+					this._getDatas();
+					console.log('主人，刚才服务器出了一下小差');
+				}, 2000);
+			}
+			
+		});
 	},
 	render: function() {
 		return (
@@ -62,7 +106,7 @@ var SectionComponent = React.createClass({
 						<li><img src="../public/img/1.png"/>&nbsp;&nbsp;2000元以下</li>
 	        		</ul>
 	        	</div>
-	        	<GetMapComponent data={this.props.data}/>
+	        	<GetMapComponent data={this.ALLDATA}/>
 	        </section>
 		);
 	}
@@ -345,43 +389,26 @@ var GetMapComponent = React.createClass({
  * @param _getDatas 获取数据
  */
 var Container = React.createClass({
-	getInitialState: function() {
-		return {
-			status: false
-		};
-	},
-	_getDatas: function() {
-		const that = this;
-		const areaId = $.getUrlParam('areaId');
-		let setData = {
-			areaId: areaId,
-			date: new Date().getTime()
-		};
-		// /public/others/data2.json
-		// /show/rest/info/recentInfoReal
-		$.GetAjax($.getCtx()+'/rest/info/recentInfoReal', setData, 'GET', true, function(data) {
-			that.state.status = true;
-			that.setState({
-				data: data
-			});
-			setTimeout(function() {
-				that._getDatas();
-			}, 2000);
-		});
-	},
-	componentDidMount: function() {
-		this._getDatas();
-	},
 	render: function() {
 		return (
 			<div className="container-cp">
 	        	<HeaderComponent/>
-	            <SectionComponent data={this.state.data || false}/>
+	            <SectionComponent/>
         	</div>
 		)
 	}
 });
 
+var LodingComponent = React.createClass({
+	render: function() {
+		return (
+			<div className="echarts-loding">
+				<img src="img/svg/bar.svg"/>
+				<p className="puffLoading">正在从云端获取数据</p>
+			</div>
+		)
+	}
+});
 /**
  * @param 添加整个Container组件到页面
  */

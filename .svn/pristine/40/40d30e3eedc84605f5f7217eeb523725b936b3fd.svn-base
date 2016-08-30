@@ -1,0 +1,215 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: training_structure.css
+* createTime: 2016/08/10
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 电商培训课程人员结构css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+.maxBody(@width:100%,@height:100%){
+	width: @width;
+	height: @height;
+}
+
+@margin-box-left:65%;
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	background: #16172c;
+}
+//加载动画样式开始
+.echarts-map-show{
+	.fl();
+	.maxBody(@margin-box-left,100%);
+	opacity: 0;
+}
+.hide{
+	opacity: 0;
+}
+.show{
+	opacity: 1;
+}
+.echarts-loading{
+	@loadingWidth: 40px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	.maxBody();
+	img{
+		.maxBody(@loadingWidth,@loadingWidth);
+		position: absolute;
+		top:50%;
+		left: 50%;
+		margin-top:@loadingWidth/-2;
+		margin-left: @loadingWidth/-2;
+	}
+	.puffLoading{
+		position: relative;
+		text-align: center;
+		color: #fff;
+		top: 50%;
+		margin-top: 30px;
+		font-size: 15px;
+	}
+}//加载动画样式结束
+.con{
+	.maxBody();
+	position: absolute;
+	.hide{
+		opacity: 0;
+	}
+	.show{
+		opacity: 1;
+	}
+	.header{
+		/* height: 30%; */
+		.maxBody(100%,25%);
+		position: absolute;
+		.topPie{
+			width:50%;
+			height:100%;
+			.fl();
+		}
+		.topTitle{
+			width:50%;
+			height:100%;
+			.fl();
+			 display: block;
+			.table{
+				.maxBody(45%,70%);
+			    .bc();
+			    .d-flex-v();
+			    .tc();
+			    margin-left: 10%;
+			    border-spacing: 0px;
+			    webkit-flex: 1;
+			    display: -webkit-flex;
+			    display: flex;
+			    flex-direction: column;
+			    display: -webkit-flex;
+			    .title{
+				    font-size: 2.8vh;
+				    color: #e8dbdb;
+				    background: #be2b0f;
+				    border-radius: 8px 8px 0px 0px;
+				    font-weight: normal;
+				    display: -webkit-flex;
+				    display: flex;
+				    -webkit-flex: 1;
+				    flex: 1;
+				    -webkit-flex-direction: column;
+				    flex-direction: column;
+				    .flex(1);
+				    .flex-hc();
+				    .flex-vc();
+			    }
+			    .personData{
+			    	.flex(2);
+			    	.flex-hc();
+			    	.flex-vc();
+			    	border-radius: 0 0 8px 8px;
+			    	color: #fff;
+			    	display: -webkit-flex;
+				    display: flex;
+				    -webkit-flex-direction: row;
+				    flex-direction: row;
+				    border-radius: 0px 0px 8px 8px;
+				    background: #7d1908;
+				    display: -webkit-flex;
+				    display: flex;
+				    -webkit-flex-direction: column;
+				    flex-direction: column;
+			    	.personSum{
+			    		.flex-hc();
+			    		.flex-vc();
+			    		display: flex;
+					   	font-size: 6vh;
+					   	display: -webkit-flex;
+					    display: flex;
+					    -webkit-flex: 1;
+					    flex: 1;
+					    -webkit-flex-direction: column;
+					    flex-direction: column;
+			    	}
+			    	
+			    }
+			}
+		}
+	};
+	.content{
+		.maxBody(100%,90%);
+    	position: absolute;
+    	top: 10%;
+		.conbg{
+			/* margin-top: -40px; */
+			margin-top: -2%;
+		    z-index: 99;
+		    right: 0px;
+		    .maxBody(18%,20%);
+		    background-color: #14192C;
+			.abs();
+			.button{
+    			.maxBody(40%,100%);
+				.abs();
+				.active{
+					transition: border linear .2s,box-shadow linear .5s;
+				    -moz-transition: border linear .2s,-moz-box-shadow linear .5s;
+				    -moz-box-shadow: 0 0 20px rgba(255,255,255,.5);
+				    -webkit-box-shadow: 0 0 20px rgba(255,255,255,.5);
+				    position: relative;
+				}
+				.active:after{
+					content: '';
+				    position: absolute;
+				    width: 100%;
+				    height: 100%;
+				    border: 3px solid #fff;
+				    border-radius: 5px;
+				    left: 0;
+				    top: 0;
+				    box-sizing: border-box;
+				}
+			    .press{
+			    	background-image: url(../img/bgpress.png);
+			    	background-repeat: no-repeat;
+				    cursor: pointer;
+				    .maxBody(50%,auto);
+				    .rel();
+				    bottom: 1px;
+				    background-size: 100% auto;
+			    }
+			    .free {
+				    background-image: url(../img/bgfree.png);
+			    	background-repeat: no-repeat;
+				    cursor: pointer;
+				    .maxBody(50%,auto);
+				    background-size:100% auto;
+				}
+			    li{
+				    list-style: none;
+				    cursor: pointer;
+				    .fl();
+				    .maxBody(50%,auto);
+				    img{
+	  				    .maxBody(100%,auto);
+				    }
+			    }
+			}
+		}
+		.conLine{
+			.maxBody(100%,100%);
+		}
+	}
+}

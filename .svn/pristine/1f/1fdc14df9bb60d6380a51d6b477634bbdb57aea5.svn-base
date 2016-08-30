@@ -1,0 +1,109 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0县域版
+* fileName: chinaRealDataList.css
+* createTime: 2016/06/30
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时采集监控
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+html,
+body{
+	.maxBody();
+	background: #16172C;
+}
+
+.container{
+	.maxBody();
+}
+
+.container-cp{
+	.maxBody();
+
+	header{
+		width: 100%;
+		height: 14%;
+
+		.d-flex-h();
+		.flex-hc();
+		.flex-vc();
+		.font-fm();
+		color: #ABACB1;
+		font-size: 2.4vw;
+
+	}
+
+	section{
+		width: 100%;
+		height: 86%;
+		.map-box{
+			width: 60%;
+			height: 100%;
+			position: relative;
+			.fl();
+			.map-show{
+				height: 100%;
+			}
+		}
+		.list-box{
+			width: 35%;
+			height: 70%;
+			margin: 10% 0 0 5%;
+			.fl();
+			.d-flex-v();
+
+			.list-title{
+				color: #7D8491;
+				margin: 5% 0 0 0;
+				.font-fm();
+				font-size: 2vw;
+			}
+
+			.pushAnimateNum{
+				color: #EDB204;
+				font-size:4vw;
+				margin: 4% 0;
+				.font-fm();
+				.short-size-span{
+					color: #7D8491;
+					font-size: 1.7vw;
+					margin: 0 5px;
+					.font-fm();
+				}
+				
+			}
+			.pushListBox{
+				margin: 0;
+				margin-top: 10%;
+				.d-flex-v();
+  				.flex(1);
+				position: relative;
+  				li{
+  					.d-flex-h();
+  					.flex-vc();
+  					.flex(1);
+  					color: #6c7b90;
+					font-size: 2vw;
+					.font-fm();
+					position: relative;
+					padding-left: 13%;
+					img{
+						position: absolute;
+						height: 100%;
+						left: 0;
+					}
+  				}
+			}
+			
+		}
+	}
+}

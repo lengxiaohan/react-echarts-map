@@ -1,0 +1,426 @@
+import {GetAnimateNum} from "common";
+import "ajax-plus";
+import "BusinessLess";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PubSub from 'pubsub-js';
+
+// 获取区域id
+let areaId = $.getUrlParam('areaId');
+
+class MapComponent extends React.Component {
+	componentDidMount() {
+		let setJson = {
+			date: [],
+			buyData: [],
+			sellData: []
+		};
+		this.pubsub_token = PubSub.subscribe('showMap', (topic, data) => {
+			switch(data && data.buysells || 0 ) {
+				case 0:
+					alert('buysells 字段丢失');
+					return false;
+				default:
+					break;
+			}
+			for (let i = 0; i < data.buysells.length; i++) {
+				setJson.date.push(data.buysells[i] && data.buysells[i].date || '无数据');
+				setJson.buyData.push(data.buysells[i] && data.buysells[i].bamount || 0);
+				setJson.sellData.push(data.buysells[i] && data.buysells[i].samount || 0);
+			};
+			
+			this._showMap(setJson);
+		});
+	}
+	componentWillUnmount() {
+		PubSub.unsubscribe(this.pubsub_token);
+	}
+	_showMap(JSONDATA) {
+		const myChart = echarts.init(document.getElementById('echarts-map'));
+		let config = {
+			MaxBuyData: Math.max.apply(Math, JSONDATA.buyData)*2,   //取出y轴代买的最大值来绘制y轴
+			MaxSellData: Math.max.apply(Math, JSONDATA.sellData)*2, //取出y轴代卖的最大值来绘制y轴
+			LINEWITH: 5, 				//绘制图形线条的宽度
+			symbolSize: 4, 				//标注点的大小
+			splitNumber: 5, 			//y轴均分几等分
+			COLORSTYLE: '#6c7b90',  	//x,y轴lengend的字体颜色
+			COLORSTYLESELL: '#005896',	//代卖的线条和标注颜色
+			COLORSTYLEBUY: '#EB691B',	//代买的线条和标注颜色
+			FONTSIZE: $(window).height()*0.035
+		};
+		let option = {
+			color: '#fff',
+			grid: {
+				x: '13%',
+				y: '10%',
+				x2: '8%',
+				y2: '7%'
+			},
+			legend: {
+		    	show: true,
+		        data:['代买','代卖'],
+		        x: $(window).width()*0.545,
+		        y: $(window).height()*0.031,
+		        textStyle: {
+		        	color: config.COLORSTYLE,
+		        	fontSize: config.FONTSIZE,
+					fontFamily: 'Microsoft Yahei ui'
+		        }
+		    },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    type: 'line' // 默认为直线，可选为：'line' | 'shadow'
+                },
+                formatter: params => {
+                    return params[0].name + '<br/>' + params[0].seriesName + ' : ' + params[0].value  +'元'+ '<br/>' + params[1].seriesName + ' : ' + -params[1].value +'元';
+                }
+            },
+            xAxis: [{
+                show: true,
+                axisLabel: {
+                    textStyle: {
+                        color: config.COLORSTYLE,
+			        	fontSize: config.FONTSIZE,
+						fontFamily: 'Microsoft Yahei ui'
+                    }
+                },
+                splitLine: {
+					show: true,
+					lineStyle: {
+						color: ['rgba(255,255,255,0.05)']
+					}
+				},
+                type: 'category',
+                boundaryGap: false,
+                axisLine: { 
+                	show: true, 
+                	lineStyle: { 
+                		color: 'rgba(108,123,144,0.8)' 
+                	} 
+                },
+                data: JSONDATA.date
+            }],
+            yAxis: [{
+                type: 'value',
+                max: config.MaxBuyData,
+                splitLine: {
+                    show: false
+                },
+                axisLine: { 
+                	show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: config.COLORSTYLE,
+			        	fontSize: config.FONTSIZE,
+						fontFamily: 'Microsoft Yahei ui'
+                    }
+                },
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['#14192c', '#161B2E']
+                    }
+                },
+                splitNumber: config.splitNumber
+            }, {
+                type: 'value',
+                min: -config.MaxSellData,
+                axisLabel: {
+                    textStyle: {
+                        color: config.COLORSTYLE,
+			        	fontSize: config.FONTSIZE,
+						fontFamily: 'Microsoft Yahei ui'
+                    },
+                    formatter: v => {
+                        return -v;
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+                axisLine: { 
+                	show: false
+                },
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['#14192c', '#161B2E']
+                    },
+                },
+                splitNumber: config.splitNumber
+            }],
+            series: [{
+                name: '代买',
+                type: 'line',
+                smooth: true, //平滑曲线显示
+                symbol: 'emptyCircle',
+                symbolSize: config.symbolSize,
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            color: (() => {
+                                let zrColor = zrender.tool.color;
+                                return zrColor.getLinearGradient(
+                                    0, 100, 0, 200, [
+                                        [0, 'rgba(114,50,44,0.8)'],
+                                        [0.8, 'rgba(108,54,39,0.8)']
+                                    ]
+                                )
+                            })(),
+                            type: 'default'
+                        },
+                        lineStyle: { //上面线条样式
+                            color: config.COLORSTYLEBUY,
+                            width: config.LINEWITH
+                        },
+                        color: config.COLORSTYLEBUY
+                    }
+                },
+                data: JSONDATA.buyData
+            }, {
+                name: '代卖',
+                type: 'line',
+                smooth: true, //平滑曲线显示
+                yAxisIndex: 1,
+                symbol: 'emptyCircle',
+                symbolSize: config.symbolSize,
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            type: 'default',
+                            color: (() => {
+                                let zrColor = zrender.tool.color;
+                                return zrColor.getLinearGradient(
+                                    0, 0, 0, 100, [
+                                        [0, 'rgba(14,34,82,0.9)'],
+                                        [0.8, 'rgba(12,70,107,0.9)']
+                                    ]
+                                )
+                            })(),
+                            type: 'default'
+                        },
+                        lineStyle: { //上面线条样式
+                            color: config.COLORSTYLESELL,
+                            width: config.LINEWITH
+                        },
+                        color: config.COLORSTYLESELL
+                    }
+                },
+                data: (() => {
+                    const oriData = JSONDATA.sellData;
+                    let len = oriData.length;
+                    while (len--) {
+                        oriData[len] *= -1;
+                    }
+                    return oriData;
+                })()
+            }]
+        };
+        // 为echarts对象加载数据
+	    myChart.setOption(option);
+	}
+	render() {
+		return (
+			<div className="echarts-map-show" id="echarts-map"></div>
+		)
+	}
+}
+
+class ListComponent extends React.Component {
+	state = {
+		show: false
+	}
+	constructor(props) {
+		super(props);
+		this.superData = [];
+		this.arrayGroup = []; //拉取数据回来进行分组的转换数组
+		this.totalPage = 0;
+		this.currentPage = 1;
+	}
+	componentDidMount() {
+		this._getDataList();
+	}
+	_pushListComponent(data = []) {
+		let listArray = data; //获取数据进行遍历赋值
+		let LENGTH = listArray.length;
+		if (LENGTH < 10) {
+			for(let i = 0;i<10-LENGTH;i++){
+				listArray.push([]);
+			}
+		}
+		this.listShowDom = listArray.map((item, list) => {
+			return <ListLiComponent item={item} list={list+10*(this.currentPage-1)} key={list} key2={list} total={this.totalPage}/>
+		});
+	}
+	_getDataList() {
+
+		if(sessionStorage.getItem('DATALIST_PAGEBUSINESSALL')){
+			const data = JSON.parse(sessionStorage.getItem('DATALIST_PAGEBUSINESSALL'));
+			this.showMapComponent(data,true);
+		}else{
+			let setData = {
+				"areaId": areaId
+			};
+			$.GetAjax($.getCtx() + '/rest/site/findAllTBServiceSumAmount', setData, 'GET', true, (data, state) => {
+				if (state && data.tables[0]) {
+					// 缓存全部数据到本地
+					sessionStorage.setItem('DATALIST_PAGEBUSINESSALL', JSON.stringify(data));
+					this.showMapComponent(data,false);
+				} else if (!state) {
+					setTimeout(() => {
+						this._getDataList();
+						console.log('主人，刚才服务器出了一下小差');
+					}, 2000);
+				}
+			});
+		};
+		
+	}
+	showMapComponent(data,state) {
+		let [PAGEERS,totalNums] = [10,0];
+		$.onloadJavascript("./js/dist/echarts-all.js", false, true);
+		// 进行数据组装
+		for (let i = 0; i < data.tables.length / PAGEERS; i++) {
+			let attr = []; //该数组用于缓存当前循环的数据信息（最多存10条数据），赋给缓存session
+			for (let k = i * PAGEERS; k < i * PAGEERS + PAGEERS; k++) {
+				attr.push(data.tables[k]);
+			}
+
+			// 赋值
+			this.arrayGroup[i] = attr;
+			// 缓存
+			sessionStorage.setItem('DATALIST_PAGEBUSINESS' + (i+1), JSON.stringify(this.arrayGroup[i]));
+
+			// 初始化数据渲染
+			if (i == 0) {
+				this.superData = this.arrayGroup[i];
+				this.totalPage = Math.ceil(data.tables.length / PAGEERS);
+
+				this.setState({
+					show: true
+				});
+			}
+
+		}
+
+		const setTimeDates = state ? 0 : 2000;
+		setTimeout(() => {
+			$('.echarts-loding').hide();
+			$('.echarts-map-show').css("opacity",1);
+			$('.echarts-list-show').css("opacity",1);
+			PubSub.publish('showMap',data);
+			// 2016-8-18日新增，动态加载数字，并处理在页面上，封装了新方法ReactGetAniNumId
+			// ReactGetAniNumId可传虚拟dom的节点,或者jquery的id,如'#id'
+			let ReactGetAniNumId = ReactDOM.findDOMNode(this.refs.ReactGetAniNumId);
+			GetAnimateNum(ReactGetAniNumId,totalNums,'单');
+		},setTimeDates);
+	}
+	componentDidUpdate() {
+		if (this.totalPage <= 1) {
+			return false;
+		};
+		setTimeout(() => {
+			if (this.currentPage < this.totalPage) {
+				this.currentPage ++;
+			} else {
+				this.currentPage = 1;
+			}
+			this.superData = JSON.parse(sessionStorage.getItem('DATALIST_PAGEBUSINESS' + this.currentPage));
+			this.setState({
+				show: true
+			});
+		},5000);
+	}
+	render() {
+		this._pushListComponent(this.superData);
+		return (
+			<div className="echarts-list-show">
+				<div className="list-box">
+					<section>
+						<div className="nav-title">
+							<span>排名</span>
+							<span>站点名称</span>
+							<span>服务数</span>
+							<span>所属乡镇</span>
+						</div>
+						<ul>
+							{this.listShowDom || ''}
+						</ul>
+					</section>
+				</div>
+			</div>
+		)
+	}
+}
+
+class ListLiComponent extends React.Component {
+	constructor(props) {
+		super(props);
+		this.listData = props;
+	}
+	componentWillReceiveProps(nextProps) {
+		this.listData = nextProps;
+		// this.timeoutEnd();
+	}
+	// componentDidMount() {
+	// 	this.timeoutEnd();
+	// }
+	// timeoutEnd(){
+	// 	let listId = "list"+this.listData.key2;
+	// 	let listDom = ReactDOM.findDOMNode(this.refs[listId]);
+	// 	setTimeout(()=>{
+	// 		$(listDom).find('span').removeClass().addClass('animated bounceIn showList');
+	// 	},this.listData.key2*200);
+
+	// 	if (this.listData.total <= 1) {
+	// 		return false;
+	// 	}
+
+	// 	setTimeout(()=>{
+	// 		$(listDom).find('span').removeClass().addClass('animated bounceOut');
+	// 	},this.listData.key2*200+5000);
+	// }
+	render() {
+		return (
+			<li ref={"list"+this.listData.key2}>
+				<span>{this.listData.item && this.listData.item.tradeNumber ? (this.listData.list+1 < 10 ? "0"+(this.listData.list+1) : this.listData.list+1) : '' || ''}</span>
+				<span>{this.listData.item && this.listData.item.siteName || ''}</span>
+				<span>{this.listData.item && this.listData.item.tradeNumber || ''}</span>
+				<span>{this.listData.item && this.listData.item.region || ''}</span>
+			</li>
+		)
+	}
+}
+
+class LodingComponent extends React.Component {
+	render() {
+		return (
+			<div className= {sessionStorage.getItem('DATALIST_PAGEBUSINESSALL') ? "echarts-loding hide" : "echarts-loding"}>
+				<img src="img/svg/bar.svg"/>
+				<p className="puffLoading">正在从云端获取数据</p>
+			</div>
+		)
+	}
+}
+
+class Container extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return (
+			<div className="container">
+	    		<MapComponent />
+	    		<ListComponent />
+	    		<LodingComponent />
+	    	</div>
+		)
+	}
+}
+
+ReactDOM.render(
+	<Container />,
+	document.getElementById('myMap')
+);

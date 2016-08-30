@@ -19,17 +19,18 @@ const urlCss = "TJ-county/public/css";
 const TIME = new Date();
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: urlList + "/static/trainingStructureDetails.js",
+    entry: urlList + "/static/cityRealDataList.js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
-    // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService trainingStructureDetails.js
+    // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService trainingStructureDetails
     // countyRealtimeOne  countyRealtime countyGoodsList trainingStructure trainingStructureDetails
+    // chinaRealDataList cityRealDataList
     output: {
         // publicPath: "TJ-province/public/build/",
         // path: path.join(__dirname, "TJ-province/build"),
 
         publicPath: "TJ-county/public/build/",
         path: path.join(__dirname, "TJ-county/build"),
-        filename: "trainingStructureDetails.min.js"
+        filename: "cityRealDataList.min.js"
     },
     module: {
         preLoaders: [
@@ -105,6 +106,8 @@ module.exports = {
             'animateCss': urlCss+ "/plus/animate.css",
             'migrateCommon': urlList + "/static/countyMigrateCommon.js",
             'trainingStructureDetails': urlLess + "/trainingStructureDetails.less",
+            'chinaRealDataListLess': urlLess + "/chinaRealDataList.less",
+            'cityRealDataListLess': urlLess + "/cityRealDataList.less",
             'cookie': urlList + "/plus/cookie.js"
         }
     }

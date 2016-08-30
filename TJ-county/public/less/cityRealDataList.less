@@ -16,19 +16,45 @@
 // 初始化页面
 .reset();
 
-.maxBody(){
-	width: 100%;
-	height: 100%;
-}
-
 html,
 body{
 	.maxBody();
 	background: #16172C;
+	overflow: hidden;
 }
 
 .container{
 	.maxBody();
+}
+
+.hide{
+	opacity: 0;
+}
+.show{
+	opacity: 1;
+}
+.echarts-loding{
+	@lodingWidth: 40px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	.maxBody();
+	img{
+		.maxBody(@lodingWidth,@lodingWidth);
+		position: absolute;
+		top:50%;
+		left: 50%;
+		margin-top:@lodingWidth/-2;
+		margin-left: @lodingWidth/-2;
+	}
+	.puffLoading{
+		position: relative;
+		text-align: center;
+		color: #fff;
+		top: 50%;
+		margin-top: 30px;
+		font-size: 15px;
+	}
 }
 
 .container-cp{
@@ -43,7 +69,7 @@ body{
 		.flex-vc();
 		.font-fm();
 		color: #ABACB1;
-		font-size: 2.4vw;
+		font-size: 4vh;
 
 	}
 
@@ -70,25 +96,23 @@ body{
 				color: #7D8491;
 				margin: 5% 0 0 0;
 				.font-fm();
-				font-size: 2vw;
+				font-size: 4vh;
 			}
 
 			.pushAnimateNum{
 				color: #EDB204;
-				font-size:4vw;
-				margin: 4% 0;
+				font-size:8vh;
+				margin: 2% 0;
 				.font-fm();
 				.short-size-span{
 					color: #7D8491;
-					font-size: 1.7vw;
+					font-size: 3vh;
 					margin: 0 5px;
 					.font-fm();
 				}
 				
 			}
 			.pushListBox{
-				margin: 0;
-				margin-top: 10%;
 				.d-flex-v();
   				.flex(1);
 				position: relative;
@@ -97,7 +121,7 @@ body{
   					.flex-vc();
   					.flex(1);
   					color: #6c7b90;
-					font-size: 2vw;
+					font-size: 3vh;
 					.font-fm();
 					position: relative;
 					padding-left: 13%;
