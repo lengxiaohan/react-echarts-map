@@ -1,0 +1,187 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ县域正式版
+* fileName: countyDistributionService.less
+* createTime: 2016/08/15
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 电商服务站分布情况页面
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+.maxBody(@width:100%,@height:100%){
+	width: @width;
+	height: @height;
+}
+
+@margin-box-left:70%;
+
+html,
+body{
+	.maxBody();
+}
+.container{
+	.maxBody();
+	background: #16172C;
+	overflow: hidden;
+}
+.echarts-map-show{
+	.fl();
+	.maxBody(@margin-box-left,100%);
+	opacity: 0;
+}
+.hide{
+	opacity: 0;
+}
+.show{
+	opacity: 1;
+}
+.echarts-loding{
+	@lodingWidth: 40px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	.maxBody();
+	img{
+		.maxBody(@lodingWidth,@lodingWidth);
+		position: absolute;
+		top:50%;
+		left: 50%;
+		margin-top:@lodingWidth/-2;
+		margin-left: @lodingWidth/-2;
+	}
+	.puffLoading{
+		position: relative;
+		text-align: center;
+		color: #fff;
+		top: 50%;
+		margin-top: 30px;
+		font-size: 15px;
+	}
+}
+
+.echarts-list-show{
+	margin-left: @margin-box-left;
+	.maxBody(100%-@margin-box-left,100%);
+	.b-sizing();
+	padding: 0 4.3% 0 0;
+	opacity: 0;
+	.list-box{
+		.maxBody();
+		header{
+			.maxBody(100%,20%);
+			@height-tak:34%;
+			@radius:10px;
+			margin-bottom: 2%;
+			.list-title{
+				.maxBody(100%,@height-tak);
+				.d-flex-v();
+				.flex-hc();
+				.flex-vc();
+				.font-fm();
+				border-top-left-radius: @radius;
+				border-top-right-radius: @radius;
+				background:#2C3346;
+				color:#6c7b90;
+				font-size: 3.5vh;
+			}
+			.list-total-num{
+				.maxBody(100%,100%-@height-tak);
+				.d-flex-v();
+				.flex-hc();
+				.flex-vc();
+				.font-fm();
+				border-bottom-left-radius: @radius;
+				border-bottom-right-radius: @radius;
+				background:#262B3F;
+				color:#fff;
+				font-size: 7.5vh;
+				span{
+					font-size: 4.5vh;
+					color:#697186;
+				}
+			}
+		}
+		section{
+			.maxBody(100%,78%);
+			.d-flex-v();
+			border: 1px solid #1B1C31;
+			border-radius: 10px;
+			.nav-title{
+				.flex(1);
+				height: 10%;
+				.d-flex-h();
+				.flex-hc();
+				.flex-vc();
+				width: 100%;
+				span{
+					.d-flex-h();
+					.flex(2);
+					.flex-hc();
+					.flex-vc();
+					height: 100%;
+					padding: 0 5%;
+					.b-sizing();
+					.font-fm();
+					font-size: 3.3vh;
+					color: #fff;
+					.txt-overflowed();
+					&:first-child{
+						.flex(1);
+					}
+				}
+			}
+			ul{
+				.flex(10);
+				height: 90%;
+				.d-flex-v();
+				.flex-hc();
+				.flex-vc();
+				li{
+					width: 100%;
+					height: 10%;
+					.d-flex-h();
+					.flex-hc();
+					.flex-vc();
+					span{
+						.d-flex-h();
+						.flex(2);
+						.flex-vc();
+						.font-fm();
+						height: 100%;
+						.b-sizing();
+						padding: 0 5%;
+						color: #aeb6c1;
+						font-size: 2.8vh;
+						.txt-overflowed();
+						// opacity: 0;
+						&:nth-child(1){
+							.flex(1);
+							.flex-hc();
+						}
+						&:nth-child(2){
+							.flex-hc(flex-start);
+						}
+						&:nth-child(3){
+							.flex-hc(flex-end);
+						}
+					}
+					.showList{
+						opacity: 1;
+					}
+					&:nth-child(odd){
+						background: #1A1C31;
+					}
+				}
+				
+			}
+		}
+	}
+}

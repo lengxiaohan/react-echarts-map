@@ -1,0 +1,123 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ县域正式版
+* fileName: countryDemandDistribution.less
+* createTime: 2016/09/01
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 热力分布图
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+@margin-box-left:70%;
+
+html,
+body{
+	.maxBody();
+	background: #16172C;
+}
+.container{
+	.maxBody();
+	overflow: hidden;
+}
+
+.show{
+	opacity: 1;
+}
+.hide{
+	opacity: 0;
+}
+
+.echarts-list-show{
+	.maxBody();
+	opacity: 0;
+	.echarts-map-show{
+		margin-left: 100% - @margin-box-left;
+		.maxBody(@margin-box-left,100%);
+		opacity: 0;
+	}
+	.list-box{
+		.maxBody(100%-@margin-box-left,100%);
+		padding: 0 0 0 4.3%;
+		.b-sizing();
+		.fl();
+		.d-flex-v();
+		border: 1px solid #1B1C31;
+		border-radius: 10px;
+		.nav-title{
+			.flex(1);
+			height: 10%;
+			.d-flex-h();
+			.flex-hc();
+			.flex-vc();
+			width: 100%;
+			span{
+				.d-flex-h();
+				.flex(2);
+				.flex-hc();
+				.flex-vc();
+				height: 100%;
+				padding: 0 5%;
+				.b-sizing();
+				.font-fm();
+				font-size: 3.3vh;
+				color: #fff;
+				.txt-overflowed();
+				&:first-child{
+					.flex(1);
+				}
+			}
+		}
+		ul{
+			.flex(10);
+			height: 90%;
+			.d-flex-v();
+			.flex-hc();
+			.flex-vc();
+			li{
+				width: 100%;
+				height: 10%;
+				.d-flex-h();
+				.flex-hc();
+				.flex-vc();
+				span{
+					.d-flex-h();
+					.flex(2);
+					.flex-vc();
+					.font-fm();
+					height: 100%;
+					.b-sizing();
+					padding: 0 5%;
+					color: #aeb6c1;
+					font-size: 2.8vh;
+					.txt-overflowed();
+					// opacity: 0;
+					&:nth-child(1){
+						.flex(1);
+						.flex-hc();
+					}
+					&:nth-child(2){
+						.flex-hc(flex-start);
+					}
+					&:nth-child(3){
+						.flex-hc(flex-end);
+					}
+				}
+				.showList{
+					opacity: 1;
+				}
+				&:nth-child(odd){
+					background: #1A1C31;
+				}
+			}
+			
+		}
+	}
+}

@@ -1,7 +1,7 @@
 const webpack = require("webpack"),
     path = require("path"),
     fs = require("fs");
-//ExtractTextPlugin = require("extract-text-webpack-plugin");// 独立css
+    // ExtractTextPlugin = require("extract-text-webpack-plugin");// 独立css
 
 // 读取入口文件
 const jsDir = fs.readdirSync('./TJ-province/public/js/static'),
@@ -17,11 +17,12 @@ const urlList = "TJ-county/public/js";
 const urlLess = "TJ-county/public/less";
 const urlCss = "TJ-county/public/css";
 const TIME = new Date();
+const fileNamed = "cityRealDataList";
 module.exports = {
     // devtool: "source-map", // 便于调试
-    entry: urlList + "/static/cityRealDataList.js",
+    entry: urlList + "/static/"+fileNamed+".js",
     // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
-    // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService trainingStructureDetails
+    // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService
     // countyRealtimeOne  countyRealtime countyGoodsList trainingStructure trainingStructureDetails
     // chinaRealDataList cityRealDataList
     output: {
@@ -30,17 +31,17 @@ module.exports = {
 
         publicPath: "TJ-county/public/build/",
         path: path.join(__dirname, "TJ-county/build"),
-        filename: "cityRealDataList.min.js"
+        filename: ""+fileNamed+".min.js"
     },
     module: {
         preLoaders: [
 
         ],
         loaders: [
-            //{
+            // {
             //    test: /\.less$/,
             //    loader: ExtractTextPlugin.extract('style-loader',  "css-loader!less-loader")
-            //},
+            // },
             {test: /\.less$/,loader: "style-loader!css-loader!autoprefixer-loader!less-loader?sourceMap"},
             {test: /\.css$/,loader: "style-loader!css-loader!autoprefixer-loader"},
             // {test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?name=[hash].[ext]'},
@@ -75,7 +76,7 @@ module.exports = {
         }), //去除警告
         // new webpack.optimize.CommonsChunkPlugin('common.js'),//提取多个页面之间的公共模块
         new webpack.BannerPlugin('项目打包，' + TIME + ' zhouxinjian'), // 头部注释
-        //new ExtractTextPlugin("[name].css"),
+        // new ExtractTextPlugin(""+fileNamed+".min.css"),
 
         //全局引入，避免每个页面重复书写
         new webpack.ProvidePlugin({
@@ -92,11 +93,11 @@ module.exports = {
         alias: {
             'jquery': urlList + "/plus/jquery-2.0.3.js",
             'echarts-all': urlList + "/dist/echarts-all.js",
-            'common': urlList + "/static/common.js",
+            'common': urlList + "/static/common/common.js",
             'canvasCommon': urlList + "/static/canvasCommon.js",
-            'echarts-line': urlList + "/static/echarts.line.exports.js",
-            'echarts-map': urlList + "/static/echarts.map.exports.js",
-            'ajax-plus': urlList + "/static/getViewData.js",
+            'echarts-line': urlList + "/static/common/echarts.line.exports.js",
+            'echarts-map': urlList + "/static/common/echarts.map.exports.js",
+            'ajax-plus': urlList + "/static/common/getViewData.js",
             'receiveLess': urlLess + "/countyMigrateReceive.less",
             'issueLess': urlLess + "/countyMigrateIssue.less",
             'DisSeverLess': urlLess + "/countyDistributionService.less",
@@ -108,6 +109,7 @@ module.exports = {
             'trainingStructureDetails': urlLess + "/trainingStructureDetails.less",
             'chinaRealDataListLess': urlLess + "/chinaRealDataList.less",
             'cityRealDataListLess': urlLess + "/cityRealDataList.less",
+            'distributionLess': urlLess + "/countryDemandDistribution.less",
             'cookie': urlList + "/plus/cookie.js"
         }
     }

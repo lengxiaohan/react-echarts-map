@@ -1,0 +1,189 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@ include file="../../pages/taglibs.jsp"%>
+<%
+String areaName=request.getParameter("areaId");
+%>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>地图map</title>
+
+<style>
+    html,
+    body{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #main{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+</head>
+<body>
+	 <div id="main"></div>
+</body>
+<script src="js/plus/jquery-3.0.0.min.js"></script>
+<script src="js/plus/echarts3-map.min.js"></script>
+<script src="js/static/getViewData.js"></script>
+<script src="js/plus/china.js"></script>
+<script>
+	$.getUrlParam = function (name) {
+	    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	    var r = window.location.search.substr(1).match(reg);
+	    if (r != null) return unescape(r[2]); return null;
+	};
+	var mapMoudle = {
+		init:function(){
+			this.myChart = echarts.init(document.getElementById('main'));
+			this.cityArr = [];
+			this.provinceArr = [];
+			this.countyArr = [];
+			this.getData();
+		},
+		getData: function(){
+			var that = this;
+			var userId = $.getUrlParam('userId') || 0;
+			$.GetAjax('/show/rest/oper/area/getAreaByUser', { userId: userId }, 'GET', true, function (data) {
+				var cityData = data.info['市'] || [];
+				var provinceData = data.info['省'] || [];
+				var countyData = data.info['县'] || [];
+				for(var i = 0;i<cityData.length;i++){
+					that.cityArr.push({
+						name:cityData[i].shortName,
+			            value: [cityData[i].lng, cityData[i].lat]
+					});
+				}
+				for(var j = 0;j<provinceData.length;j++){
+					that.provinceArr.push({
+						name:provinceData[j].shortName,
+			            value: [provinceData[j].lng, provinceData[j].lat]
+					});
+				}
+				for(var k = 0;k<countyData.length;k++){
+					that.countyArr.push({
+						name:countyData[k].shortName,
+			            value: [countyData[k].lng, countyData[k].lat]
+					});
+				}
+				that.setOption(that.getOption(that.cityArr,that.provinceArr,that.countyArr));
+			});
+		},
+		getOption: function(cityArr,provinceArr,countyArr){
+			var series = [{
+		        name: 'm',
+		        type: 'effectScatter',
+		        coordinateSystem: 'geo',
+		        zlevel: 5,
+		        z:0,
+		        label: {
+		            normal: {
+		                show: true,
+		                position: ['0%', '90%'],
+		                formatter: '{b}',
+		                textStyle: {
+		                	color:'#fff',
+		                	fontSize:$(window).width()/100
+		                }
+		            }
+		        },
+		        symbol:'image://../public/img/ic_map.png',
+		        symbolSize: $(window).width()/30,
+		        showEffectOn:'emphasis',
+		        data: cityArr
+		    },{
+		        name: 'n',
+		        type: 'effectScatter',
+		        coordinateSystem: 'geo',
+		        zlevel: 5,
+		        z:0,
+		        label: {
+		            normal: {
+		                show: true,
+		                position: ['0%', '90%'],
+		                formatter: '{b}',
+		                textStyle: {
+		                	color:'#fff',
+		                	fontSize:$(window).width()/100
+		                }
+		            }
+		        },
+		        symbol:'image://../public/img/ic_map.png',
+		        symbolSize: $(window).width()/30,
+		        showEffectOn:'emphasis',
+		        data: provinceArr
+		    },{
+		        name: 'x',
+		        type: 'effectScatter',
+		        coordinateSystem: 'geo',
+		        zlevel: 5,
+		        z:0,
+		        label: {
+		            normal: {
+		                show: true,
+		                position: ['0%', '90%'],
+		                formatter: '{b}',
+		                textStyle: {
+		                	color:'#fff',
+		                	fontSize:$(window).width()/100
+		                }
+		            }
+		        },
+		        symbol:'image://../public/img/ic_map.png',
+		        symbolSize: $(window).width()/30,
+		        showEffectOn:'emphasis',
+		        data: countyArr
+		    }]; 
+
+		    var option = {
+		        geo: {
+		            map: 'china',
+		            label: {
+		                emphasis: {
+		                  show: false
+		                }
+		            },
+		            roam: false,
+		            zlevel: 0,
+		            itemStyle: {
+		                normal: {
+		                    areaColor: '#323c48',
+		                    borderColor: '#404a59'
+		                },
+		                emphasis: {
+		                  areaColor: '#2a333d'
+		                }
+		            }
+		            // ,
+		            // regions: [{
+		            //     name: '四川',
+		            //     selected: true,
+		            //     itemStyle: {
+		            //         normal: {
+		            //             color: 'red'
+		            //         }
+		            //     }
+		            // }]
+		        },
+		        series: series
+		    };
+		    
+		    return option;
+		},
+		setOption: function(option){
+			this.myChart.setOption(option);
+		}
+	};
+	
+	mapMoudle.init();
+</script>
+</html>

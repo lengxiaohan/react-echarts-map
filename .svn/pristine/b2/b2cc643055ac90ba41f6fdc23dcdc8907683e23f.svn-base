@@ -1,0 +1,28 @@
+.maxBody(@width:100%,@height:100%){
+	width: @width;
+	height: @height;
+}
+.echarts-loding{
+	@lodingWidth: 40px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	.maxBody();
+	background: #16172C;
+	img{
+		.maxBody(@lodingWidth,@lodingWidth);
+		position: absolute;
+		top:50%;
+		left: 50%;
+		margin-top:@lodingWidth/-2;
+		margin-left: @lodingWidth/-2;
+	}
+	.puffLoading{
+		position: relative;
+		text-align: center;
+		color: #fff;
+		top: 50%;
+		margin-top: 30px;
+		font-size: 15px;
+	}
+}
