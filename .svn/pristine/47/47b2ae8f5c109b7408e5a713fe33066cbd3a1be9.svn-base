@@ -1,0 +1,211 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: ProvinSaleDistribution.css
+* createTime: 2016/09/13
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 农特产品全国经销商经销热力图详情页css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+.maxBody(@width: 100%, @height: 100%) {
+    width: @width;
+    height: @height;
+}
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	background: rgba(0, 0, 51, 0.7);
+	border-left: 2px rgba(0, 153, 255, 0.5) solid;
+	border-right: 2px rgba(0, 153, 255, 0.5) solid;
+	border-bottom: 2px rgba(0, 153, 255, 0.5) solid;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+#con{
+	.maxBody();
+	#content{
+		.maxBody();
+		.header{
+		    .maxBody(100%,6%);
+		    .rel();
+		    .head-left{
+			    .maxBody(25%,100%);
+			    .fl();
+			    .rel();
+			    margin-top: 1px;
+			    border-top: 1px rgba(0,153,255,0.5) solid;
+		    }
+		    .head-con{
+			    .maxBody(50%,100%);
+			    .fl();
+			    box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+			    .rel();
+			    img{
+				    .maxBody(100%,100%);
+				    .rel();
+				    z-index: 2;
+			    }
+			    p{
+			    	.abs();
+				    top: 0;
+				    .maxBody(100%,100%);
+				    margin: 0 auto;
+				    text-align: center;
+				    z-index: 4;
+				    color: #fff;
+				    font-size: 3.5vh;
+			    }
+		    }
+		    .head-right{
+			    .maxBody(25%,100%);
+			    .fl();
+			    .rel();
+			    margin-top: 1px;
+			    border-top: 1px rgba(0,153,255,0.5) solid;
+		    }
+		}
+		.con{
+		    .maxBody(100%,90%);
+		    .abs();
+		    padding-top: 1%;
+		    .list{
+			    .maxBody(20%,100%);
+			    .fl();
+			    .abs();
+			    top: 0;
+			    left: 0;
+			    clear: both;
+			    margin-left: 5%;
+			    .table{
+			    	.abs();
+				    .maxBody(100%,65%);
+				    .d-flex-v();
+				    top: 20%;
+				    .thead{
+					    .d-flex-v();
+					    ul{
+					    	.fl();
+						    .d-flex-v();
+						    li{
+							    font-size: 2.61vh;
+							    .flex-vc();
+							   .flex-hc(start);
+							   .d-flex-h();
+							    color: #fff;
+						    }
+					    }
+				    }
+				    .tbody{
+						.d-flex-v();
+					    .flex(10);
+					    ul{
+					    	.fl();
+					    	.flex(1);
+					    	.d-flex-h();
+						    li{
+							   .flex-vc();
+							   .flex-hc();
+							   .d-flex-h();
+							    font-size: 1.96vh;
+							    color: #fff;
+							    padding-right: 3.5%;
+							    border-bottom: 1px dashed #828baa;
+							    &:first-child{
+	                                span{
+	                                	background-color: #3e04b1;
+									    border: 0;
+									    border-radius: 2px;
+									    color: #fff;
+									    outline: 0;
+	                                }
+	                            }
+	                            // &:nth-child(2){
+	                            //     .flex(2);
+	                            //     .flex-hc();
+	                            // }
+	                            // &:nth-child(3){
+	                            //     .flex(2);
+	                            //     .flex-hc();
+	                            // }
+						    }
+					    }
+				    }
+			    }
+		    }
+		    .saleDis{
+			    .abs();
+			    .maxBody(auto,6%);
+			    left: 25%;
+			    bottom: 10%;
+			    .d-flex-h();
+			    img{
+				    .maxBody(auto,100%);
+				    margin: 0 10px 0 0;
+			    }
+				p{
+					color: #aeb6c1;
+				    .d-flex-h();
+				    .flex();
+				    font-size: 2vh;
+				    .flex-vc();
+				    .flex-hc();
+				}
+		    }
+		    .legend{
+		    	.maxBody(auto,10%);
+			    .abs();
+			    left: 30%;
+			    bottom: 10%;
+			    .d-flex-v();
+			    label{
+			    	color: #fff;
+			    }
+			    div{
+			    	.d-flex-h();
+				   .flex();
+				    height: 33.33333%;
+				    img{
+					    .maxBody(auto,100%);
+					    margin: 0 10px 0 0;
+				    }
+				    label{
+				    	color: #fff;
+				    	.d-flex-h();
+					    .flex();
+					    font-size: 1.96vh;
+					    // display: -moz-box;
+					    // -moz-box-pack: center;
+					    // -moz-box-align: center;
+					    // display: -webkit-box;
+					    // -webkit-box-pack: center;
+					    // -webkit-box-align: center;
+					    // display: box;
+					    // box-pack: center;
+					    // box-align: center;
+					    .flex-hc();
+					    .flex-vc();
+				    }
+			    }
+		    }
+		    .jsmap{
+     			.fl();
+     			.abs();
+     			.maxBody(65%,100%);
+     			left: 25%;
+		    }
+		}
+	}
+}

@@ -117,8 +117,8 @@ var FooterComponent = React.createClass({
 						<span id="Js_pre_page" className={this.props.isCurrent == 0 ? "normalColor" : "chooseSelect"} onClick={this.props.prev} disabled={this.props.isCurrent == 0 ? "true" : "false"}>&nbsp;&lt;&nbsp;上一页</span>
 					</div>
 					<div className="pageA">
-						<input type="button" className="page" value={this.props.currentPage}/>/
-						<span className="page">{this.props.totalPage}</span>
+						<input type="button" className="page" value={this.props.currentPage}/>
+						<span className="page">/{this.props.totalPage}</span>
 					</div>
 					<div className="pageA">
 						<span id="Js_next_page" className={this.props.isCurrent == 1 ? "normalColor" : "chooseSelect"}  onClick={this.props.next} disabled={this.props.isCurrent == 0 ? "true" : "false"}>下一页&nbsp;&gt;&nbsp;</span>

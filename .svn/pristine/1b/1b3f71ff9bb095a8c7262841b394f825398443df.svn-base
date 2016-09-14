@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Swiper demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <!-- jquery JS -->
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="js/swiper.min.js"></script>
+    <!-- imgload JS-->
+    <script src="js/imgload.min.js"></script>
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <!-- main CSS -->
+    <link rel="stylesheet" href="css/mobile.min.css">
+</head>
+<body>
+    <div class="loading" id="loading">
+        <img src="img/bars.svg" alt="loading"/>
+        <p>loading <span id="loadShow">0%</span></p>
+    </div>
+
+    <div class="containerIndex">
+        <span class="bg-repeat-index"></span>
+        <button disabled="true" class="logo">
+            <img src="img/logo.png" alt="logo"/>
+        </button>
+        <button disabled="true" class="font">
+            <img src="img/font.png" alt="font"/>
+        </button>
+        <button disabled="true" class="state1">
+            <img src="img/page1/state1.png" alt="bottom"/>
+        </button>
+        <button disabled="true" class="state2">
+            <img src="img/page1/state2.png" alt="center"/>
+        </button>
+        <button disabled="true" class="state3">
+            <img src="img/page1/state3.png" alt="center"/>
+        </button>
+    </div>
+    <div class="cloneBg">
+        <span class="bg-repeat-others"></span>
+        <button disabled="true" class="font">
+            <img src="img/font.png" alt="font"/>
+        </button>
+    </div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+    
+            <div class="swiper-slide page1">
+                <span class="bg-repeat-others"></span>
+                <button disabled="true" class="logo">
+                    <img src="img/logo.png" alt="logo"/>
+                </button>
+                <button disabled="true" class="font">
+                    <img src="img/font.png" alt="font"/>
+                </button>
+                <button disabled="true" class="huo">
+                    <img src="img/page1/huo.png" alt="huo"/>
+                </button>
+                <button disabled="true" class="star">
+                    <img src="img/page1/star.png" alt="star"/>
+                </button>
+                <button disabled="true" class="fontlist1"></button>
+                <button disabled="true" class="fontlist2"></button>
+            </div>
+
+            <div class="swiper-slide page2">
+                <span class="bg-repeat-others"></span>
+                <button disabled="true" class="title">
+                    <img src="img/font.png" alt="font"/>
+                </button>
+                <div class="section">
+                    <div class="bg3072"></div>
+                    <button disabled="true" class="name3072">
+                        <img src="img/page2/name.png" alt="name3072"/>
+                    </button>
+                    <div class="sec3072">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="footer">
+                    <p>利用云计算处理和分析</p>
+                    <p>全国电子商务平台的</p>
+                    <p>海量交易数据</p>
+                </div>
+            </div>
+
+            <div class="swiper-slide page3">
+                <span class="bg-repeat-others"></span>
+                <button disabled="true" class="title">
+                    <img src="img/font.png" alt="font"/>
+                </button>
+                <div class="section">
+                    <button disabled="true" class="cloud">
+                        <img src="img/page3/cloud.png" alt="cloud"/>
+                    </button>
+                    <button disabled="true" class="cloud_down">
+                        <img src="img/page3/cloud_down.png" alt="cloud_down"/>
+                    </button>
+                    <div class="circle1"></div>
+                    <div class="circle2"></div>
+                    <div class="circle3"></div>
+                    <p class="line"></p>
+                </div>
+                <div class="footer">
+                    <p>为政府、企业、行政机构等</p>
+                    <p>提供电子商务</p>
+                    <p>大数据产品/服务</p>
+                </div>
+            </div>
+
+            <div class="swiper-slide page4">
+                <span class="bg-repeat-others"></span>
+                <button disabled="true" class="title">
+                    <img src="img/font.png" alt="font"/>
+                </button>
+                <div class="section">
+                    <div class="list-box-top">
+                        <div class="left">
+                            <div class="left-sec">
+                                <p>公司正式成立<br/>自主研发的垂直电商<br/>O2O平台正式上线</p>
+                            </div>
+                            <div class="left-time">2011年</div>
+                        </div>
+                        <div class="right">
+                            <div class="right-sec">
+                                <p>全国首家电子商务大数据平台<br/>映潮大数据平台正式发布</p>
+                                <img src="img/page4/img1.png" alt="img"/>
+                            </div>
+                            <div class="right-time">2014年7月</div>
+                        </div>
+                    </div>
+                    <button disabled="true" class="line">
+                        <img src="img/page4/line.png" alt="line"/>
+                    </button>
+                    <div class="list-box-bottom">
+                        <div class="list">
+                            <div class="list-time">2012~2013年</div>
+                            <div class="list-sec">
+                                <p>运营垂直电商O2O平台<br/>累计服务10万用户<br/>成功服务超过1000家电商企业<br/>并为客户提供大数据服务</p>
+                                <img src="img/page4/img2.png" alt="img"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide page5">
+                <button disabled="true" class="title">
+                    <img src="img/font.png" alt="font"/>
+                </button>
+                <div class="section">
+                    <div class="list-box-top">
+                        <div class="left"></div>
+                        <div class="right">
+                            <div class="right-sec">
+                                <p>公司挂牌新三板<br/>证券代码：836177</p>
+                                <img src="img/page5/img2.png" alt="img"/>
+                            </div>
+                            <div class="right-time">2016年3月</div>
+                        </div>
+                    </div>
+                    <button disabled="true" class="line">
+                        <img src="img/page5/line.png" alt="line"/>
+                    </button>
+                    <div class="list-box-bottom">
+                        <div class="list">
+                            <div class="list-time">2015年6月</div>
+                            <div class="list-sec">
+                                <p>正式被授权为<br/>四川省电子商务大数据中心</p>
+                                <img src="img/page5/img1.png" alt="img"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide page6">
+                <span class="bg-repeat-others"></span>
+                <button disabled="true" class="title">
+                    <img src="img/font.png" alt="font"/>
+                </button>
+                <div class="section">
+                    <div class="list-box-top">
+                        <div class="left"></div>
+                        <div class="right">
+                            <div class="right-sec">
+                                <p>映潮科技亮相国家级数博会，携<br/>手贵州省商务厅共同打造贵州电子商务云。</p>
+                                <img src="img/page6/img2.png" alt="img"/>
+                            </div>
+                            <div class="right-time">2016年5月</div>
+                        </div>
+                    </div>
+                    <button disabled="true" class="line">
+                        <img src="img/page6/line.png" alt="line"/>
+                    </button>
+                    <div class="list-box-bottom">
+                        <div class="list">
+                            <div class="list-time">2016年一季度</div>
+                            <div class="list-sec">
+                                <p>国家统计局和商务部领导先后莅<br/>临公司调研大数据的开发应用，<br/>并与公司达成深度合作意向。</p>
+                                <img src="img/page6/img1.png" alt="img"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide page7">
+                该模块待开发，往后继续，后面还有。
+                <span class="bg-repeat-others"></span>
+            </div>
+            <div class="swiper-slide page8">
+                <span class="bg-repeat-others"></span>
+                <div class="title">数据挖掘</div>
+                <div class="blue blue1">
+                    <img src="img/page8/bule.png" alt="bule">
+                    <button>SVM<br/>支持向量机</button>
+                    <p>数值预测与分类</p>
+                </div>
+                <div class="blue blue2">
+                    <img src="img/page8/bule.png" alt="bule">
+                    <button>SVM<br/>支持向量机</button>
+                    <p>数值预测与分类</p>
+                </div>
+                <div class="blue blue3">
+                    <img src="img/page8/bule.png" alt="bule">
+                    <button>SVM<br/>支持向量机</button>
+                    <p>数值预测与分类</p>
+                </div>
+                <div class="blue blue4">
+                    <img src="img/page8/bule.png" alt="bule">
+                    <button>SVM<br/>支持向量机</button>
+                    <p>数值预测与分类</p>
+                </div>
+                <div class="blue blue5">
+                    <img src="img/page8/bule.png" alt="bule">
+                    <button>SVM<br/>支持向量机</button>
+                    <p>数值预测与分类</p>
+                </div>
+                <div class="blue blue6">
+                    <img src="img/page8/bule.png" alt="bule">
+                    <button>SVM<br/>支持向量机</button>
+                    <p>数值预测与分类</p>
+                </div>
+
+                <div class="red">
+                    <img src="img/page8/red.png" alt="red">
+                    <button>数据<br/>挖掘分析</button>
+                </div>
+                
+                <div class="green green1">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="green green2">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="green green3">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="green green4">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="green green5">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="green green6">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="green green7">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="green green8">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="green green9">
+                    <img src="img/page8/green.png" alt="green">
+                </div>
+                <div class="footer">近百种算法</div>
+            </div>
+            <div class="swiper-slide page9">
+                <span class="bg-repeat-others"></span>
+                <div class="title">云服务器</div>
+                <div class="footer">安全 弹性 高效 稳定</div>
+                <div class="title2">服务器性能</div>
+                <div class="footer2">分布式并行处理</div>
+                <img src="img/page9/ico1.png" class="ico1" alt="安全">
+                <img src="img/page9/ico2.png" class="ico2" alt="弹性">
+                <img src="img/page9/ico3.png" class="ico3" alt="高效">
+                <img src="img/page9/ico4.png" class="ico4" alt="稳定">
+                <img src="img/page9/ico5.png" class="ico5" alt="云服务">
+                <button disabled="true" class="server">
+                    <img src="img/page9/server.png" class="server-img">
+                    <img src="img/page9/sun1.png" class="sun-img-1">
+                    <img src="img/page9/sun2.png" class="sun-img-2">
+                    <img src="img/page9/sun3.png" class="sun-img-3">
+                    <img src="img/page9/sun4.png" class="sun-img-4">
+                    <img src="img/page9/sun5.png" class="sun-img-5">
+                    <img src="img/page9/sun6.png" class="sun-img-6">
+                </button>
+                <button disabled="true" class="circle1">
+                    <img src="img/page9/circle1.png">
+                </button>
+                <button disabled="true" class="circle2">
+                    <img src="img/page9/circle2.png">
+                </button>
+                <button disabled="true" class="circle3">
+                    <div class="circle3-box">
+                        <img src="img/page9/circle3.png" class="circle3-img">
+                        <img src="img/page9/top.png" class="circle3-top">
+                        <img src="img/page9/left.png" class="circle3-left">
+                        <img src="img/page9/bottom.png" class="circle3-bottom">
+                        <img src="img/page9/right.png" class="circle3-right">
+                        <img src="img/page9/ico5.png" class="circle3-300">
+                    </div>
+                </button>
+            </div>
+            <div class="swiper-slide page10">
+                <span class="bg-repeat-others"></span>
+                <div class="title">提供数据</div>
+                <div class="section">
+                    <div class="sec-box icon1">
+                        <i></i>
+                        <div>
+                            <h1>电子商务整体交易及走势</h1>
+                            <p>国内生产总值与网络交易额增长对比<br/>网络零售额及同比增长率<br/>网络零售额及排名</p>
+                        </div>
+                    </div>
+                    <div class="sec-box icon2">
+                        <i></i>
+                        <div>
+                            <h1>电子商务交易解析</h1>
+                            <p>服务型网络零售额占比及解析<br/>实务型与服务型对比解析<br/>实务型行业网络零售额及占比</p>
+                        </div>
+                    </div>
+                    <div class="sec-box icon3">
+                        <i></i>
+                        <div>
+                            <h1>电子商务零售行业解析</h1>
+                            <p>行业热度指数与电商企业数量对比解析<br/>行业热度指数<br/>服务型行业网络零售额及占比</p>
+                        </div>
+                    </div>
+                    <div class="sec-box icon4">
+                        <i></i>
+                        <div>
+                            <h1>电商企业监控</h1>
+                            <p>电商经济产出指数<br/>新增店铺数<br/>网络交易额及同比增长率</p>
+                        </div>
+                    </div>
+                    <div class="sec-box icon5">
+                        <i></i>
+                        <div>
+                            <h1>综合发展指数</h1>
+                            <p>单店交易指数<br/>网商基础指数<br/>网商密度指数</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">为客户提供电子商务大数据分析结果，数据内容涵盖第一、第二、第三产业，涉及网络零售、B2B大宗等全面交易，覆盖全国各省/各市洲网络交易额、网络零售额、重点电商企业监测、优势行业分析等数十个项目</div>
+            </div>
+            <div class="swiper-slide page11">
+                <span class="bg-repeat-others"></span>
+                <div class="title">优势对比</div>
+                <div class="section">
+                    <button disabled="true" class="img1">
+                        <img src="img/page11/img1-1.png" alt="img1-1"/>
+                        <img src="img/page11/img1-2.png" alt="img1-2"/>
+                    </button>
+                    <button disabled="true" class="img2">
+                        <img src="img/page11/img2-1.png" alt="img2-1"/>
+                        <img src="img/page11/img2-2.png" alt="img2-2"/>
+                    </button>
+                    <button disabled="true" class="img3">
+                        <img src="img/page11/img3-1.png" alt="img3-1"/>
+                        <img src="img/page11/img3-2.png" alt="img3-2"/>
+                    </button>
+                </div>
+            </div>
+            <div class="swiper-slide page12">
+                <span class="bg-repeat-others"></span>
+                <div class="title">产品-映潮指数</div>
+                <div class="footer">映潮指数是以电子版报告形式发送给客户的数据产品分为年报(1月15日提供)，半年报(每年7月15日提供)，季度报告(4月15日、7月15日、10月15日提供)，月度报告(次月15日提供)</div>
+                <div class="section">
+                    <img src="img/page12/desk.png" alt="desk" class="desk">
+                    <img src="img/page12/book.png" alt="book" class="book">
+                    <img src="img/page12/light.png" alt="light" class="light">
+                    <img src="img/page12/more.png" alt="more" class="more">
+                    <img src="img/page12/people.png" alt="people" class="people">
+                </div>
+            </div>
+            <div class="swiper-slide page13">
+                <span class="bg-repeat-others"></span>
+                <div class="title">产品-映潮天玑</div>
+                <div class="footer">映潮天玑是以云计算技术为基础，软件与硬件相结合，可随时将大数据可视化的监控及展示系统。涵盖数据采集、处理，多维度统计、可视化展示等多项功能，其内部由数据采集、平台监控、数据统计等多个模块组成。监测平台数，统计维度，计算方法处于国际领先。</div>
+                <div class="section">
+                    
+                </div>
+            </div>
+            <div class="swiper-slide page14">
+                <span class="bg-repeat-others"></span>
+                <div class="title">应用场景</div>
+            </div>
+            <div class="swiper-slide page15">
+                <span class="bg-repeat-others"></span>
+                <div class="title">最新报告</div>
+            </div>
+        </div>
+        <!-- Add Pagination -->
+        <!-- <div class="swiper-pagination"></div> -->
+        <!-- Add Arrows -->
+        <!-- <div class="swiper-button-next"></div> -->
+        <!-- <div class="swiper-button-prev"></div> -->
+    </div>
+
+    <!-- main JS -->
+    <script src="js/main.min.js"></script>
+</body>
+</html>

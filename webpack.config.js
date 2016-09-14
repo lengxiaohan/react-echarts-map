@@ -11,13 +11,14 @@ jsDir.forEach((file) => {
     entryFiles[fileList[0]] = __dirname + '/TJ-province/public/js/static/' + file;
 });
 // 省域版
-// const urlList = "TJ-province/public/js";
+const urlList = "TJ-province/public/js";
+const urlBuild = "TJ-province/";
 // 县域版
-const urlList = "TJ-county/public/js";
-const urlLess = "TJ-county/public/less";
-const urlCss = "TJ-county/public/css";
+// const urlList = "TJ-county/public/js";
+// const urlLess = "TJ-county/public/less";
+// const urlCss = "TJ-county/public/css";
 const TIME = new Date();
-const fileNamed = "cityRealDataList";
+const fileNamed = "doubleCanvasLine";
 module.exports = {
     // devtool: "source-map", // 便于调试
     entry: urlList + "/static/"+fileNamed+".js",
@@ -29,8 +30,8 @@ module.exports = {
         // publicPath: "TJ-province/public/build/",
         // path: path.join(__dirname, "TJ-province/build"),
 
-        publicPath: "TJ-county/public/build/",
-        path: path.join(__dirname, "TJ-county/build"),
+        publicPath: urlBuild+"public/build/",
+        path: path.join(__dirname, urlBuild+"build"),
         filename: ""+fileNamed+".min.js"
     },
     module: {
@@ -94,22 +95,22 @@ module.exports = {
             'jquery': urlList + "/plus/jquery-2.0.3.js",
             'echarts-all': urlList + "/dist/echarts-all.js",
             'common': urlList + "/static/common/common.js",
-            'canvasCommon': urlList + "/static/canvasCommon.js",
+            'canvasCommon': urlList + "/static/common/canvasCommon.js",
             'echarts-line': urlList + "/static/common/echarts.line.exports.js",
             'echarts-map': urlList + "/static/common/echarts.map.exports.js",
             'ajax-plus': urlList + "/static/common/getViewData.js",
-            'receiveLess': urlLess + "/countyMigrateReceive.less",
-            'issueLess': urlLess + "/countyMigrateIssue.less",
-            'DisSeverLess': urlLess + "/countyDistributionService.less",
-            'BusinessLess': urlLess + "/countyBusinessService.less",
-            'trainingStructure': urlLess + "/trainingStructure.less",
-            'coordinates': urlList + "/static/coordinates.js",
-            'animateCss': urlCss+ "/plus/animate.css",
-            'migrateCommon': urlList + "/static/countyMigrateCommon.js",
-            'trainingStructureDetails': urlLess + "/trainingStructureDetails.less",
-            'chinaRealDataListLess': urlLess + "/chinaRealDataList.less",
-            'cityRealDataListLess': urlLess + "/cityRealDataList.less",
-            'distributionLess': urlLess + "/countryDemandDistribution.less",
+            // 'receiveLess': urlLess + "/countyMigrateReceive.less",
+            // 'issueLess': urlLess + "/countyMigrateIssue.less",
+            // 'DisSeverLess': urlLess + "/countyDistributionService.less",
+            // 'BusinessLess': urlLess + "/countyBusinessService.less",
+            // 'trainingStructure': urlLess + "/trainingStructure.less",
+            // 'coordinates': urlList + "/static/coordinates.js",
+            // 'animateCss': urlCss+ "/plus/animate.css",
+            // 'migrateCommon': urlList + "/static/countyMigrateCommon.js",
+            // 'trainingStructureDetails': urlLess + "/trainingStructureDetails.less",
+            // 'chinaRealDataListLess': urlLess + "/chinaRealDataList.less",
+            // 'cityRealDataListLess': urlLess + "/cityRealDataList.less",
+            // 'distributionLess': urlLess + "/countryDemandDistribution.less",
             'cookie': urlList + "/plus/cookie.js"
         }
     }

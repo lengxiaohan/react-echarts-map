@@ -43,7 +43,7 @@ import "ajax-plus";
 			this.datas = void 0;
 			this.ROTATENUMS = 0; //从逆时针90开始画圆
 			this.DOMLENGTH = 0;
-			this.fillColor = ['#ff3333', '#6600ff', '#0099ff', '#ffcc33', '#ff7800', '#ff3333', '#faa'];
+			this.fillColor = ['#ff7800', '#ffdd00', '#66cc00', '#ff8c27', '#cd6000', '#ff3333', '#faa'];
 			this.canvasAttrBox = []; //存放扇形绘制数据
 			this.canvasDashBox = []; //存放虚线绘制数据
 			this.datas = {
@@ -98,7 +98,8 @@ import "ajax-plus";
 							nums += data.infos[k].numbers;
 							that.datas.max.push({
 								name: data.infos[k].typeName,
-								value: data.infos[k].numbers
+								value: data.infos[k].numbers,
+								desc: k+1
 							})
 						}
 					}
@@ -133,8 +134,8 @@ import "ajax-plus";
 			var RSH = this.c_height / 2;
 			var radius_1 = void 0;
 			var radius_2 = void 0;
-			var central_1 = void 0;
-			var central_2 = void 0;
+			var central_large = void 0;
+			var central_small = void 0;
 			var firstCircle = 0;
 
 			var largeCircleArry = this.datas['max']; //获取大圆中的数据
@@ -146,23 +147,28 @@ import "ajax-plus";
 			var largeTotal = 0; //大圆总数据和
 			var smallTotal = 0; //小圆总数据和
 			var temp = 0; //中介参数
+			var ApplicationObj = {};
 
 			// 大圆半径
 			radius_1 = (RSW / 2) - (RSW / 5);
 			// 小圆半径
-			radius_2 = (RSW / 2) - (RSW / 3.5);
+			// radius_2 = (RSW / 2) - (RSW / 3.5);
 
 			radius_1 = radius_1 <= 0 ? 10 : radius_1 >= RSH ? RSH - 10 : radius_1;
-			radius_2 = radius_2 <= 0 ? 10 : radius_2 >= RSH - 10 ? RSH - 20 : radius_2;
+
+			// 第一版区分大小圆
+			// radius_2 = radius_2 <= 0 ? 10 : radius_2 >= RSH - 10 ? RSH - 20 : radius_2;
+			// 第二版大小圆相等
+			radius_2 = radius_1;
 
 			// 大圆圆心
-			central_1 = {
-				'w': RSW - radius_1,
+			central_large = {
+				'w': RSW - radius_1*1.2,
 				'h': RSH
 			};
 			// 小圆圆心
-			central_2 = {
-				'w': RSW + radius_2 * 2,
+			central_small = {
+				'w': RSW + radius_2*1.2,
 				'h': RSH
 			}
 
@@ -180,6 +186,9 @@ import "ajax-plus";
 			$.each(smallCircleArry, function(i, o) {
 				smallTotal += o['value'];
 				smallArray.push(o['value']);
+				if (smallCircleArry.length-1 == i) {
+					smallArray.push('isNull');
+				}
 			});
 
 			// 此处计算大圆的旋转度数
@@ -191,6 +200,9 @@ import "ajax-plus";
 
 			// 求大圆弧度，求比例，绘制圆弧
 			$.each(largeArray, function(i, o) {
+				console.log(i);
+				console.log(o);
+				console.log(largeCircleArry);
 				var t_sq = 0; //初始化要绘制弧度的结束点（就是结束弧度位置 注：总弧度为360度）
 				var attr = {};
 
@@ -199,9 +211,9 @@ import "ajax-plus";
 
 				largeBox[i] = that.ROTATENUMS + t_sq; //从that.ROTATENUMS点开始绘制，就是加上这个点的位置
 
-				attr.x = central_1.w;
-				attr.y = central_1.h;
-				attr.r = radius_1;
+				attr.x = central_large.w;
+				attr.y = central_large.h;
+				attr.r = largeCircleArry[i].desc == 1 ? radius_1 : largeCircleArry[i].desc == 2 ? radius_1 - radius_1*0.2 : radius_1 - radius_1*0.4;
 				attr.color = that.fillColor[i];
 				attr.end = largeBox[i];
 
@@ -210,6 +222,9 @@ import "ajax-plus";
 					attr.start = largeBox[i - 1];
 				} else {
 					attr.start = that.ROTATENUMS;
+					ApplicationObj['start'] = that.ROTATENUMS;
+					ApplicationObj['end'] = attr.end;
+					ApplicationObj['total'] = attr.end-attr.start;
 				}
 				var starts = attr.start;
 				var ends = attr.end;
@@ -228,6 +243,7 @@ import "ajax-plus";
 
 			});
 
+
 			// 初始化temp，继续绘制小圆
 			temp = 0;
 			// 求小圆弧度，求比例，绘制圆弧
@@ -235,7 +251,8 @@ import "ajax-plus";
 				var t_sq = 0;
 				var length = 0;
 				var attr = {};
-				var ROTATENUMS = -90; // 小圆旋转度数
+				var ROTATENUMS = ApplicationObj['start']; // 小圆旋转度数
+				var totalRotate = ApplicationObj['total']; // 绘制总区域
 
 				// 计算大圆消耗了前几个颜色值
 				for (var k in that.datas['max']) {
@@ -243,15 +260,15 @@ import "ajax-plus";
 				}
 
 				temp += o;
-				t_sq = temp / smallTotal * 360;
+				t_sq = temp / smallTotal * totalRotate;
 
 				smallBox[i] = ROTATENUMS + t_sq;
 
-				attr.x = central_2.w;
-				attr.y = central_2.h;
+				attr.x = central_small.w;
+				attr.y = central_small.h;
 				attr.r = radius_2;
-				attr.color = that.fillColor[i + length];
-				attr.end = smallBox[i];
+				
+				
 
 				if (largeBox[i - 1]) {
 					attr.start = smallBox[i - 1];
@@ -259,10 +276,21 @@ import "ajax-plus";
 					attr.start = ROTATENUMS;
 				}
 
+				that.canvasAttrBox.push(attr);
+
+				if (o === 'isNull') {
+					attr.color = 'rgba(0,0,0,.2)';
+					attr.end = ApplicationObj['start'];
+					return false;
+				}else{
+					attr.color = that.fillColor[i + length];
+					attr.end = smallBox[i];
+				}
+
 				var starts = attr.start;
 				var ends = attr.end;
 				var tempHd = 0;
-				tempHd = i == 0 ? ends - 15 : starts + 15;
+				tempHd = i == 0 ? ends - (ends - starts) / 2 : i == 1 ? ends - starts > 15 ? ends - 15 : ends - (ends - starts) / 2 : ends - starts > 15 ? starts + 15 : ends - (ends - starts) / 2;
 
 				that.canvasFontBox['min'].push({
 					x: attr.x + (attr.r * Math.cos(2 * Math.PI / 360 * tempHd)),
@@ -273,22 +301,20 @@ import "ajax-plus";
 					parentR: attr.r
 				});
 
-				that.canvasAttrBox.push(attr);
-
 			});
 
 			that.canvasDashBox.push({
-				fromX: central_1.w,
-				fromY: central_1.h - radius_1,
-				toX: central_2.w,
-				toY: central_2.h - radius_2,
+				fromX: central_large.w,
+				fromY: central_large.h - radius_1,
+				toX: central_small.w,
+				toY: central_small.h - radius_2,
 				pattern: 5,
 				color: that.fillColor[0]
 			}, {
-				fromX: central_1.w,
-				fromY: central_1.h + radius_1,
-				toX: central_2.w,
-				toY: central_2.h + radius_2,
+				fromX: central_large.w,
+				fromY: central_large.h + radius_1,
+				toX: central_small.w,
+				toY: central_small.h + radius_2,
 				pattern: 5,
 				color: that.fillColor[0]
 			});
@@ -349,7 +375,7 @@ import "ajax-plus";
 			// 清除画布
 			this.clear();
 			// 先绘制曲线
-			this.pushLineShow();
+			// this.pushLineShow();
 			// 再绘制饼图
 			for (var i = 0; i < circleArr.length; i++) {
 				this.setPubCircle(circleArr[i].x, circleArr[i].y, circleArr[i].r, circleArr[i].color, circleArr[i].start, circleArr[i].end);
@@ -373,10 +399,11 @@ import "ajax-plus";
 		setAniCircle: function(x, y, r, color, start, end) {
 			var that = this;
 			var num = start;
+			var FEED = 20;
 			requestAnimationFrame(animate);
 
 			function animate(time) {
-				num += (end - start < 20 ? (end - start) / 5 : 20);
+				num += (end - start < FEED ? (end - start) / 5 : FEED);
 				num >= end ? num = end : '';
 
 				that.ctx.fillStyle = color; //填充当前绘制区域颜色
@@ -386,7 +413,10 @@ import "ajax-plus";
 					cancelAnimationFrame(animate);
 					if (that.DOMLENGTH == 5) {
 						that.addEvent();
-						that.pushCircle();
+						setTimeout(()=>{
+							that.pushCircle();
+						});
+						
 					}
 				} else {
 					requestAnimationFrame(animate);

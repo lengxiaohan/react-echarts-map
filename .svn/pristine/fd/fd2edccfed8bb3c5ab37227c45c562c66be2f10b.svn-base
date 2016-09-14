@@ -46,7 +46,7 @@ $.extend({
 	}
 });
 
-$.onloadJavascript("./js/static/publicCommon.js", false, true);
+$.onloadJavascript("./js/static/common/publicCommon.js", false, true);
 
 export function getJson(areaid) {
 	var value;
