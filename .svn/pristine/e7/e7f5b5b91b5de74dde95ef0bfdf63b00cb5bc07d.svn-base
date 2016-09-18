@@ -56,7 +56,7 @@ var SectionComponent = React.createClass({
 		this._pushListComponent(this.props.data);
 		return (
 			<section>
-				<div id="tableBox" className="table-box">
+				<div className="table-box">
 					<ul className="goodsListHeader">
 						<li className="contentBox-style1">网商名称</li>
 						<li className="contentBox-style2" >归属地</li>
@@ -167,7 +167,7 @@ var Container = React.createClass({
 				"type": type ? type : ''
 			};
 			$.GetAjax($.getCtx() + '/rest/network/page', setData, 'GET', true, function(data, state) {
-				if (state && data.code == 0) {
+				if (state && data.data.rows) {
 					var data = data.data;
 					// 进行数据组装
 					for (let i = 0; i < data.rows.length / PAGEERS; i++) {
@@ -205,12 +205,8 @@ var Container = React.createClass({
 						that._getDatas(nums, type, page);
 						console.log('主人，刚才服务器出了一下小差');
 					}, 2000);
-				} else {
-					setTimeout(function(){
-						$('.onLoading').find('img').remove();
-						$('.onLoading').find('.puffLoading').html(data.desc);
-					},700);
 				}
+
 			});
 
 		} else {

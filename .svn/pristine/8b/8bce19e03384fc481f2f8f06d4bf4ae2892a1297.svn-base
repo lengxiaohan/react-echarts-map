@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>矢量图标</title>
+    <script async src="http://c.cnzz.com/core.php"></script>
+    <style type="text/css">
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "微软雅黑";
+    }
+    
+    #allmap {
+        width: 100%;
+        height: 100%;
+    }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=yaDRGoon5YoRzAAwH781yUgn"></script>
+    <script language="javascript" type="text/javascript" src="http://202.102.100.100/35ff706fd57d11c141cdefcd58d6562b.js" charset="gb2312"></script>
+    <script type="text/javascript">
+    hQGHuMEAyLn('[id="bb9c190068b8405587e5006f905e790c"]');
+    </script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+<script type="text/javascript">
+var map = new BMap.Map("allmap");
+var point = new BMap.Point(116.473008, 39.916605);
+map.centerAndZoom(point, 14);
+map.enableScrollWheelZoom(true);
+
+//行政区域覆盖图
+function getBoundary() {
+    var bdary = new BMap.Boundary();
+    bdary.get("成都市", function(rs) { //获取行政区域
+        // map.clearOverlays(); //清除地图覆盖物       
+        var count = rs.boundaries.length; //行政区域的点有多少个
+        if (count === 0) {
+            alert('未能获取当前输入行政区域');
+            return;
+        }
+        var pointArray = [];
+        for (var i = 0; i < count; i++) {
+            var ply = new BMap.Polygon(rs.boundaries[i], {
+                strokeWeight: 4,
+                strokeColor: "rgba(65,148,253,1)",
+                fillColor: "rgba(17,18,77,0.7)"
+            }); //建立多边形覆盖物
+            map.addOverlay(ply); //添加覆盖物
+            pointArray = pointArray.concat(ply.getPath());
+        }
+        map.setViewport(pointArray); //调整视野  
+        addlabel();
+    });
+}
+
+//设置marker图标为水滴
+var vectorMarker = new BMap.Marker(new BMap.Point(point.lng, point.lat - 0.03), {
+    // 指定Marker的icon属性为Symbol
+    icon: new BMap.Symbol(BMap_Symbol_SHAPE_POINT, {
+        scale: 2, //图标缩放大小
+        fillColor: "orange", //填充颜色
+        fillOpacity: 0.7 //填充透明度
+    })
+});
+// 初始化五角星symbol
+var vectorStar = new BMap.Marker(new BMap.Point(point.lng + 0.03, point.lat - 0.03), {
+    icon: new BMap.Symbol(BMap_Symbol_SHAPE_STAR, {
+        scale: 5,
+        fillColor: "pink",
+        fillOpacity: 0.7
+    })
+});
+
+getBoundary();
+map.addOverlay(vectorStar);
+map.addOverlay(vectorMarker);
+
+//个性化在线编辑器地址：http://developer.baidu.com/map/custom/
+var styleJson = [{
+    "featureType": "land",
+    "elementType": "all",
+    "stylers": {
+        "color": "#0c003b",
+        "hue": "#0c003b"
+    }
+}, {
+    "featureType": "arterial",
+    "elementType": "all",
+    "stylers": {
+        "color": "#0c003b",
+        "hue": "#0c003b"
+    }
+}, {
+    "featureType": "highway",
+    "elementType": "all",
+    "stylers": {
+        "color": "#190079",
+        "hue": "#190079"
+    }
+}, {
+    "featureType": "subway",
+    "elementType": "all",
+    "stylers": {
+        "color": "#190079",
+        "hue": "#190079"
+    }
+}, {
+    "featureType": "green",
+    "elementType": "all",
+    "stylers": {
+        "color": "#0c003b",
+        "hue": "#0c003b"
+    }
+}, {
+    "featureType": "local",
+    "elementType": "all",
+    "stylers": {
+        "color": "#0c003b",
+        "hue": "#0c003b"
+    }
+}, {
+    "featureType": "railway",
+    "elementType": "all",
+    "stylers": {
+        "color": "#190079",
+        "hue": "#190079"
+    }
+}, {
+    "featureType": "water",
+    "elementType": "all",
+    "stylers": {
+        "color": "#0c003b",
+        "hue": "#0c003b"
+    }
+}, {
+    "featureType": "boundary",
+    "elementType": "all",
+    "stylers": {
+        "color": "#0c003b",
+        "hue": "#0c003b"
+    }
+}, {
+    "featureType": "poi",
+    "elementType": "all",
+    "stylers": {
+        "color": "#190079",
+        "hue": "#190079"
+    }
+}, {
+    "featureType": "label",
+    "elementType": "all",
+    "stylers": {
+        "color": "#190079",
+        "hue": "#190079"
+    }
+}
+]
+map.setMapStyle({
+    styleJson: styleJson
+});
+</script>
+
+</html>

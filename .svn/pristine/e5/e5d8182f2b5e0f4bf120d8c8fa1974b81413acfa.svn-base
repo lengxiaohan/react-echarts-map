@@ -1,0 +1,160 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: expressDotDetails.less
+* createTime: 2016/09/14
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 快递物流网点分布详情页css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+.maxBody(@width: 100%, @height: 100%) {
+    width: @width;
+    height: @height;
+}
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	background: rgba(0, 0, 51, 0.7);
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+#con{
+	.maxBody();
+	#content{
+		.maxBody();
+		.header{
+		    .maxBody(100%,6%);
+		    .rel();
+    		.abs();
+			.d-ib();
+			.abs();
+			background: #224980;
+			box-sizing: border-box;
+		    -moz-box-sizing: border-box;
+		    -webkit-box-sizing: border-box;
+			p{
+				.maxBody(100%,100%);
+				text-align: center;
+				span{
+					color:#fff;
+					font-size: 3vh;
+					line-height: 2;
+					&:nth-child(4){
+						color:red;
+					}
+				}
+			}
+		}
+		.nav{
+			.maxBody(100%,9%);
+			.d-ib();
+			.abs();
+			top: 8%;
+			background-image: url(../img/titleBg.png);
+			background-size: auto 100%;
+			box-sizing: border-box;
+		    -moz-box-sizing: border-box;
+		    -webkit-box-sizing: border-box;
+			p{
+				.maxBody(100%,100%);
+				text-align: center;
+				span{
+					color:#fff;
+					font-size: 3vh;
+					line-height: 2.6;
+					&:nth-child(4){
+						color:red;
+					}
+				}
+			}
+		}
+		.con{
+			.maxBody(100%,80%);
+		    .abs();
+		    top: 20%;
+		    .map{
+		    	.maxBody(60%,95%);
+		    	float:left;
+		    	border: 3px solid rgba(40,83,141,1);
+		    	box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+		    }
+		    .count{
+		    	.maxBody(40%,95%);
+		    	float:left;
+		    	.Logistical{
+					.maxBody(90%,50%);
+					margin: 0 auto;
+				    background-image: url(/TJ-province/public/img/topBg.png);
+				    // background-image: url(../img/bgpress.png);
+   					background-size: 100% 100%;
+   					-webkit-box-sizing:border-box;
+					-moz-box-sizing:border-box;
+					box-sizing:border-box;
+   					div{
+   						width: 100%;
+					    height: 50%;
+					    text-align: center;
+					    margin:auto;
+					    -webkit-box-sizing:border-box;
+						-moz-box-sizing:border-box;
+						box-sizing:border-box;
+   						p{
+   							&:nth-child(1){
+								color:#fff;
+   								font-size: 6vh;
+   							}
+   							&:nth-child(2){
+   								color:#fff;
+   								font-size: 5.5vh;
+   							}
+   							span{
+   								color:#5FB618;
+   							}
+   						}
+   					}
+		    	}
+		    	.express{
+					.maxBody(90%,50%);
+					margin: 0 auto;
+					background-image: url(/TJ-province/public/img/topBg.png);
+   					background-size: 100% 100%;
+   					-webkit-box-sizing:border-box;
+					-moz-box-sizing:border-box;
+					box-sizing:border-box;
+   					div{
+   						width: 100%;
+					    height: 50%;
+					    text-align: center;
+					    margin:auto;
+   						p{
+   							&:nth-child(1){
+								color:#fff;
+   								font-size: 6vh;
+   							}
+   							&:nth-child(2){
+   								color:#fff;
+   								font-size: 5.5vh;
+   							}
+   							span{
+   								color:#F0CD61;
+   							}
+   						}
+   					}
+		    	}
+		    }
+		}
+	}
+}

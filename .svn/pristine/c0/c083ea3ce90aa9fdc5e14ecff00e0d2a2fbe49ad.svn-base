@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>快递物流网点分布</title>
+    <script language="javascript" type="text/javascript" src="js/static/common/api" charset="gb2312"></script>
+</head>
+
+<body>
+    <div id="con">
+    </div>
+    <script src="../build/expressDot.min.js"></script>
+</body>
+
+</html> 

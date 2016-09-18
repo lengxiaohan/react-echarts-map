@@ -9,7 +9,7 @@ var option = {
 	areaId: $.getUrlParam('areaId'),
 	canvasId: "myCanvas",
 	titleId: "shortName",
-	setUrl: "/rest/network/getSumByTypes",
+	setUrl: "/rest/ntworkbusiness/getSumByTypes",
 	color: ['#ff7800', '#ffdd00', '#66cc00', '#ff8c27', '#cd6000'],
 	title: {
 		show: true,

@@ -1,0 +1,176 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: expressDotDetails.less
+* createTime: 2016/09/14
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 快递物流网点分布详情页css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+.maxBody(@width: 100%, @height: 100%) {
+    width: @width;
+    height: @height;
+}
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	background: rgba(0, 0, 51, 0.7);
+	border-left: 2px rgba(0, 153, 255, 0.5) solid;
+	border-right: 2px rgba(0, 153, 255, 0.5) solid;
+	border-bottom: 2px rgba(0, 153, 255, 0.5) solid;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+#con{
+	.maxBody();
+	#content{
+		.maxBody();
+		.header{
+		    .maxBody(100%,6%);
+		    .rel();
+    		.abs();
+		    .head-left{
+			    .maxBody(25%,100%);
+			    .fl();
+			    .rel();
+			    margin-top: 1px;
+			    border-top: 1px rgba(0,153,255,0.5) solid;
+		    }
+		    .head-con{
+			    .maxBody(50%,100%);
+			    .fl();
+			    box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+			    .rel();
+			    img{
+				    .maxBody(100%,100%);
+				    .rel();
+				    z-index: 2;
+			    }
+			    p{
+			    	.abs();
+				    top: 0;
+				    .maxBody(100%,100%);
+				    margin: 0 auto;
+				    text-align: center;
+				    z-index: 4;
+				    color: #fff;
+				    font-size: 3.5vh;
+			    }
+		    }
+		    .head-right{
+			    .maxBody(25%,100%);
+			    .fl();
+			    .rel();
+			    margin-top: 1px;
+			    border-top: 1px rgba(0,153,255,0.5) solid;
+		    }
+		}
+		.con{
+			.maxBody(100%,90%);
+		    .abs();
+		    top: 7%;
+			.nav{
+				.maxBody(100%,9%);
+				.d-ib();
+				.abs();
+				background-image: url(../img/titleBg.png);
+    			background-size: auto 100%;
+    			box-sizing: border-box;
+			    -moz-box-sizing: border-box;
+			    -webkit-box-sizing: border-box;
+				p{
+					.maxBody(100%,100%);
+					text-align: center;
+					span{
+						color:#fff;
+						font-size: 3vh;
+    					line-height: 2;
+    					&:nth-child(4){
+    						color:red;
+    					}
+					}
+				}
+			}
+			.list{
+				.maxBody(40%,90%);
+				.abs();
+				top: 10%;
+				.table{
+					.maxBody(100%,100%);
+					.d-flex-v();
+					.abs();
+					.thead{
+						.flex(1);
+						background-image: url(../img/titleBg.png);
+    					background-size: auto 100%;
+					    ul{
+					    	.fl();
+						    .flex(1);
+						    .d-flex-h();
+						    .maxBody(100%,100%);
+						    li{
+							    font-size: 2.61vh;
+							    .flex-vc();
+							    .flex-hc();
+							    .flex(1);
+							    .flex-hc(start);
+							    .d-flex-h();
+							    color: #fff;
+						    }
+					    }
+				    }
+					.tbody{
+						.d-flex-v();
+					    .flex(10);
+					    ul{
+					    	.fl();
+					    	.flex(1);
+					    	.d-flex-h();
+					    	.maxBody(100%,100%);
+						    li{
+							   .flex-vc();
+							   .flex-hc();
+							   .d-flex-h();
+							   .flex(1);
+							    font-size: 1.96vh;
+							    color: #fff;
+							    padding-right: 3.5%;
+							    &:first-child{
+	                                span{
+	                                	background-color: #3e04b1;
+									    border: 0;
+									    border-radius: 2px;
+									    color: #fff;
+									    outline: 0;
+	                                }
+	                            }
+						    }
+					    }
+					    ul:nth-child(odd) {
+						    background-color: #11174E;
+						}
+				    }
+				}
+			}
+			.jsmap{
+				.maxBody(60%,90%);
+				.abs();
+				right: 0;
+				top: 10%;
+			}
+		}
+	}
+}

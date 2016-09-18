@@ -32,7 +32,7 @@
 		 * @param index 传入当前页的第几个
 		 */
 		function skip(index){
-			var tk = $("#tableBox .contentBox").eq(index-1);
+			var tk = $("#plattable .contentBox").eq(index-1);
 			tk.click();
 		};
 

@@ -13,6 +13,7 @@ jsDir.forEach((file) => {
 // 省域版
 const urlList = "TJ-province/public/js";
 const urlBuild = "TJ-province/";
+const urlLess = "TJ-province/public/less";
 // 县域版
 // const urlList = "TJ-county/public/js";
 // const urlLess = "TJ-county/public/less";
@@ -99,6 +100,7 @@ module.exports = {
             'echarts-line': urlList + "/static/common/echarts.line.exports.js",
             'echarts-map': urlList + "/static/common/echarts.map.exports.js",
             'ajax-plus': urlList + "/static/common/getViewData.js",
+            'provinceGoodsLess': urlLess + "/provinceGoodsList.less",
             // 'receiveLess': urlLess + "/countyMigrateReceive.less",
             // 'issueLess': urlLess + "/countyMigrateIssue.less",
             // 'DisSeverLess': urlLess + "/countyDistributionService.less",
