@@ -1,0 +1,209 @@
+/**
+ * Created by zhouxinjian on 2016/9/19.
+ * radarChart is 雷达图自定义控件
+ */
+(function($){
+	let radarChart = {
+		/**
+		 * @name init
+		 * @param 初始化方法
+		 */
+		init(obj){
+			this.callbackObj = obj; // 传递的参数
+			this.canvas = document.getElementById(this.callbackObj.canvasId);
+			this.areaId = this.callbackObj.areaId || $.getUrlParam('areaId');
+			this.WIDTH = $('#'+this.callbackObj.canvasId).width() || $('body').width();
+			this.HEIGHT = $('#'+this.callbackObj.canvasId).height() || $('body').height();
+			this.canvas.width = this.WIDTH;
+			this.canvas.height = this.HEIGHT;
+			this.indicatorName = []; // 雷达图的坐标名称
+			this.indicatorLength = void 0; // 雷达图的坐标个数
+			this.indicatorMoudleDeg = void 0; // 每个坐标所占雷达图的区域范围
+			this.indicatorObject = new Object;  // 雷达图的坐标名称对应各自的位置得坐标的对象
+			this.radarDatarObject = new Object; // 用于标注雷达图得名称和数字对应到各自的坐标
+			if (this.canvas.getContext) {
+				//获取对应的CanvasRenderingContext2D对象(画笔)
+				this.ctx = this.canvas.getContext("2d");
+				this.findCanvasCenter();
+			} else {
+				return false;
+			}
+		},
+		/**
+		 * @name findCanvasCenter
+		 * @param 获取雷达图得中心位置和半径
+		 */
+		findCanvasCenter(){
+			// radarCenter 是获取的雷达图得中心坐标
+			// radarWidth 是获取雷达图得半径
+			this.radarCenter = [
+				this.WIDTH / 2,
+				this.HEIGHT / 2 + this.HEIGHT * 0.05
+			];
+			this.radarWidth = void 0;
+			const PROPORTION = 0.85; //比例值
+			// 高宽判断，来确定当前半径的参考系
+			if (this.WIDTH >= this.HEIGHT) {
+				this.radarWidth = this.HEIGHT * PROPORTION / 2;
+			}else{
+				this.radarWidth = this.WIDTH * PROPORTION / 2;
+			}
+			this.getDatas();
+		},
+		/**
+		 * @name getIndicatorPosition
+		 * @param 获取雷达图得终点坐标
+		 */
+		getIndicatorPosition(){
+			this.indicatorLength = this.indicatorName.length; // 雷达图的坐标个数
+			this.indicatorMoudleDeg = 360 / this.indicatorLength; // 每个坐标所占雷达图的区域范围
+			for (let i = 0; i < this.indicatorLength; i++) {
+				// 雷达图得坐标名称对应得终点坐标
+				this.indicatorObject[this.indicatorName[i]] = [
+					this.radarCenter[0] + (this.radarWidth * Math.cos(2 * Math.PI / 360 * (this.indicatorMoudleDeg*i-90))),
+					this.radarCenter[1] + (this.radarWidth * Math.sin(2 * Math.PI / 360 * (this.indicatorMoudleDeg*i-90)))
+				]
+				// 绘制中心点到雷达图终点坐标得连线
+				this.setCanvasLine(this.radarCenter[0],this.radarCenter[1],this.indicatorObject[this.indicatorName[i]][0],this.indicatorObject[this.indicatorName[i]][1],this.callbackObj.borderColor && this.callbackObj.borderColor);
+			}
+			
+			let totalGriddingNum = 12; // 划分总的多边形数量
+			let totalGridding = this.radarWidth / totalGriddingNum; // 每个多边形得半径
+
+			// 绘制多边形
+			for (let k = 0; k <= totalGriddingNum; k++) {
+				this.getGridding(totalGridding*k);
+			}
+		},
+		/**
+		 * @name getDatas
+		 * @param 获取雷达图得名称所对应得数据
+		 */
+		getDatas(){
+			// 获取得数据
+			console.log($.getCtx() + this.callbackObj.setUrl);
+			$.GetAjax($.getCtx() + this.callbackObj.setUrl, this.callbackObj.setUrlConfig, 'GET', true, (getData, state) => {
+				if (state && getData.code == 0) {
+					this.callbackObj.callbackSetData(getData,(data,listName) => {
+						this.indicatorName = listName; // 雷达图的坐标名称
+						this.getIndicatorPosition();
+						// 数据中的最大值和最小值
+						let MAX = Math.max.apply({},data);
+						let MIN = Math.min.apply({},data);
+						let rangeColor = this.callbackObj.canvasRangeColor && this.callbackObj.canvasRangeColor || ['rgba(17,246,117,1)','rgba(17,246,117,.4)'];
+						// 最大值对应得最大半径
+						let MAXWIDTH = this.radarWidth / 12 * 11;
+						// 每一分所占得基数
+						let TEMP = MAX / MAXWIDTH;
+						let griddingStart = []; // 装载数据对应得不规则多边形对应得坐标
+
+						// 根据对应数据生成不规则多边形得坐标对象
+						for (let i = 0; i < this.indicatorLength; i++) {
+							let firstWidth = data[i] / TEMP;
+							griddingStart.push([
+								this.radarCenter[0] + (firstWidth * Math.cos(2 * Math.PI / 360 * (this.indicatorMoudleDeg*i-90))),
+								this.radarCenter[1] + (firstWidth * Math.sin(2 * Math.PI / 360 * (this.indicatorMoudleDeg*i-90)))
+							]);
+							this.radarDatarObject[this.indicatorName[i]] = data[i] ? [data[i],this.indicatorObject[this.indicatorName[i]][0],this.indicatorObject[this.indicatorName[i]][1]] : [0,this.indicatorObject[this.indicatorName[i]][0],this.indicatorObject[this.indicatorName[i]][1]];
+						}
+						this.setCanvasRange(griddingStart,rangeColor);
+						this.pushFontAddData(this.radarDatarObject,this.radarCenter);
+					});
+				} else if (!state) {
+					setTimeout(() => {
+						this.getDatas();
+						console.log('主人，刚才服务器出了一下小差');
+					}, 2000);
+				} else {
+					setTimeout(() => { 
+						$('.onLoading').find('img').remove();
+						$('.onLoading').find('.puffLoading').html(getData.desc);
+					},700);
+				}
+			});
+		},
+		/**
+		 * @name setCanvasLine
+		 * @param 绘制两点得连线
+		 * @param startX(起始点横坐标) startY(起始点纵坐标) endX(终点横坐标) endY(终点纵坐标) color(线条颜色)
+		 */
+		setCanvasLine(startX,startY,endX,endY,color){
+			this.ctx.save();
+		    this.ctx.beginPath();
+		    this.ctx.moveTo(startX, startY);
+		    this.ctx.lineTo(endX, endY);
+		    this.ctx.strokeStyle = color || "#09f";
+		    this.ctx.stroke();
+		    this.ctx.closePath();
+		    this.ctx.restore();
+		},
+		/**
+		 * @name setCanvasRange
+		 * @param 绘制数据生成得无规则图形
+		 * @param data(数据包) fillColor(填充得颜色)
+		 */
+		setCanvasRange(data,fillColor){
+			let gnt=this.ctx.createRadialGradient(this.radarCenter[0],this.radarCenter[1],this.radarWidth/100,this.radarCenter[0],this.radarCenter[1],this.radarWidth);  // 渐变颜色
+			this.ctx.beginPath();
+		    this.ctx.moveTo(data[0][0], data[0][1]);
+		    for (let i = 1; i < data.length; i++) {
+		    	this.ctx.lineTo(data[i][0], data[i][1]);
+		    }
+            gnt.addColorStop(0, fillColor[0]); //起点
+            gnt.addColorStop(1, fillColor[1]); //终点
+            this.ctx.fillStyle = gnt;
+            this.ctx.fill();
+		},
+		/**
+		 * @name getGridding
+		 * @param 绘制蜘蛛网多边形
+		 * @param lineWidth(对应得半径)
+		 */
+		getGridding(lineWidth){
+			for (let i = 0; i < this.indicatorLength; i++) {
+				let griddingStart = [
+					this.radarCenter[0] + (lineWidth * Math.cos(2 * Math.PI / 360 * (this.indicatorMoudleDeg*i-90))),
+					this.radarCenter[1] + (lineWidth * Math.sin(2 * Math.PI / 360 * (this.indicatorMoudleDeg*i-90)))
+				];
+				let griddingEnd = [
+					this.radarCenter[0] + (lineWidth * Math.cos(2 * Math.PI / 360 * (this.indicatorMoudleDeg*(i+1 >= this.indicatorLength ? 0 : i+1)-90))),
+					this.radarCenter[1] + (lineWidth * Math.sin(2 * Math.PI / 360 * (this.indicatorMoudleDeg*(i+1 >= this.indicatorLength ? 0 : i+1)-90)))
+				];
+				// 绘制蜘蛛网多边形
+				this.setCanvasLine(griddingStart[0],griddingStart[1],griddingEnd[0],griddingEnd[1],this.callbackObj.borderColor && this.callbackObj.borderColor);
+			}
+		},
+		/**
+		 * @name pushFontAddData
+		 * @param 绘制雷达图中得文字
+		 * @param 
+		 */
+		pushFontAddData(radarData,radarCenter){
+			for(let radar in radarData){
+				let fontSize = this.callbackObj.font && this.callbackObj.font['auto'] && this.callbackObj.font['auto'] ? this.HEIGHT * 0.05 : this.callbackObj.font && this.callbackObj.font['fontSize'] && this.callbackObj.font['fontSize'] || this.HEIGHT * 0.05;
+				let fontFamilly = this.callbackObj.font && this.callbackObj.font['fontStyle'] || "微软雅黑";
+
+				fontSize = fontSize > 16 ? 16 : fontSize;
+				let text = radar+" "+radarData[radar][0];
+				//设置字体样式
+				this.ctx.font = fontSize + "px "+fontFamilly;
+				//设置字体填充颜色
+				this.ctx.fillStyle = this.callbackObj.font && this.callbackObj.font['color'] && this.callbackObj.font['color'] == "auto" ? color : this.callbackObj.font && this.callbackObj.font['color'] || "#fff";
+				let textWidth = this.ctx.measureText(text).width;
+				//从坐标点开始绘制文字
+				const temp = 0.12;
+				if ( radarData[radar][1] >= radarCenter[0]) {
+					let [x,y] = [0,0];
+					radarData[radar][2] > radarCenter[1] ? [x,y] = [radarData[radar][1] + textWidth*temp,radarData[radar][2] + textWidth*temp] : [x,y] = [radarData[radar][1] + textWidth*temp,radarData[radar][2] - textWidth*temp];
+					this.ctx.fillText(text, x, y);
+				}else{
+					let [x,y] = [0,0];
+					radarData[radar][2] > radarCenter[1] ? [x,y] = [radarData[radar][1] - textWidth - textWidth*temp,radarData[radar][2] + textWidth*temp] : [x,y] = [radarData[radar][1] - textWidth - textWidth*temp,radarData[radar][2] - textWidth*temp];
+					this.ctx.fillText(text, x, y);
+				}
+				
+			}
+		}
+	};
+	module.exports = radarChart
+})(jQuery)

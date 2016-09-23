@@ -1,34 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<style>
-		html,body{
-			position: relative;
-			width: 100%;
-			height: 100%;
-			margin: 0;
-			padding: 0;
-		}
-
-		#main{
-			position: absolute;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 0;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .chart {
+            height: 500px;
+            width: 800px;
+        }
+    </style>
 </head>
 <body>
-	
-	<div id="main"></div>
+<div id="chart" class="chart"></div>
+<script src="js/dist/echarts-all.js"></script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts图表
+    var myChart = echarts.init(document.getElementById('chart'));
+    var option = {
+        tooltip: {
+            show: true
+        },
+        legend: {
+            data:['销量']
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ],
+        series : [
+            {
+                "name":"销量",
+                "type":"bar",
+                "data":[5, 20, 40, 10, 10, 20]
+            }
+        ]
+    };
 
-	<script src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
-	<script src="js/plus/jquery-3.0.0.min.js"></script>
-	<script src="js/dist/echarts.js"></script>
-	<script src="js/static/test.js"></script>
+    // 为echarts对象加载数据
+    myChart.setOption(option);
+
+    var ecConfig = echarts.config;
+
+    //可以获取有效的数据元素，数据元素属性包含坐标点和长宽（如果页面有变化需要重新获取）
+    var counts = option.series[0].data.length;
+    console.log(counts);
+    setTimeout(function(){
+        autoHover();
+    },2000);
+    
+
+    var zrender = myChart.getZrender();
+    var elements = zrender.storage._elements;
+    function autoHover() {
+        var echartsData = [];
+        var ii = 0;
+        for (var key in elements) {
+            //根据series中的一系列name值对elements进行归类排序，然后在进行hover
+            //过滤条件需要完善
+            if (elements[key]._echartsData) {
+                echartsData.push(key);
+            }
+        }
+        console.log(echartsData);
+        setInterval(function(){
+            start(echartsData[ii]);
+            console.log(ii);
+            ii++;
+            if (ii>=counts) {
+                ii=0;
+            }
+        },1000);
+        
+    }
+    function start(key){
+        var style = elements[key].style;
+        (function (style) {
+            zrender.trigger('mousemove', {
+                zrenderX: Math.ceil(style.x + style.width/2),
+                zrenderY: Math.ceil(style.y + style.height/2)
+            });
+        })(style);
+    }
+</script>
 </body>
 </html>

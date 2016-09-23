@@ -1,0 +1,113 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: ChinaMonitorScatter.less
+* createTime: 2016/09/23
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时散点图
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+html,
+body{
+	.maxBody();
+	.b-sizing();
+	overflow: hidden;
+	background: #000938;
+	#container{
+		.maxBody();
+		// opacity: 0;
+	}
+}
+
+.container{
+	.maxBody();
+	.d-flex-v();
+	.header{
+		margin: auto;
+		width: 98%;
+		background:#ea622f;
+		height:50px;
+		line-height:50px;
+		text-align:center;
+		color:#fff;
+		font-size:1.6rem;
+		font-weight:bold;
+		margin-top:5px;
+		letter-spacing:8px;
+	}
+	section {
+		margin: auto;
+		width: 92%;
+		.d-flex-v();
+		.flex(1);
+		.sec-title {
+			margin: 10px auto;
+			font-size: 0.9em;
+			position: relative;
+			top: 0;
+			color: #aeb6c1;
+			text-align: center;
+			width: 100%;
+			background: url("../img/shis.png") no-repeat;
+			background-size: 100% 100%;
+			height: 40px;
+			span{
+				position: relative;
+				top: 4px;
+				font-weight: bold;
+			}
+			.title {
+				text-align: center;
+				color: #fff;
+				margin-left: 9px;
+				font-size: 1.2em;
+			}
+			.yuan {
+				text-align: center;
+				font-size: 1.4em;
+				color: #fff;
+			}
+			.t_num {
+				color: #ffc000;
+				font-size: 1.3em;
+			}
+		}
+		.sec-map {
+			width: 100%;
+			-webkit-box-flex: 1;
+			-moz-box-flex: 1;
+			-webkit-flex: 1;
+			-ms-flex: 1;
+			flex: 1;
+		}
+	}
+	.legend {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		position: fixed;
+		bottom: 4%;
+		left: 4%;
+		display:none;
+		li {
+			color: #fff;
+			font-size: 0.8em;
+			line-height: 0.1;
+			img {
+				position: relative;
+				top: 5px;
+			}
+		}
+	}
+	.legendShow{
+		display: block;
+	}
+}

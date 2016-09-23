@@ -1,0 +1,27 @@
+import 'common';
+import "canvasCommon";
+import "ajax-plus";
+import doubleCircle from "./doubleCanvasModule.js";
+
+var option = {
+	onLoading: true,
+	loadingClassName: "container",
+	areaId: $.getUrlParam('areaId'),
+	canvasId: "myCanvas",
+	titleId: "shortName",
+	setUrl: "/rest/network/getSumByTypes",
+	color: ['#ff7800', '#66cc00', '#ffdd00', '#C2651C', '#ff7800'],
+	title: {
+		show: true,
+		nameId: "JS_provin_name",
+		numId: "JS_head_num"
+	},
+	font: {
+		auto: false,
+		// fontSize: '10',
+		color: '#fff',
+		fontStyle: "微软雅黑"
+	}
+}
+
+doubleCircle.init(option);

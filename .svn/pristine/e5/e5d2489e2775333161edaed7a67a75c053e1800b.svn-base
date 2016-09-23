@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>网商列表</title>
+<link href="css/ProvinDoubleCanvas.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<p class="head_title"><span id="JS_provin_name"></span>&nbsp;网商数量&nbsp;<span class="head-num" id="JS_head_num">0</span></p>
+		<canvas id="myCanvas" class="myCanvas"></canvas>
+	</div>
+	
+</body>
+<script src="js/static/common/loading.min.js"></script>
+<script src="../build/doubleCanvasLine.min.js"></script>
+<script type="text/javascript">
+	function setType(type){
+		var type = type ? type : '';
+		var areaId = $.getUrlParam('areaId');
+		window.location.href = "provinceGoodsList.html?areaId="+areaId+"&type="+type;
+	}
+</script>
+</html>

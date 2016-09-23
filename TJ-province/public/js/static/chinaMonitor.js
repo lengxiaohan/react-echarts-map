@@ -3,7 +3,7 @@ import {
 } from "common";
 import "echarts-map";
 import "ajax-plus";
-
+import "../../less/ChinaMonitorScatter.less";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
@@ -82,7 +82,6 @@ class SectionComponent extends React.Component {
 						}
 					},
 					borderWidth: 1,
-					borderColor: '#000033',
 					areaStyle: {
 						// 区域图，纵向渐变填充
 						type: 'default',
@@ -90,8 +89,8 @@ class SectionComponent extends React.Component {
 							var zrColor = zrender.tool.color;
 							return zrColor.getLinearGradient(
 								0, 200, 0, 400, [
-									[0, 'rgba(0,102,255,0.4)'],
-									[0.4, 'rgba(0,102,255,0.4)']
+									[0, 'rgba(0,102,255,1)'],
+									[0.4, 'rgba(0,102,255,1)']
 								]
 							)
 						})()
@@ -111,6 +110,35 @@ class SectionComponent extends React.Component {
 			},
 			data: selectData,
 			geoCoord: that.geoCoord()
+		},
+		{
+			name: 'boxShadow',
+			type: 'map',
+			mapType: 'chinaShadow',
+			hoverable: false,
+			roam: false,
+			itemStyle: {
+				normal: {
+					label: {
+						show: false
+					},
+					borderWidth: 1,
+					areaStyle: {
+						// 区域图，纵向渐变填充
+						type: 'default',
+						color: (function() {
+							var zrColor = zrender.tool.color;
+							return zrColor.getLinearGradient(
+								0, 200, 0, 400, [
+									[0, 'rgba(0,0,0,0)'],
+									[0.4, 'rgba(0,0,0,0)']
+								]
+							)
+						})()
+					}
+				}
+			},
+			data: []
 		}];
 
 		for (let i = 0; i < 5; i++) {
@@ -139,9 +167,9 @@ class SectionComponent extends React.Component {
 
 		function callback(ec) {
 			PubSub.publish('showLegend', 'show');
-			that.pushDataSet = setTimeout(function() {
-				that.getJson();
-			}, 3000);
+			// that.pushDataSet = setTimeout(function() {
+			// 	that.getJson();
+			// }, 3000);
 		}
 	}
 	geoCoord() {
@@ -200,32 +228,32 @@ class SectionComponent extends React.Component {
 	}
 }
 
-class LegendComponent extends React.Component {
-	state = {
-		show: 'legend'
-	}
-	componentDidMount() {
-		this.pubsub_token = PubSub.subscribe('showLegend', function(topic, data) {
-			this.setState({
-				show: 'legend legendShow'
-			});
-		}.bind(this));
-	}
-	componentWillUnmount() {
-		PubSub.unsubscribe(this.pubsub_token);
-	}
-	render() {
-		return (
-			<ul className={this.state.show}>
-				<li><img alt="img" src="img/5.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;40000元以上</li>
-				<li><img alt="img" src="img/3.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;30000元~40000元</li>
-				<li><img alt="img" src="img/2.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;16000元~30000元</li>
-				<li><img alt="img" src="img/4.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;4000元~16000元</li>
-				<li><img alt="img" src="img/1.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;4000元以下</li>
-			</ul>
-		)
-	}
-}
+// class LegendComponent extends React.Component {
+// 	state = {
+// 		show: 'legend'
+// 	}
+// 	componentDidMount() {
+// 		this.pubsub_token = PubSub.subscribe('showLegend', function(topic, data) {
+// 			this.setState({
+// 				show: 'legend legendShow'
+// 			});
+// 		}.bind(this));
+// 	}
+// 	componentWillUnmount() {
+// 		PubSub.unsubscribe(this.pubsub_token);
+// 	}
+// 	render() {
+// 		return (
+// 			<ul className={this.state.show}>
+// 				<li><img alt="img" src="img/5.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;40000元以上</li>
+// 				<li><img alt="img" src="img/3.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;30000元~40000元</li>
+// 				<li><img alt="img" src="img/2.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;16000元~30000元</li>
+// 				<li><img alt="img" src="img/4.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;4000元~16000元</li>
+// 				<li><img alt="img" src="img/1.png" width="25" height="25"/>&nbsp;&nbsp;&nbsp;4000元以下</li>
+// 			</ul>
+// 		)
+// 	}
+// }
 
 
 class Container extends React.Component {
@@ -234,10 +262,9 @@ class Container extends React.Component {
 	}
 	render() {
 		return (
-			<div className="container-box">
+			<div className="container">
 	    		<HeaderComponent />
 	    		<SectionComponent />
-	    		<LegendComponent />
 	    	</div>
 		)
 	}

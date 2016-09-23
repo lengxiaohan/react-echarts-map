@@ -18,12 +18,13 @@ const urlLess = "TJ-province/public/less";
 // const urlList = "TJ-county/public/js";
 // const urlLess = "TJ-county/public/less";
 // const urlCss = "TJ-county/public/css";
+// const urlBuild = "TJ-county/";
 const TIME = new Date();
-const fileNamed = "doubleCanvasLine";
+const fileNamed = "chinaMonitor";
 module.exports = {
     // devtool: "source-map", // 便于调试
     entry: urlList + "/static/"+fileNamed+".js",
-    // chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
+    // ProvinceRadarChart ProvinceRadarChartDemand chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
     // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService
     // countyRealtimeOne  countyRealtime countyGoodsList trainingStructure trainingStructureDetails
     // chinaRealDataList cityRealDataList
@@ -94,7 +95,6 @@ module.exports = {
         // 模块别名定义，方便后续直接引用别名
         alias: {
             'jquery': urlList + "/plus/jquery-2.0.3.js",
-            'echarts-all': urlList + "/dist/echarts-all.js",
             'common': urlList + "/static/common/common.js",
             'canvasCommon': urlList + "/static/common/canvasCommon.js",
             'echarts-line': urlList + "/static/common/echarts.line.exports.js",

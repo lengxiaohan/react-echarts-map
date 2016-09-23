@@ -1,0 +1,189 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ省域版
+* fileName: ProvinceGoodsList.less
+* createTime: 2016/09/18
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 省市级网商列表
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+html,
+body{
+	.maxBody();
+	background: #16172C;
+	overflow: hidden;
+}
+
+.container{
+	opacity: 0;
+	.maxBody(99.6%,99.2%);
+	.b-sizing();
+	margin: 0.2%; 
+	border-left: 1px solid #045097;
+	border-right: 1px solid #045097;
+	border-bottom: 1px solid #045097;
+	.content-cp{
+		background: rgba(0, 0, 51, 0.7);
+		.d-flex-v();
+		height: 95%;
+		padding-bottom: 5%;
+		header{
+			@color:rgba(0, 153, 255, 0.5);
+			margin-bottom: 1%; 
+			.maxBody(100%,6%);
+			.head-left {
+				.maxBody(15%,100%);
+				.fl();
+				border-top: 1px @color solid;
+			}
+			.head-right {
+				.maxBody(15%,100%);
+				.fl();
+				border-top: 1px @color solid;
+			}
+			.head-con {
+				.maxBody(70%,100%);
+				.fl();
+				.b-sizing();
+				.rel();
+			}
+			.head-con img {
+				.maxBody();
+				z-index: 2;
+			}
+			.head-con p {
+				.abs();
+				.maxBody();
+				.font-s(3.3vh);
+				.font-fm();
+				.d-flex-h();
+				.flex-hc();
+				.flex-vc();
+				color: #fff;
+				top: 0;
+				z-index: 4;
+			}
+		}
+		section{
+			.d-flex-v();
+			.flex(1);
+			.b-sizing();
+			height: 80%;
+			margin: 1% 2% 0;
+			.table-box{
+				width: 100%;
+				overflow: hidden;
+				.maxBody();
+				.d-flex-v();
+				.flex(1);
+			}
+			.contentBox-style1 {
+				.flex(3);
+			}
+
+			.contentBox-style2 {
+				.flex(2);
+			}
+
+			.contentBox-style3 {
+				.flex(1);
+			}
+			ul.goodsListHeader{
+				.flex(1);
+				.d-flex-h();
+				color: #fff;
+				background-image: url(../img/titleBg.png);
+				background-size: auto 100%;
+				li{
+					.font-fm();
+					font-size: 2.2vh;
+					margin-top: 1.1vh;
+				    margin-left: 3.5%;
+				    display:inline-block;
+				    white-space: nowrap;
+				    overflow: hidden;
+				    text-overflow: ellipsis;
+				}
+				li:after{
+					content:'';
+					display:inline-block;
+					width:0;
+					height:100%;
+					vertical-align:middle;
+				}
+			}
+			.goodsListContent{
+				.flex(15);
+				.d-flex-v();
+				width: 100%;
+				.bc();
+				ul.contentBox{
+					.flex(1);
+					.d-flex-h();
+					color: #C9C9BC;
+					font-size:0;
+					li{
+						.font-fm();
+						font-size: 1.6vh;
+						margin-top: 1.1vh;
+					    margin-left: 3.5%;
+					    display:inline-block;
+					    white-space: nowrap;
+					    overflow: hidden;
+					    text-overflow: ellipsis;
+					}
+					li:after{
+						content:'';
+						display:inline-block;
+						width:0;
+						height:100%;
+						vertical-align:middle;
+					}
+				}
+				ul:nth-child(even) {
+					background-color: #001149;
+				}
+			}
+		}
+		footer{
+			height: 5%;
+			.pager{
+				.maxBody(96%,100%);
+				.bc();
+				.d-flex-h();
+				background-color: #001149;
+				.pager-list{
+					.font-s(1.6vh);
+					.font-fm();
+					.d-flex-h();
+					.flex-hc();
+					.flex-vc();
+					.flex(1);
+					.page{
+						color:#fff;
+					}
+				}
+			}
+			.normalColor{
+				color:rgba(176, 34, 6, 0.2);
+				opacity: 0;
+			}
+			.chooseSelect{
+				color:#fff;
+				opacity: 0;
+			}
+		}
+	}
+}
+.none{
+	display: none;
+}

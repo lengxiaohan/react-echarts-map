@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>农特产品全国经销商经销热力图</title>
+	<script src="js/static/common/loading.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<header id="headerContent"></header>
+		<canvas id="radarMap">
+		您的浏览器不支持canvas标签。
+		</canvas>
+	</div>
+	<script src="../build/ProvinceRadarChart.min.js"></script>
+</body>
+</html>
