@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>网商列表 </title>
+<script src="js/static/common/loading.min.js"></script>
+</head>
+<body>
+	<div id="listContainer" class="container"></div>
+	<script src="../build/provinceGoodsList.min.js"></script>
+	<script>
+		/**
+		 * @param 此处代码为与andriod的交互代码，属于全局代码
+		 * @param next 下一页
+		 * @param pre 上一页
+		 */
+
+		 function next(){
+		 	$('#Js_next_page').click();
+		 }
+
+		 function pre(){
+		 	$('#Js_pre_page').click();
+		 }
+
+		 /**
+		 * android 传入index值进行跳转
+		 * @param index 传入当前页的第几个
+		 */
+		function skip(index){
+			console.log(index);
+			var tk = $("#tableBox .contentBox").eq(index);
+			tk.click();
+		};
+
+		/* 
+		 * 获取数据类型
+		 */
+		function setType(type){
+			sessionStorage.clear();
+			location.href=location.pathname+"?areaId="+$.getUrlParam('areaId')+"&type="+type;
+		};
+	</script>
+</body>
+</html>

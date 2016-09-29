@@ -20,11 +20,11 @@ const urlLess = "TJ-province/public/less";
 // const urlCss = "TJ-county/public/css";
 // const urlBuild = "TJ-county/";
 const TIME = new Date();
-const fileNamed = "chinaMonitor";
+const fileNamed = "provinceGoodsList";
 module.exports = {
     // devtool: "source-map", // 便于调试
     entry: urlList + "/static/"+fileNamed+".js",
-    // ProvinceRadarChart ProvinceRadarChartDemand chinaMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
+    // ProvinceRadarChart ProvinceRadarChartDemand chinaMonitor cityMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
     // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService
     // countyRealtimeOne  countyRealtime countyGoodsList trainingStructure trainingStructureDetails
     // chinaRealDataList cityRealDataList
@@ -50,7 +50,7 @@ module.exports = {
             // {test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?name=[hash].[ext]'},
             {
                 test: /\.(png|jpg)$/,
-                loader: 'url?limit=8192&name=[hash].[ext]'
+                loader: 'url?limit=30000&name=[hash].[ext]'
             }, {
                 test: /\.js?$/,
                 loader: 'babel-loader',
