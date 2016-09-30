@@ -61,6 +61,7 @@ export function splitString(string,start,end) {
 export function getJson(areaid) {
 	var value;
 	var data = $.ajax({
+		// url: $.getCtx() + '/js/chart/geoJson/' + areaid + '.json',
 		url:'../../mapJson/' + areaid + '.json',
 		dataType: 'json',
 		header:{"sig": $.getUrlParam('sig')},

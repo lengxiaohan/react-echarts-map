@@ -20,7 +20,7 @@ const urlLess = "TJ-province/public/less";
 // const urlCss = "TJ-county/public/css";
 // const urlBuild = "TJ-county/";
 const TIME = new Date();
-const fileNamed = "provinceGoodsList";
+const fileNamed = "ProvinSingleDouble";
 module.exports = {
     // devtool: "source-map", // 便于调试
     entry: urlList + "/static/"+fileNamed+".js",

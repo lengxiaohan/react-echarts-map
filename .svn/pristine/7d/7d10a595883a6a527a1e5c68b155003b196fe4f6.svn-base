@@ -1,0 +1,394 @@
+"use strict";
+import {getAreaName,formatPrice,splitString,getAreaCp} from "common";
+import "onlineSaleCountyDis";
+import "echarts-map";
+import "jquery";
+import "ajax-plus";
+import React from 'react';
+import ReactDOM from 'react-dom';
+sessionStorage.clear();
+// 获取区域id
+let areaId = $.getUrlParam('areaId');
+// 获取区域name
+let name = $.getUrlParam('name');
+// 获取区域shortName
+let shortName = $.getUrlParam('shortName');
+
+
+/**
+ * @name HeaderComponent 头部组件
+ * @param _getName 头部信息名称
+ */
+var HeaderComponent = React.createClass({
+    componentDidUpdate:function(){
+        $("#name").html(name);
+    },
+    render: function() {
+        return (
+            <div className="header">
+                <img alt="header" src="./img/onlineSale/titleBg.png"/>
+                <p>
+                    <span id="name"></span>&nbsp;&nbsp;
+                    电子商务经济运行云图
+                </p>
+            </div>
+        )
+    }
+});
+
+/**
+ * @name NavComponent Nav标题组件
+ * @param _getName 列表表头信息
+ * @param componentWillMount 初始化渲染前调用
+ * @param componentWillUpdate 在接收到新的 props 或者 state 之前立刻调用。
+ */
+var NavComponent =React.createClass({
+    componentWillMount:function(){
+         this.setState({
+            data:""
+        });
+    },
+    componentWillUpdate:function(props,state){//在接收到新的 props 或者 state 之前立刻调用。
+        var data=props.data;
+        var time = data.datatime;
+        let areaname = data.areaName;
+        let arr = data.datas ? data.datas : []; //获取数据进行遍历赋值
+        if(!arr.length>0||state.ready){
+            return false;
+        }
+        let sum = 0;
+        for(let i=0; i<arr.length; i++){
+            let data = arr[i].fuwuwgamount + arr[i].shiwuwgamount;
+            sum += data;
+        }
+        let datasum = parseInt(sum*10000*10000);
+        $("#sum").html(formatPrice(datasum))
+        $(".time").html(time);
+        $(".areaname").html(areaname);
+    },
+    render: function() {
+        return (
+            <div className="nav">
+                <p >
+                    <img alt="header" src="./img/onlineSale/navleft.png"/>
+                    <span className="time"></span>&nbsp;&nbsp;
+                    <span className="areaname"></span>&nbsp;&nbsp;网络零售额累计&nbsp;&nbsp;
+                    <span id="sum"></span>元
+                    <img alt="header" src="./img/onlineSale/navright.png"/>
+                </p>
+            </div>
+        )
+    }   
+});
+/**
+ * @name ConComponent 主要内容组件
+ * @param _getName 头部信息名称
+ */
+var MapComponent = React.createClass({
+    componentWillReceiveProps: function(nextProps) {
+        const that = this;
+        this.data = nextProps.data;
+    },
+    TradeData:function(){
+        this.minService = [];
+        this.highService = [];
+        this.middleService = [];
+        this.minEntity = [];
+        this.highEntity = [];
+        this.middleEntity = [];
+    },
+    Data:function(name,value){
+        this.name = name;
+        this.value = value;
+    },
+    getSesstion() {
+        this.__buildShadow();
+        const that = this;
+        let cityMap = {};
+        cityMap[that.data.areaName] = that.data.areaId;
+        let parentName = that.data.areaName;
+        let data = that.data["datas"]?that.data["datas"]:'';
+        if(data && data.length){
+            let serviceArr = [],entityArr = [];//存放服务型、实物型数据数组
+            let dataserviceSum = 0,dataentitySum = 0;//总数
+            let dataserviceMin = data[0].fuwuwgamount,dataentityMin = data[0].shiwuwgamount;//最小值
+            let dataserviceMax = 0,dataentityMax = 0;//最大值
+            for (let i = 0; i < data.length; i++) {
+                let serviceValue = data[i].fuwuwgamount;
+                let entityValue = data[i].shiwuwgamount;
+                dataserviceMin = serviceValue<dataserviceMin ? serviceValue : dataserviceMin;
+                dataentityMin = entityValue<dataentityMin ? entityValue : dataentityMin;
+                dataserviceMax = serviceValue>dataserviceMax ? serviceValue : dataserviceMax;
+                dataentityMax = entityValue>dataentityMax ? entityValue : dataentityMax;
+                dataserviceSum += serviceValue;
+                dataentitySum += entityValue;
+
+                let areaName = data[i].areaName;
+                if(areaName.indexOf("归口") !=-1 || areaName.indexOf("市辖") !=-1 || areaName.indexOf("高新区") !=-1){
+                    console.log(areaName);
+                    continue;
+                }
+
+                serviceArr.push(new this.Data(areaName, serviceValue));
+                entityArr.push(new this.Data(areaName, entityValue));
+            }
+            let serviceobj = [], entityobj = [];
+            serviceobj.push(dataserviceMin);
+            serviceobj.push(dataserviceMax);
+            serviceobj.push(serviceArr);
+
+            entityobj.push(dataentityMin);
+            entityobj.push(dataentityMax);
+            entityobj.push(entityArr);
+            
+            this.getCanvas({
+                name:name,
+                parentName: parentName,
+                serviceobj:serviceobj,
+                entityobj:entityobj
+            });
+        }else{
+            this.getCanvas({
+                name: name,
+                parentName: '',
+                id: dom,
+                serviceobj:'',
+                entityobj:''
+            });
+        };
+    },
+    componentDidUpdate: function() {
+        this.getSesstion();
+    },
+    
+    getCanvas: function(obj) {
+
+        let geoCoord = getAreaCp(obj.parentName);
+        console.log(geoCoord);
+        //初始选中地域
+        let series =[{
+            type: 'map',
+            hoverable: false,
+            roam:false,
+            itemStyle:{
+                normal:{
+                    label:{
+                        show:true,
+                        textStyle:{
+                            color:'rgba(255,255,255,0.5)',
+                            fontSize:($(window).width()/55 > 25 ? 25 : $(window).width()/55)
+                        }
+                    },
+                    borderWidth:1,
+                    borderColor:'rgba(255,255,255,0.5)',
+                    areaStyle: {
+                        // 区域图，纵向渐变填充
+                       type:'default',
+                       color : '#03325e'
+                    }
+                },
+                emphasis:{
+                    label:{
+                        show:true,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize:($(window).width()/55 > 25 ? 25 : $(window).width()/55)
+                        }
+                    },
+                    areaStyle: {
+                        // 区域图，纵向渐变填充
+                       type:'default',
+                       color : '#024b90'
+                    },
+                    borderWidth:1,
+                    borderColor:'rgba(255,255,255,0.5)',
+                    color:'#024b90'
+                }
+            },
+            geoCoord:geoCoord,  
+            data:[
+                {
+                    name:obj.name,
+                    selected:true
+                }
+            ]
+        }];
+        let He = $(window).height()*0.03;//图片最高度
+        let HeMin = He*1/5;//图片最低高度
+        console.log(He+"##"+HeMin);
+        let entity = obj.entityobj;
+        console.log(entity);
+        for(let n =0; n<entity[2].length; n++){
+             let HeImgtwo = entity[2][n].value/entity[1]*He > HeMin ? entity[2][n].value/entity[1]*He : HeMin;
+            if(entity[2][n]){
+                series.push(
+                    {
+                        name: '服务型',
+                        type: 'map',
+                        markPoint: {
+                            color:"#000",
+                            symbol:'image://../public/img/onlineSale/physicalhigh.png',//diamond
+                            symbolSize:[15,HeImgtwo],
+                            symbolPosition: 'bottom',
+                            effect: {
+                                show: false,
+                                shadowBlur: 0
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color:"#FD7701",
+                                    label: {
+                                        show: false,
+                                    }
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false,
+                                    }
+                                }
+                            },
+                            data: [entity[2][n]]
+                        },
+                        data:[]
+                    }
+                );
+            }
+        };
+        let service = obj.serviceobj;
+        let HeImgArr=[];
+        console.log(service);
+        for(let i=0; i<service[2].length; i++){
+            let HeImg = service[2][i].value/service[1]*He > HeMin ? service[2][i].value/service[1]*He : HeMin;
+            HeImgArr.push(HeImg);
+            if(service[2][i]){
+                series.push(
+                    {
+                        name: '服务型',
+                        type: 'map',
+                        markPoint: {
+                            color:"#000",
+                            symbol:'image://../public/img/onlineSale/servicehigh.png',//diamond
+                            symbolSize:[15,HeImg],
+                            symbolPosition: 'bottom',
+                            effect: {
+                                show: false,
+                                shadowBlur: 0
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color:"#FD7701",
+                                    label: {
+                                        show: false,
+                                    }
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false,
+                                    }
+                                }
+                            },
+                            data: [service[2][i]]
+                        },
+                        data:[]
+                    },
+                );
+            }
+        };
+        
+        console.log(series);
+        $("#mainMap").setEchartMap($.mapModule(null, series), {setParent:true});
+    },
+    //创建有发光效果地图背景
+    __buildShadow: function(){
+        let series = [{
+            name: 'boxShadow',
+            type: 'map',
+            boxShadow: true,
+            boxShadowColor: 'rgba(0,153,255,1)',
+            hoverable: false,
+            roam: false,
+            data: []
+        }];
+        $("#mainMapShadow").setEchartMap($.mapModule(null, series), {setParent:true});
+    },
+    render: function() {
+        return (
+            <div className="map">
+                <div id="mainMapShadow"></div>
+                <div id="mainMap"></div>
+            </div>
+            
+        )
+    }
+});
+
+/**
+ * @name LegendComponent 图例组件
+ */
+var LegendComponent = React.createClass({
+    render: function(){
+        return (
+            <div className="legend">
+                <div><img alt="Legend" src="./img/onlineSale/physical.png" className="xinxin"/><label>实物型网络零售</label></div>
+                <div><img alt="Legend" src="./img/onlineSale/service.png" className="xinxin"/><label>服务型网络零售</label></div>
+            </div>
+        )
+    }
+});
+
+var Container = React.createClass({
+    getInitialState: function() {
+        return {
+            data: []
+        };
+    },
+    componentDidMount: function() {//加载数据。当加载成功，将数据存储在 state 中，触发 render 来更新你的 UI。
+        this._getDatas();
+    },
+    _getDatas: function() {//加载数据方法
+        const that = this;
+        let setData = {
+            "areaId": areaId ? areaId : '',
+            dataType:'json',
+            type:'GET',
+            needAll:true
+        };
+        $.GetAjax($.getCtx()+'/rest/totals/getNextTotalsList', setData, 'GET', true, function(data,state) {
+           if (state && data.datas.length>0) {
+                that.setState({
+                    data:data
+                });
+                setTimeout(function(){
+                    $('.onLoading').remove();
+                    $("#con").css("opacity",1);
+                },1000);
+            } else {
+                setTimeout(function() {//数据没有请求成功，就一直请求
+                    that._getDatas();
+                    console.log('主人，刚才服务器出了一下小差');
+                }, 2000);
+                that.setState({
+                    data:''
+                });
+            };
+        });
+    },
+    render: function() {
+        return (
+            <div  id="content">
+                 <HeaderComponent />
+                 <NavComponent data={this.state.data ? this.state.data : []} getDatas={this._getDatas}/>
+                 <MapComponent data={this.state.data ? this.state.data : []}  />
+                 <LegendComponent/>
+            </div>
+        )
+    }
+});
+
+/**
+ * @param 添加整个Container组件到页面
+ */
+ReactDOM.render(
+    <Container />,
+    document.getElementById('con')
+);

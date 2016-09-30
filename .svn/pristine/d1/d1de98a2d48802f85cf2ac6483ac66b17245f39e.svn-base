@@ -1,0 +1,120 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: onlineSaleCountyDistribution.less
+* createTime: 2016/09/27
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 市级网络零售额县域分布页css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	background: rgba(0, 0, 51, 0.7);
+	.b-sizing();
+}
+#con{
+	opacity: 0;
+	.maxBody();
+	#content{
+		.maxBody();
+		.header{
+    		.maxBody(100%,7.5%);
+    		.b-sizing();
+    		.abs();
+    		// overflow: hidden;
+    		img{
+    			z-index: -2;
+    			.maxBody();
+				// margin: 0 0 50% 0;
+    		}
+    		p{
+    			.maxBody();
+    			color: #fff;
+    			text-align: center;
+    			font-size: 3.5vh;
+    			line-height: 2;
+    			z-index: 4;
+    			top: 0;
+    			.abs();
+    		}
+		}
+		.nav{
+			.maxBody(100%,4.5%);
+			.b-sizing();
+			.abs();
+			top: 8.5%;
+			p{
+    			.maxBody();
+    			.b-sizing();
+    			color: #fff;
+    			text-align: center;
+    			font-size: 4vh;
+    			// line-height: 1.3;
+    			top: 0;
+    			#sum{
+    				color:#ffdd00;
+    				.short-size-span{
+    					color:#fff;
+    				}
+    			}
+    			img{
+					.maxBody(auto,100%);
+				}
+    		}
+		}
+		.map{
+			top: 14%;
+		    height: 86%;
+		    width: 90%;
+		    position: absolute;
+		    left: 5%;
+		    #mainMapShadow{
+		    	.maxBody();
+		    	.abs();
+				top: 0;
+				left: 0;
+				z-index: 0;
+		    }
+		    #mainMap{
+		    	.maxBody();
+		    	.abs();
+				top: 0;
+				left: 0;
+				z-index: 1;
+		    }
+		}
+		.legend{
+		    .maxBody(22%,11%);
+		    .abs();
+		    bottom: 6%;
+		    .d-flex-v();
+		    div{
+		    	.d-flex-h();
+		    	.flex();
+		    	img{
+				    .maxBody(auto,100%);
+				    max-width: 10%;
+				    margin: 0 10px 0 0;
+		    	}
+		    	label{
+		    		color: #fff;
+				    .d-flex-h();
+				    .flex();
+				    font-size: 2vh;
+				    .flex-vc();
+				    .flex-hc(start);
+		    	}
+		    }
+		}
+	}
+}

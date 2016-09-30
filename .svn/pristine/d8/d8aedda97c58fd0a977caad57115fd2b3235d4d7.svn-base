@@ -1,0 +1,17 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>市级网络零售额县域分布 </title>
+<script src="js/static/common/loading.min.js"></script>
+</head>
+<body>
+    <div id="con" class="con"></div>
+    <script src="js/static/common/loading.min.js"></script>
+    <script type="text/javascript" src="js/dist/echarts-source.min.js"></script>
+    <script src="../build/onlineSaleCountyDistribution.min.js"></script>
+</body>
+</html>

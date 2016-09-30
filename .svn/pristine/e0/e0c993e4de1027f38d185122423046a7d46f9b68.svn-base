@@ -17530,7 +17530,6 @@ define('echarts/chart/base', ['require', 'zrender/shape/Image', '../util/shape/I
             var height = symbolSize[1];
             // TODO断点（绘制定位图片得实例）
             // symbolPosition参数新增 解决图片以最下方为标准2016-09-29 zhouxinjian
-            // pointUdoMargin为true则上移图片会上移
             var itemShape = new IconShape({
                 style: {
                     iconType: symbol.replace('empty', '').toLowerCase(),
@@ -17543,8 +17542,7 @@ define('echarts/chart/base', ['require', 'zrender/shape/Image', '../util/shape/I
                            ? emptyColor 
                            : (nColor || color),
                     strokeColor: normal.borderColor || nColor || color,
-                    lineWidth: nBorderWidth,
-                    pointUdoMargin: serie['symbolPosition'] && serie['symbolPosition'] === "bottom" ? true : false || false,
+                    lineWidth: nBorderWidth
                 },
                 highlightStyle: {
                     color: symbol.match('empty') 
@@ -24277,6 +24275,7 @@ define('zrender/shape/Image', ['require', './Base', '../tool/util'], function (r
                     );
 
                 }
+                
                 var image = style.image;
                 var self = this;
 
@@ -24357,9 +24356,7 @@ define('zrender/shape/Image', ['require', './Base', '../tool/util'], function (r
                         // console.log('width:'+width);
                         // console.log('height:'+height);
                         // console.log('****************************');
-                        // 2016-9-29新增参数pointUdoMargin为true则上移12px否则不变
-                        style.pointUdoMargin ? y-=12 : '';
-                        ctx.drawImage(image, x, y, width, height);
+                        ctx.drawImage(image, x, y-12, width, height);
                     }
                     // 如果没设置宽和高的话自动根据图片宽高设置
                     if (!style.width) {
