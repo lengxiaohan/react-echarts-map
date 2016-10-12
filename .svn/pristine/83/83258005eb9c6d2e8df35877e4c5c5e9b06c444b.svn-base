@@ -1,0 +1,536 @@
+"use strict";
+import {getAreaName,addPlaceHolder,splitString} from "common";
+import "expressDot";
+import "jquery";
+import "ajax-plus";
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+// 获取区域id
+let areaId = $.getUrlParam('areaId');
+// 获取区域name
+let name = $.getUrlParam('name');
+// 获取区域shortName
+let shortName = $.getUrlParam('shortName');
+
+/**
+ * @name HeaderComponent 头部组件
+ * @param _getName 头部信息名称
+ */
+var HeaderComponent = React.createClass({
+    componentWillMount:function(){
+         this.setState({
+            data:""
+        });
+    },
+    componentWillUpdate:function(props,state){//在接收到新的 props 或者 state 之前立刻调用。
+        var data=props.data.data;
+        let arr = data.sum ? data.sum : []; //获取数据进行遍历赋值
+        if(!arr.length>0||state.ready){
+            return false;
+        }
+        let datatime = arr[0].datatime.toString();
+        let year = splitString(datatime,0,4);
+        let types= arr[0].name + arr[1].name;
+        $("#year").html(year);
+        $("#types").html(types);
+    },
+    componentDidUpdate:function(){
+        $("#name").html(name);
+    },
+    render: function() {
+        return (
+            <div className="header">
+                <p>
+                    <span id="name"></span>&nbsp;&nbsp;
+                    <span id="year"></span>年&nbsp;&nbsp;
+                    <span id="types"></span>网点分布
+                </p>
+            </div>
+        )
+    }
+});
+
+/**
+ * @name NavComponent Nav标题组件
+ * @param _getName 列表表头信息
+ * @param componentWillMount 初始化渲染前调用
+ * @param componentWillUpdate 在接收到新的 props 或者 state 之前立刻调用。
+ */
+var NavComponent =React.createClass({
+    componentWillMount:function(){
+         this.setState({
+            data:""
+        });
+    },
+    componentWillUpdate:function(props,state){//在接收到新的 props 或者 state 之前立刻调用。
+        var data=props.data.data;
+        let arr = data.sum ? data.sum : []; //获取数据进行遍历赋值
+        if(!arr.length>0||state.ready){
+            return false;
+        }
+        let datatime = arr[0].datatime.toString();
+        let year = splitString(datatime,0,4);
+        let month = addPlaceHolder(splitString(datatime,4,6));
+        let types= arr[0].name + arr[1].name;
+        let sum = arr[0].num + arr[1].num;
+        $(".year").html(year);
+        $(".types").html(types);
+        $("#sum").html(sum);
+    },
+    componentDidUpdate:function(){
+        $(".name").html(name);
+    },
+    render: function() {
+        return (
+            <div className="nav">
+                <p >
+                    <span className="name"></span>&nbsp;&nbsp;
+                    <span className="year"></span>年&nbsp;&nbsp;
+                    <span className="types"></span>网点总数&nbsp;&nbsp;
+                    <span id="sum"></span>
+                </p>
+            </div>
+        )
+    }
+});
+/**
+ * @name ConComponent 主要内容组件
+ * @param _getName 头部信息名称
+ */
+var ConComponent = React.createClass({
+    render: function() {
+        return (
+            <div className="con">
+                <LeftMapComponent data={this.props.data}/>
+                <RightCountComponent data={this.props.data}/>
+            </div>
+        )
+    }
+});
+
+/**
+ * @name LeftMapComponent 左边地图组件
+ * @param _getName 头部信息名称
+ */
+var LeftMapComponent = React.createClass({
+    componentWillReceiveProps: function(nextProps) {//在接收到新的 props 或者 state 之前立刻调用。
+        const that = this;
+        this.data = nextProps.data?nextProps.data:'';
+    },
+    getInit:function(){
+        const that = this;
+        let dom = that.refs['map'];//findDOMNode从组件获取真实 DOM 的节点
+        let arr = that.data.data ? that.data.data.list : []; //获取数据进行遍历赋值
+        let markerLog = [],markerExp = [],Other = [];
+        if(arr && arr.length>0){
+            for(let i= 0; i<arr.length; i++){
+                let lng,lat;
+                if(arr[i].datatype == "物流"){
+                    lng = arr[i].lng;
+                    lat = arr[i].lat;
+                    let logist = [arr[i].branchAddress,lng,lat ];
+                    markerLog.push(logist,logist);
+                }else if(arr[i].datatype == "快递"){
+                    lng = arr[i].lng;
+                    lat = arr[i].lat;
+                    let express = [arr[i].branchAddress,lng,lat ];
+                    markerExp.push(express);
+                }else{
+                    lng = arr[i].lng;
+                    lat = arr[i].lat;
+                    let other = [arr[i].branchAddress,lng,lat ];
+                    Other.push(other);
+                }
+                
+            }
+            this.getCanvas({
+                // data: that.data.infos,
+                id: dom,
+                markerLog:markerLog,
+                markerExp:markerExp,
+                Other:Other
+            });
+        }else{
+            this.getCanvas({
+                // data:'',
+                id: dom,
+                markerLog:'',
+                markerExp:'',
+                Other:''
+            });
+        }
+    },  
+    getCanvas:function(obj) {
+        // var map = new BMap.Map("map");
+        var map = new BMap.Map(obj.id);
+        var point = new BMap.Point(103.9526, 30.7617);
+        map.centerAndZoom(point, 15);//标注中心点
+        map.enableScrollWheelZoom(true);//鼠标缩放
+        
+        //地图样式设置
+        var styleJson = [{
+        "featureType": "background",
+        "elementType": "all",
+        "stylers": {}
+    }, {
+        "featureType": "land",
+        "elementType": "all",
+        "stylers": {
+            "color": "#0c003b",
+            "hue": "#0c003b"
+        }
+    }, {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": {
+            "color": "#0c003b",
+            "hue": "#0c003b"
+        }
+    }, {
+        "featureType": "green",
+        "elementType": "all",
+        "stylers": {
+            "color": "#000368",
+            "hue": "#000368",
+            "weight": "1.5",
+            "visibility": "off"
+        }
+    }, {
+        "featureType": "manmade",
+        "elementType": "all",
+        "stylers": {
+            "color": "#000000",
+            "hue": "#000000"
+        }
+    }, {
+        "featureType": "building",
+        "elementType": "all",
+        "stylers": {
+            "color": "#000000",
+            "hue": "#000000"
+        }
+    }, {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": {
+            "color": "#190079",
+            "hue": "#190079"
+        }
+    }, {
+        "featureType": "poi",
+        "elementType": "labels.icon",
+        "stylers": {
+            "color": "#bb2b2b",
+            "hue": "#c32f2f",
+            "visibility": "off"
+        }
+    }, {
+        "featureType": "highway",
+        "elementType": "all",
+        "stylers": {
+            "color": "#000368",
+            "hue": "#000368",
+            "visibility": "off"
+        }
+    },
+    [{
+        "featureType": "poi",
+        "elementType": "labels.icon",
+        "stylers": {
+            "color": "#bb2b2b",
+            "hue": "#c32f2f",
+            "visibility": "off"
+        }
+    }, {
+        "featureType": "arterial",
+        "elementType": "all",
+        "stylers": {
+            "color": "#000368",
+            "hue": "#000368",
+            "weight": "1.5",
+            "visibility": "on"
+        }
+    }], {
+        "featureType": "local",
+        "elementType": "all",
+        "stylers": {
+            "color": "#0c003b",
+            "hue": "#0c003b"
+        }
+    },
+    [{
+        "featureType": "poi",
+        "elementType": "labels.icon",
+        "stylers": {
+            "color": "#bb2b2b",
+            "hue": "#c32f2f",
+            "visibility": "off"
+        }
+    }, {
+        "featureType": "railway",
+        "elementType": "all",
+        "stylers": {
+            "color": "#000368",
+            "hue": "#000368",
+            "weight": "1.5",
+            "visibility": "on"
+        }
+    }], {
+        "featureType": "subway",
+        "elementType": "all",
+        "stylers": {
+            "color": "#190079",
+            "hue": "#190079"
+        }
+    },
+    [{
+        "featureType": "poi",
+        "elementType": "labels.icon",
+        "stylers": {
+            "color": "#bb2b2b",
+            "hue": "#c32f2f",
+            "visibility": "off"
+        }
+    }, {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": {
+            "color": "#000368",
+            "hue": "#000368",
+            "weight": "1.5",
+            "visibility": "off"
+        }
+    }], {
+        "featureType": "poi",
+        "elementType": "labels.text.fill",
+        "stylers": {
+            "color": "#000368",
+            "hue": "#000368",
+            "weight": "3.5",
+            "visibility": "on"
+        }
+    }, {
+        "featureType": "poi",
+        "elementType": "labels.text.stroke",
+        "stylers": {
+            "color": "#000368",
+            "hue": "#000368",
+            "weight": "3.5",
+            "visibility": "on"
+        }
+    }, {
+        "featureType": "administrative",
+        "elementType": "all",
+        "stylers": {
+            "color": "#0c003b",
+            "hue": "#0c003b",
+            "visibility": "off"
+        }
+    }, {
+        "featureType": "boundary",
+        "elementType": "all",
+        "stylers": {
+            "color": "#0c003b",
+            "hue": "#0c003b"
+        }
+    },
+    [{
+        "featureType": "poi",
+        "elementType": "labels.icon",
+        "stylers": {
+            "color": "#bb2b2b",
+            "hue": "#c32f2f",
+            "visibility": "off"
+        }
+    }, {
+        "featureType": "label",
+        "elementType": "labels.icon",
+        "stylers": {
+            "color": "#000368",
+            "hue": "#000368",
+            "weight": "1.5",
+            "visibility": "off"
+        }
+    }]
+        ]
+        map.setMapStyle({
+            styleJson: styleJson
+        });
+        //行政区域覆盖图
+        function getBoundary() {
+            let bdary = new BMap.Boundary();
+            bdary.get( (name).toString() , function(rs) { //获取行政区域
+                // map.clearOverlays(); //清除地图覆盖物       
+                let count = rs.boundaries.length; //行政区域的点有多少个
+                if (count === 0) {
+                    alert('未能获取当前输入行政区域');
+                    return;
+                }
+                let pointArray = [];
+                for (let i = 0; i < count; i++) {
+                    let ply = new BMap.Polygon(rs.boundaries[i], {
+                        strokeWeight: 4,
+                        strokeColor: "rgba(0,153,255,1)",
+                        fillColor: "rgba(0,153,255,0.2)"
+                    }); //建立多边形覆盖物
+                    map.addOverlay(ply); //添加覆盖物
+                    pointArray = pointArray.concat(ply.getPath());
+                }
+                map.setViewport(pointArray); //调整视野  
+                // addlabel();
+            });
+        }; 
+        let markerLog = obj.markerLog;
+        let markerExp = obj.markerExp;
+        // 添加物流标注方法
+        function PointLog(point, index) {  
+            let Logistical = new BMap.Icon("img/logisticalSmall.png",  //物流
+                new BMap.Size(7, 7), {  
+                    // 指定定位位置
+                    offset: new BMap.Size(10, 25),  
+                    // 当需要从一幅较大的图片中截取某部分作为标注图标时，需要指定大图的偏移位置   
+                    // imageOffset: new BMap.Size(0, 0 - index * 25)  // 设置图片偏移  
+                });  
+            let markerLogistical = new BMap.Marker(point, { icon: Logistical });  
+            map.addOverlay(markerLogistical); 
+            return markerLogistical;  
+        };
+         // 添加快递标注方法
+        function PointExp(point, index) {  
+            let express = new BMap.Icon("img/expressSmall.png",  //快递
+                new BMap.Size(7, 7), {  
+                    // 指定定位位置
+                    offset: new BMap.Size(10, 25),  
+                    // 当需要从一幅较大的图片中截取某部分作为标注图标时，需要指定大图的偏移位置   
+                    // imageOffset: new BMap.Size(0, 0 - index * 25)  // 设置图片偏移  
+                });  
+            let markerExpress = new BMap.Marker(point, { icon: express });  
+            map.addOverlay(markerExpress); 
+            return markerExpress;  
+        };
+        getBoundary();
+        //执行行政区域覆盖图和添加标注方法
+        for (let i = 0; i < markerLog.length; i++) {
+            let p0 = markerLog[i][1];  
+            let p1 = markerLog[i][2];  
+            let maker = PointLog(new window.BMap.Point(p0, p1), i);  
+        };
+        for (let i = 0; i < markerExp.length; i++) {  
+            let p0 = markerExp[i][1];  
+            let p1 = markerExp[i][2];  
+            let maker = PointExp(new window.BMap.Point(p0, p1), i);  
+        };
+    },
+    componentDidUpdate: function() {
+        this.getInit();
+    },
+    render: function() {
+        return (
+            <div className="map" ref="map">
+            </div>
+        )
+    }
+});
+
+/**
+ * @name RightCountComponent 左边地图组件
+ * @param _getName 头部信息名称
+ */
+var RightCountComponent = React.createClass({
+    componentWillMount:function(){
+         this.setState({
+            data:""
+        });
+    },
+    componentWillUpdate:function(props,state){//在接收到新的 props 或者 state 之前立刻调用。
+        var data=props.data.data;
+        let arr = data.sum ? data.sum : []; //获取数据进行遍历赋值
+        if(!arr.length>0||state.ready){
+            return false;
+        }
+        let logname = arr[0].name;
+        let expname = arr[1].name;
+        let logsum = arr[0].num;
+        let expsum = arr[1].num;
+        $("#Logistical").html(logname);
+        $("#express").html(expname);
+        $(".LogisticalSum").html(logsum);
+        $(".expressSum").html(expsum);
+    },  
+    render: function() {
+        return (
+            <div className="count">
+                <div className="Logistical">
+                    <div>
+                        <p><span id="Logistical"></span>网点数</p>
+                        <p><span className="LogisticalSum"></span>个</p>
+                    </div>
+                </div>
+                <div className="express">
+                     <div>
+                        <p><span id="express"></span>网点数</p>
+                        <p><span className="expressSum"></span>个</p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+});
+
+
+var Container = React.createClass({
+    getInitialState: function() {
+        return {
+            data: []
+        };
+    },
+    componentDidMount: function() {//加载数据。当加载成功，将数据存储在 state 中，触发 render 来更新你的 UI。
+        this._getDatas();
+    },
+    _getDatas: function() {//加载数据方法
+        const that = this;
+        let setData = {
+            "areaId": areaId ? areaId : '',
+            dataType:'json',
+            type:'GET',
+            needAll:true
+        };
+        $.GetAjax($.getCtx()+'/rest/logistics/sumsandlist', setData, 'GET', true, function(data,state) {
+           if (state && data.data.list.length>0) {
+                that.setState({
+                    data:data
+                });
+                setTimeout(function(){
+                    $('.onLoading').remove();
+                    $("#con").css("opacity",1);
+                },1000);
+            } else {
+                setTimeout(function() {//数据没有请求成功，就一直请求
+                    that._getDatas();
+                    console.log('主人，刚才服务器出了一下小差');
+                }, 2000);
+                that.setState({
+                    data:''
+                });
+            };
+        });
+    },
+    render: function() {
+        return (
+            <div  id="content">
+                 <HeaderComponent data={this.state.data ? this.state.data : []} getDatas={this._getDatas}/>
+                 <NavComponent data={this.state.data ? this.state.data : []} />
+                 <ConComponent data={this.state.data ? this.state.data : []}  />
+            </div>
+        )
+    }
+});
+
+/**
+ * @param 添加整个Container组件到页面
+ */
+ReactDOM.render(
+    <Container />,
+    document.getElementById('con')
+);

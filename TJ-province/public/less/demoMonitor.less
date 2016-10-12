@@ -1,0 +1,183 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0县域版
+* fileName: chinaRealDataList.css
+* createTime: 2016/06/30
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时采集监控
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+html,
+body{
+	.maxBody();
+	background: rgba(0,0,51,.7);
+	overflow: hidden;
+}
+
+.container{
+	.maxBody();
+}
+
+.container-cp{
+	.maxBody();
+
+	header{
+		.maxBody(100%,7%);
+		.head-left {
+			.maxBody(15%,100%);
+			.fl();
+		}
+		.head-right {
+			.maxBody(15%,100%);
+			.fl();
+		}
+		.head-con {
+			.maxBody(70%,100%);
+			.fl();
+			.b-sizing();
+			.rel();
+		}
+		.head-con img {
+			.maxBody();
+			z-index: 2;
+		}
+		.head-con p {
+			.abs();
+			.maxBody(100%,80%);
+			.font-s(3.4vh);
+			.font-fm();
+			.d-flex-h();
+			.flex-hc();
+			.flex-vc();
+			color: #fff;
+			top: 0;
+			z-index: 4;
+		}
+	}
+
+	section{
+		.maxBody(100%,91%);
+		opacity: 0;
+
+		.map-box{
+			.maxBody(56%,94%);
+			position: relative;
+			.fl();
+			.b-sizing();
+			margin: 3% 2%;
+			border: 1px solid rgba(0, 153, 255, 0.498039);
+			.map-show{
+				height: 95%;
+			}
+			.map-msg-box{
+				position: relative;
+				height: 5%;
+				.d-flex-h();
+				border-top: 1px solid rgba(0, 153, 255, 0.498039);
+				li{
+					.flex(1);
+					.font-fm();
+					.d-flex-h();
+					.flex-vc();
+					.flex-hc();
+					height: 100%;
+					font-size: 0.7vw;
+					color: #fff;
+					img{
+						height: 80%;
+					}
+				}
+				
+			}
+		}
+
+		.list-box{
+			.maxBody(40%,97%);
+			margin-top: 3%;
+			.fl();
+			.d-flex-v();
+			.list-title{
+				color: #fff;
+				.font-fm();
+				font-size: 3.4vh;
+				line-height: 3.4vh;
+				text-align: center;
+			}
+
+			.pushAnimateNum{
+				color: #fc3;
+				font-size: 5.4vh;
+				margin: 5% 0;
+				height: 5.4%;
+				line-height: 5.4vh;
+				.font-fm();
+				.short-size-span{
+					color: #fff;
+					font-size: 2.8vh;
+					margin: 0 3px;
+					.font-fm();
+				}
+				text-align: center;
+			}
+			.pushListBox{
+				margin: 0;
+				.d-flex-v();
+				margin-bottom: 5%;
+  				margin-right: 5%;
+				height: 78%;
+  				li{
+					.maxBody(100%,10%);
+					.d-flex-h();
+					.flex-vc();
+  					background: none;
+
+  					&:nth-child(odd){
+  						background: rgba(0,153,255,.1);
+  					}
+
+  					p{
+  						text-align: center;
+						.d-flex-h();
+						.flex(2);
+						.flex-vc();
+						.font-fm();
+						.b-sizing();
+						padding: 0 3%;
+						color: #fff;
+						font-size: 2.5vh;
+						.txt-overflowed();
+						.flex-hc();
+    					&.listFlex1{
+	  						.flex(1);
+	  					}
+
+	  					&.listFlex2{
+	  						.flex(2);
+	  						color: #ffc;
+	  					}
+
+	  					&:nth-child(2){
+	  						.flex-hc(flex-start);
+	  					}
+
+	  					&:nth-child(3){
+	  						.flex-hc(flex-end);
+	  					}
+
+  					}
+
+  				}
+			}
+		}
+		
+	}
+}

@@ -1,0 +1,222 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: ProvinSaleDistribution.css
+* createTime: 2016/09/13
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 农特产品全国经销商经销热力图详情页css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+.maxBody(@width: 100%, @height: 100%) {
+    width: @width;
+    height: @height;
+}
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	overflow: hidden;
+}
+#con{
+	.maxBody();
+	#content{
+		.maxBody();
+		.header{
+		    .maxBody(100%,6%);
+		    .rel();
+		    .head-left{
+			    .maxBody(25%,100%);
+			    .fl();
+			    .rel();
+			    margin-top: 1px;
+			    border-top: 1px rgba(0,153,255,0.5) solid;
+		    }
+		    .head-con{
+			    .maxBody(50%,100%);
+			    .fl();
+			    .b-sizing();
+			    .rel();
+			    img{
+				    .maxBody(100%,100%);
+				    .rel();
+				    z-index: 2;
+			    }
+			    p{
+			    	.abs();
+				    top: 0;
+				    .maxBody(100%,100%);
+				    margin: 0 auto;
+				    text-align: center;
+				    z-index: 4;
+				    color: #fff;
+				    font-size: 3.5vh;
+			    }
+		    }
+		    .head-right{
+			    .maxBody(25%,100%);
+			    .fl();
+			    .rel();
+			    margin-top: 1px;
+			    border-top: 1px rgba(0,153,255,0.5) solid;
+		    }
+		}
+		.con{
+		    .maxBody(100%,75%);
+		    .abs();
+		    top: 15%;
+		    .list{
+			    .maxBody(25%,80%);
+			    .fl();
+			    .abs();
+			    top: 10%;
+			    left: 8.4%;
+			    clear: both;
+			    margin-right: 5%;
+			    .table{
+			    	.abs();
+				    .maxBody(100%,100%);
+				    .d-flex-v();
+				    .thead{
+					    .d-flex-v();
+					    .flex(1);
+					    background-image: url(../img/titleBg.png);
+						background-size: auto 100%;
+					    ul{
+					    	.fl();
+					    	.flex(1);
+						    .d-flex-h();
+						    li{
+							    font-size: 2.4vh;
+							   .flex-vc();
+							   .flex-hc();
+							   .d-flex-h();
+							    color: #fff;
+							    &:nth-child(1){
+							   	 	.flex(3.3);
+							   	 	.flex-hc();
+							    }
+							    &:nth-child(2){
+							   	 	.flex(8.3);
+							   	 	.flex-hc();
+							    }
+							    &:nth-child(3){
+							   	 	.flex(7);
+							   	 	.flex-hc(flex-end);
+							   	 	margin-right: 1.7%;
+							    }
+						    }
+					    }
+				    }
+				    .tbody{
+						.d-flex-v();
+					    .flex(10);
+					    ul{
+					    	.fl();
+					    	.flex(1);
+					    	.d-flex-h();
+						    li{
+							   .flex-vc();
+							   .d-flex-h();
+							    font-size: 2.4vh;
+							    color: #fff;
+							    margin-left:1.7%;
+	                            &:nth-child(1){
+							   	 	.flex(3.3);
+							   	 	.flex-hc();
+							    }
+							    &:nth-child(2){
+							   	 	.flex(8.3);
+							   	 	.flex-hc();
+							   	 	color: #ffffcc;
+							    }
+							    &:nth-child(3){
+							   	 	.flex(7);
+							   	 	.flex-hc(flex-end);
+							   	 	margin-right: 1.7%;
+							   	 	color: #ffffcc;
+							    }
+						    }
+						    .data01{
+						    	color:#ff3333;
+						    }
+						    .data02{
+						    	color:#ff7800;
+						    }
+						    .data03{
+						    	color:#ffdd00;
+						    }
+						    
+					    }
+					    ul:nth-child(even) {
+						    background-color: rgba(0,153,255,0.1);
+						}
+				    }
+			    }
+		    }
+		    .saleDis{
+			    .abs();
+			    .maxBody(auto,6%);
+			    left: 40%;
+			    bottom: 10%;
+			    .d-flex-h();
+			    img{
+				    .maxBody(auto,100%);
+				    margin: 0 10px 0 0;
+			    }
+				p{
+					color: #fff;
+				    .d-flex-h();
+				    .flex();
+				    font-size: 2vh;
+				    .flex-vc();
+				    .flex-hc();
+				}
+		    }
+		    .legend{
+		    	.maxBody(auto,6%);
+			    .abs();
+			    left: 40%;
+			    bottom: 10%;
+			    .d-flex-h();
+			    .flex();
+			    div{
+			    	.d-flex-h();
+				    .flex();
+				    color: #fff;
+				    font-size: 2vh;
+				    .flex-hc();
+				    .flex-vc();
+				    &:nth-child(1){
+				    	.flex(2);
+				    }
+				    img{
+					    .maxBody(auto,100%);
+				    }
+				    label{
+				    	color: #fff;
+				    	.d-flex-h();
+					    .flex();
+					    font-size: 2vh;
+					    .flex-hc();
+					    .flex-vc();
+				    }
+			    }
+		    }
+		    .jsmap{
+     			.fl();
+     			.abs();
+     			.maxBody(52%,100%);
+     			right: 8.4%;
+		    }
+		}
+	}
+}
