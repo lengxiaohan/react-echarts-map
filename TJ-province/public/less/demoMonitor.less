@@ -77,6 +77,15 @@ body{
 			border: 1px solid rgba(0, 153, 255, 0.498039);
 			.map-show{
 				height: 95%;
+				position: relative;
+				z-index: 99;
+			}
+			.map-show-bg{
+				position: absolute;
+				top: 0;
+				left: 0;
+				.maxBody(100%,95%);
+				z-index: 0;
 			}
 			.map-msg-box{
 				position: relative;

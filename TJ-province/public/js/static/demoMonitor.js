@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import { Router,Route,Link,createHistory} from "react-router";
 
 const autoTime = 5000;
+let _setTimeState = void 0;
 var HeaderComponent = React.createClass({
 	componentDidMount: function () {
 		var windowWidth = $(window).height()*0.003;
@@ -76,7 +77,14 @@ var SectionComponent = React.createClass({
 		this.setState({
 			status: true
 		});
-		setTimeout(() => {
+		let dom = ReactDOM.findDOMNode(this.refs.JsMap);
+		this.getCanvas({
+			data: this.data,
+			id: dom,
+			size: $(window).height()*0.035
+		});
+		clearTimeout(_setTimeState);
+		_setTimeState = setTimeout(() => {
 			this._getDatas();
 		}, autoTime);
 	},
@@ -84,6 +92,7 @@ var SectionComponent = React.createClass({
 		this._getDatas(true,data => {
 			$('header').css("opacity",1);
 			$('section').css("opacity",1);
+			this.__buildShadow();
 			this.start(data);
 		});
 	},
@@ -95,7 +104,7 @@ var SectionComponent = React.createClass({
 				this.nextPropsData.push({});
 			}
 		}
-		
+		this.geoCoordMap = this.data.geoCoordMap;
 		if (this.listType > MAX) {
 			this.props.change();
 		}else{
@@ -113,7 +122,7 @@ var SectionComponent = React.createClass({
 		};
 		$.GetAjax($.getCtx()+'/rest/info/recentInfoRealNew', setData, 'GET', true, (data,t_state) => {
 			if (t_state) {
-				this.ALLDATA = data;
+				this.data = data;
 				state ? callback(data) : this.start(data)
 			}else{
 				setTimeout(() => {
@@ -124,55 +133,57 @@ var SectionComponent = React.createClass({
 			
 		});
 	},
-	render: function() {
-		return (
-			<section>
-				<GetMapComponent data={this.ALLDATA} address={this.props.address}/>
-	        	<div className="list-box">
-	        		<p className="list-title">
-	        			{this.props.areaName}{this._getTitle()}
-	        		</p>
-	        		<div className="pushAnimateNum" ref="aniNum"></div>
-	        		<ul className="pushListBox">
-	        			{this.dom}
-	        		</ul>
-	        	</div>
-	        </section>
-		);
-	}
-});
-
-var GetMapComponent = React.createClass({
-	getInitialState: function() {
-		return {
-			status: false
-		};
-	},
-	componentWillReceiveProps: function(nextProps) {
-		this.data = nextProps.data;
-		this.setState({
-			status: true
-		});
-	},
-	componentDidUpdate: function() {
-
-		if (!this.state.status) {
-			return false;
-		}
-
-		let dom = ReactDOM.findDOMNode(this.refs.JsMap);
-
-		this.getCanvas({
-			data: this.data,
-			id: dom,
-			size: $(window).height()*0.035
-		});
-	},
-	getCanvas: function(obj) {
+	getCanvas(obj) {
 		const myChart = echarts.init(obj.id).clear();
 		const dataAttr = ['onePointData', 'twoPointData', 'threePointData', 'fourPointData', 'fivePointData'];
 		let datas = obj.data;
-		let geoCoordArray = datas.geoCoordMap;
+		let option = {
+			series: [{
+				name: '',
+				type: 'map',
+				selectedMode: 'single',
+				mapType: this.props.address,
+				hoverable: false,
+				roam: false,
+				itemStyle: {
+					normal: {
+						label: {
+							show: false
+						},
+						borderColor: 'rgba(0,153,255,0)',
+						color: 'rgba(0,153,255,0)'
+					}
+				},
+				data: {},
+				geoCoord: this.geoCoordMap
+			}]
+		};
+		for (let i = 0; i < 5; i++) {
+			option.series.push({
+				name: dataAttr[i],
+				type: 'map',
+				mapType: this.props.address,
+				data: [],
+				markPoint: {
+					symbol: 'image://../../img/' + (i + 1) + '.png',
+					// symbol: 'image://../public/img/' + (i + 1) + '.png',
+					symbolSize: obj.size,
+					itemStyle: {
+						normal: {
+							label: {
+								show: false
+							}
+						}
+					},
+					data: datas && datas[dataAttr[i]] || []
+				}
+			});
+		}
+		myChart.setOption(option);
+	},
+	__buildShadow(){
+		let dom = ReactDOM.findDOMNode(this.refs.JsMapBg);
+		const myChart = echarts.init(dom).clear();
 		let option = {
 			series: [{
 				name: '',
@@ -220,52 +231,49 @@ var GetMapComponent = React.createClass({
 					}
 				},
 				data: {},
-				geoCoord: geoCoordArray
+				geoCoord: this.geoCoordMap
 			}]
 		};
-		for (let i = 0; i < 5; i++) {
-			option.series.push({
-				name: dataAttr[i],
-				type: 'map',
-				mapType: this.props.address,
-				data: [],
-				markPoint: {
-					// symbol: 'image://../../img/' + (i + 1) + '.png',
-					symbol: 'image://../public/img/' + (i + 1) + '.png',
-					symbolSize: obj.size,
-					itemStyle: {
-						normal: {
-							label: {
-								show: false
-							}
-						}
-					},
-					data: datas && datas[dataAttr[i]] || []
-				}
-			});
-		}
 		myChart.setOption(option);
 	},
 	render: function() {
+		let dataAttrs = [];
+		if (this.props.address=="china") {
+			dataAttrs = ['40000元以上','30000元~40000元','16000元~30000元','4000元~16000元','4000元以下'];
+		}else{
+			dataAttrs = ['10000元以上','7500元~10000元','4000元~7500元','1000元~4000元','1000元以下'];
+		}
 		return (
-			<div className="map-box" id="JS_map_box">
-				<div className="map-show" ref="JsMap" ></div>
-				{/*<ul className="map-msg-box">
-					<li><img src="../../img/5.png" />&nbsp;&nbsp;20000元以上</li>
-					<li><img src="../../img/3.png" />&nbsp;&nbsp;15000 元~20000元</li>
-					<li><img src="../../img/2.png" />&nbsp;&nbsp;8000 元~15000元</li>
-				    <li><img src="../../img/4.png" />&nbsp;&nbsp;2000 元~8000元</li>
-					<li><img src="../../img/1.png" />&nbsp;&nbsp;2000元以下</li>
-				</ul>*/}
-				<ul className="map-msg-box">
-					<li><img src="../public/img/5.png" />&nbsp;&nbsp;20000元以上</li>
-					<li><img src="../public/img/3.png" />&nbsp;&nbsp;15000 元~20000元</li>
-					<li><img src="../public/img/2.png" />&nbsp;&nbsp;8000 元~15000元</li>
-				    <li><img src="../public/img/4.png" />&nbsp;&nbsp;2000 元~8000元</li>
-					<li><img src="../public/img/1.png" />&nbsp;&nbsp;2000元以下</li>
-				</ul>
-			</div>
-		)
+			<section>
+				<div className="map-box" id="JS_map_box">
+					<div className="map-show" ref="JsMap" ></div>
+					<div className="map-show-bg" ref="JsMapBg" ></div>
+					<ul className="map-msg-box">
+						<li><img src="../../img/5.png" />&nbsp;&nbsp;{dataAttrs[0]}</li>
+						<li><img src="../../img/3.png" />&nbsp;&nbsp;{dataAttrs[1]}</li>
+						<li><img src="../../img/2.png" />&nbsp;&nbsp;{dataAttrs[2]}</li>
+					    <li><img src="../../img/4.png" />&nbsp;&nbsp;{dataAttrs[3]}</li>
+						<li><img src="../../img/1.png" />&nbsp;&nbsp;{dataAttrs[4]}</li>
+					</ul>
+					{/*<ul className="map-msg-box">
+						<li><img src="../public/img/5.png" />&nbsp;&nbsp;20000元以上</li>
+						<li><img src="../public/img/3.png" />&nbsp;&nbsp;15000 元~20000元</li>
+						<li><img src="../public/img/2.png" />&nbsp;&nbsp;8000 元~15000元</li>
+					    <li><img src="../public/img/4.png" />&nbsp;&nbsp;2000 元~8000元</li>
+						<li><img src="../public/img/1.png" />&nbsp;&nbsp;2000元以下</li>
+					</ul>*/}
+				</div>
+	        	<div className="list-box">
+	        		<p className="list-title">
+	        			{this.props.areaName}{this._getTitle()}
+	        		</p>
+	        		<div className="pushAnimateNum" ref="aniNum"></div>
+	        		<ul className="pushListBox">
+	        			{this.dom}
+	        		</ul>
+	        	</div>
+	        </section>
+		);
 	}
 });
 
@@ -298,7 +306,14 @@ var SectionComponent2 = React.createClass({
 		this.setState({
 			status: true
 		});
-		setTimeout(() => {
+		let dom = ReactDOM.findDOMNode(this.refs.JsMap);
+		this.getCanvas({
+			data: this.data,
+			id: dom,
+			size: $(window).height()*0.035
+		});
+		clearTimeout(_setTimeState);
+		_setTimeState = setTimeout(() => {
 			this._getDatas();
 		}, autoTime);
 	},
@@ -307,6 +322,7 @@ var SectionComponent2 = React.createClass({
 			$('header').css("opacity",1);
 			$('section').css("opacity",1);
 			this.start(data);
+			this.__buildShadow();
 		});
 	},
 	start: function(data = {}) {
@@ -317,7 +333,15 @@ var SectionComponent2 = React.createClass({
 				this.nextPropsData.push({});
 			}
 		}
-		
+		this.geoCoordMap = this.data.geoCoordMap;
+		this.lengendDatas = [];
+		for (let kk in data.cityOrderList) {
+			if (data.cityOrderList[kk].areaName) {
+				this.lengendDatas.push({"name":data.cityOrderList[kk].areaName,"value":data.cityOrderList[kk].amount});
+				this.geoCoordMap[data.cityOrderList[kk].areaName] = data.cityOrderList[kk].location;
+			}
+			
+		}
 		if (this.listType > MAX) {
 			this.props.change();
 		}else{
@@ -335,8 +359,8 @@ var SectionComponent2 = React.createClass({
 		};
 		$.GetAjax($.getCtx()+'/rest/info/countrySumInfo', setData, 'GET', true, (data,t_state) => {
 			if (t_state) {
-				this.ALLDATA = data.info;
-				state ? callback(this.ALLDATA) : this.start(this.ALLDATA)
+				this.data = data.info;
+				state ? callback(this.data) : this.start(this.data)
 			}else{
 				setTimeout(() => {
 					this._getDatas();
@@ -346,50 +370,6 @@ var SectionComponent2 = React.createClass({
 			
 		});
 	},
-	render: function() {
-		return (
-			<section>
-				<GetMapComponent2 data={this.ALLDATA} address={this.props.address}/>
-	        	<div className="list-box">
-	        		<p className="list-title">
-	        			{this.props.areaName}{this._getTitle()}
-	        		</p>
-	        		<div className="pushAnimateNum" ref="aniNum"></div>
-	        		<ul className="pushListBox">
-	        			{this.dom}
-	        		</ul>
-	        	</div>
-	        </section>
-		);
-	}
-});
-
-var GetMapComponent2 = React.createClass({
-	getInitialState: function() {
-		return {
-			status: false
-		};
-	},
-	componentWillReceiveProps: function(nextProps) {
-		this.data = nextProps.data;
-		this.setState({
-			status: true
-		});
-	},
-	componentDidUpdate: function() {
-
-		if (!this.state.status) {
-			return false;
-		}
-
-		let dom = ReactDOM.findDOMNode(this.refs.JsMap);
-
-		this.getCanvas({
-			data: this.data,
-			id: dom,
-			size: $(window).height()*0.035
-		});
-	},
 	getCanvas: function(obj) {
 		const datas = obj.data;
 		const myChart = echarts.init(obj.id).clear();
@@ -397,15 +377,6 @@ var GetMapComponent2 = React.createClass({
 		const color = ['rgba(255, 240, 51,.4)', 'rgba(255, 240, 51,.5)', 'rgba(255, 240, 51,.6)', 'rgba(255, 240, 51,.8)', 'rgba(255, 240, 51,1)'];
 		const symbolSize = [2,4,6,8,10];
 		const symbolLen = [100,60,40,30,20];
-		let geoCoordArray = datas.geoCoordMap;
-		let lengendDatas = [];
-		for (let kk in datas.cityOrderList) {
-			if (datas.cityOrderList[kk].areaName) {
-				lengendDatas.push({"name":datas.cityOrderList[kk].areaName,"value":datas.cityOrderList[kk].amount});
-				geoCoordArray[datas.cityOrderList[kk].areaName] = datas.cityOrderList[kk].location;
-			}
-			
-		}
 		let option = {
 			series: [{
 				name: '',
@@ -414,77 +385,18 @@ var GetMapComponent2 = React.createClass({
 				mapType: this.props.address,
 				hoverable: false,
 				roam: false,
-				nameMap:{
-	            	'宜宾市' : '宜宾',
-	            	'成都市' : '成都',	
-	            	'德阳市' : '德阳',
-	            	'眉山市' : '眉山',
-	            	'资阳市' : '资阳',
-	            	'乐山市' : '乐山',
-	            	'自贡市' : '自贡',
-	            	'泸州市' : '泸州',
-	            	'雅安市' : '雅安',
-	            	'广安市' : '广安',
-	            	'遂宁市' : '遂宁',
-	            	'南充市' : '南充',
-	            	'达州市' : '达州',
-	            	'绵阳市' : '绵阳',
-	            	'巴中市' : '巴中',
-	            	'内江市' : '内江',
-	            	'广元市' : '广元',
-	            	'攀枝花市' : '攀枝花',
-	            	'阿坝藏族羌族自治州' : '阿坝',
-	            	'甘孜藏族自治州' : '甘孜',
-	            	'凉山彝族自治州' : '凉山',
-    	        },
 				itemStyle: {
 					normal: {
 						label: {
-							show: true,
-							textStyle: {
-								color: 'rgba(0,153,255,1)',
-								fontFamily: '微软雅黑',
-								fontSize: $(window).height()*0.014
-							}
+							show: false
 						},
-						borderWidth: 1,
-						borderColor: 'rgba(0,153,255,.5)',
-						color: 'rgba(0,153,255,.1)'
+						borderColor: 'rgba(0,153,255,0)',
+						color: 'rgba(0,153,255,0)'
 					}
 				},
 				data: {},
-				geoCoord: geoCoordArray
-			},{
-                name: '',
-                type: 'map',
-                mapType: this.props.address,
-                data: [],
-                animation: false,
-                markPoint: {
-                    symbol: 'Circle',
-                    symbolSize: 1,
-                    effect: {
-                        show: false
-                    },
-                    itemStyle: {
-                        normal: {
-                            label: {
-                            	show: false,
-                                formatter: v => {
-		                        	return v.name;
-		                        },
-		                        textStyle: {
-		                        	color: '#fff',
-		                        	fontSize: $(window).height()*0.001,
-									fontFamily: 'Microsoft Yahei ui'
-		                        }
-                            },
-                            color: '#ffcc00'
-                        }
-                    },
-                    data: lengendDatas
-                }
-            }]
+				geoCoord: this.geoCoordMap
+			}]
 		};
 		for (let s = 0; s < datas['fivePointData'].length; s++) {
 			let value = parseInt(datas['fivePointData'][s].value);
@@ -512,7 +424,7 @@ var GetMapComponent2 = React.createClass({
 		                data: [datas['fivePointData'][s]]
 		            },
 		            data:[],
-		            geoCoord: geoCoordArray
+		            geoCoord: this.geoCoordMap
 				})
 			}
 		}
@@ -546,11 +458,11 @@ var GetMapComponent2 = React.createClass({
 		                    var len = symbolLen[i];
 		                    var value;
 							for (let index = 0; index < datas[dataAttr[i]].length; index++) {
-		                    	for (let k in geoCoordArray) {
+		                    	for (let k in this.geoCoordMap) {
 			                    	if (k == datas[dataAttr[i]][index].name) {
 			                    		geoList.push({
 											name: k,
-											geoCoord: geoCoordArray[k]
+											geoCoord: this.geoCoordMap[k]
 										})
 			                    	}
 									
@@ -574,12 +486,86 @@ var GetMapComponent2 = React.createClass({
 		}
 		myChart.setOption(option);
 	},
+	__buildShadow(){
+		let dom = ReactDOM.findDOMNode(this.refs.JsMapBg);
+		const myChart = echarts.init(dom).clear();
+		let option = {
+			series: [{
+				name: '',
+				type: 'map',
+				selectedMode: 'single',
+				mapType: this.props.address,
+				hoverable: false,
+				roam: false,
+				itemStyle: {
+					normal: {
+						label: {
+							show: true,
+							textStyle: {
+								color: 'rgba(0,153,255,1)',
+								fontFamily: '微软雅黑',
+								fontSize: $(window).height()*0.014
+							}
+						},
+						borderWidth: 1,
+						borderColor: 'rgba(0,153,255,.5)',
+						color: 'rgba(0,153,255,.1)'
+					}
+				},
+				data: {},
+				geoCoord: this.geoCoordMap
+			},{
+                name: '',
+                type: 'map',
+                mapType: this.props.address,
+                data: [],
+                animation: false,
+                markPoint: {
+                    symbol: 'Circle',
+                    symbolSize: 1,
+                    effect: {
+                        show: false
+                    },
+                    itemStyle: {
+                        normal: {
+                            label: {
+                            	show: false,
+                                formatter: v => {
+		                        	return v.name;
+		                        },
+		                        textStyle: {
+		                        	color: '#fff',
+		                        	fontSize: $(window).height()*0.001,
+									fontFamily: 'Microsoft Yahei ui'
+		                        }
+                            },
+                            color: '#ffcc00'
+                        }
+                    },
+                    data: this.lengendDatas
+                }
+            }]
+		};
+		myChart.setOption(option);
+	},
 	render: function() {
 		return (
-			<div className="map-box" id="JS_map_box">
-				<div className="map-show" ref="JsMap" ></div>
-			</div>
-		)
+			<section>
+				<div className="map-box" id="JS_map_box">
+					<div className="map-show" ref="JsMap" ></div>
+					<div className="map-show-bg" ref="JsMapBg" ></div>
+				</div>
+	        	<div className="list-box">
+	        		<p className="list-title">
+	        			{this.props.areaName}{this._getTitle()}
+	        		</p>
+	        		<div className="pushAnimateNum" ref="aniNum"></div>
+	        		<ul className="pushListBox">
+	        			{this.dom}
+	        		</ul>
+	        	</div>
+	        </section>
+		);
 	}
 });
 
