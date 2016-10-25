@@ -20,11 +20,11 @@ const urlLess = "TJ-province/public/less";
 // const urlCss = "TJ-county/public/css";
 // const urlBuild = "TJ-county/";
 const TIME = new Date();
-const fileNamed = "doubleCanvasLine";
+const fileNamed = "chinaMonitor";
 module.exports = {
     // devtool: "source-map", // 便于调试
     entry: urlList + "/static/"+fileNamed+".js",
-    // ProvinceRadarChart ProvinceRadarChartDemand chinaMonitor cityMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList ProvinSingleDouble ProvinSingleTime 
+    // ProvinceRadarChart ProvinceRadarChartDemand chinaMonitor cityMonitor dataMonitorDetails doubleCanvasLine provinceGoodsList provinceGoodsListCty ProvinSingleDouble ProvinSingleTime 
     // 县域版 countyMigrateReceive  countyMigrateIssue  countyDistributionService  countyBusinessService
     // countyRealtimeOne  countyRealtime countyGoodsList trainingStructure trainingStructureDetails
     // chinaRealDataList cityRealDataList
@@ -47,7 +47,7 @@ module.exports = {
             // },
             {test: /\.less$/,loader: "style-loader!css-loader!autoprefixer-loader!less-loader?sourceMap"},
             {test: /\.css$/,loader: "style-loader!css-loader!autoprefixer-loader"},
-            // {test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?name=[hash].[ext]'},
+            {test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/, loader: 'file-loader?limit=30000&name=[hash].[ext]'},
             {
                 test: /\.(png|jpg)$/,
                 loader: 'url?limit=30000&name=[hash].[ext]'
@@ -101,6 +101,7 @@ module.exports = {
             'echarts-map': urlList + "/static/common/echarts.map.exports.js",
             'ajax-plus': urlList + "/static/common/getViewData.js",
             'provinceGoodsLess': urlLess + "/provinceGoodsList.less",
+            'provinceGoodsList': urlLess + "/provinceGoodsListCty.less",
             // 'receiveLess': urlLess + "/countyMigrateReceive.less",
             // 'issueLess': urlLess + "/countyMigrateIssue.less",
             // 'DisSeverLess': urlLess + "/countyDistributionService.less",

@@ -1,0 +1,220 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ省域版
+* fileName: ProvinceGoodsList.less
+* createTime: 2016/09/18
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 省市级网商列表
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+
+// 初始化页面
+.reset();
+
+html,
+body{
+	.maxBody();
+	overflow: hidden;
+}
+
+.container{
+	.maxBody();
+	.b-sizing();
+	.content-cp{
+		.d-flex-v();
+		height: 95%;
+		padding-bottom: 5%;
+		opacity: 0;
+	}
+	.content-sm{
+		.d-flex-v();
+		.maxBody();
+	}
+	header{
+		@color:rgba(0, 153, 255, 0.5); 
+		.maxBody(100%,8%);
+		.head-left {
+			.maxBody(15%,100%);
+			.fl();
+		}
+		.head-right {
+			.maxBody(15%,100%);
+			.fl();
+		}
+		.head-con {
+			.maxBody(70%,100%);
+			.fl();
+			.b-sizing();
+			.rel();
+		}
+		.head-con img {
+			.maxBody();
+			z-index: 2;
+		}
+		.head-con p {
+			.abs();
+			.maxBody(100%,80%);
+			.font-s(3.4vh);
+			.font-fm();
+			.d-flex-h();
+			.flex-hc();
+			.flex-vc();
+			color: #fff;
+			top: 0;
+			z-index: 4;
+		}
+		.head-small{
+			.maxBody();
+			.font-s(5vh);
+			.font-fm();
+			.d-flex-h();
+			.flex-hc();
+			.flex-vc();
+			color: #fff;
+		    background:url('../img/header-bg.png');
+		    background-size: auto 100%; 
+		}
+	}
+	section{
+		.d-flex-v();
+		.flex(1);
+		.b-sizing();
+		height: 80%;
+		margin: 3% 2% 0;
+		.table-box{
+			width: 100%;
+			overflow: hidden;
+			.maxBody();
+			.d-flex-v();
+			.flex(1);
+		}
+		.contentBox-style1 {
+			.flex(23);
+		}
+
+		.contentBox-style2 {
+			.flex(28);
+		}
+
+		.contentBox-style3 {
+			.flex(25.5);
+		}
+		.contentBox-style4 {
+			.flex(10);
+		}
+		.contentBox-style5 {
+			.flex(53.3);
+			.d-flex-h();
+			.flex-vc();
+			font-size: 5vh !important;
+			margin-top: 0; 
+		}
+		.contentBox-style6 {
+			.flex(31.5);
+			.d-flex-h();
+			.flex-vc();
+			font-size: 5vh !important;
+			margin-top: 0;
+		}
+		ul.goodsListHeader{
+			.flex(1);
+			.d-flex-h();
+			color: #fff;
+			background-image: url(../img/titleBg.png);
+			background-size: auto 100%;
+			li{
+				.font-fm();
+				font-size: 2.4vh;
+				line-height: 5vh;
+			    margin-left: 1.7%;
+			    white-space: nowrap;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			}
+			li:after{
+				content:'';
+				display:inline-block;
+				width:0;
+				height:100%;
+				vertical-align:middle;
+			}
+		}
+		.goodsListContent{
+			.flex(15);
+			.d-flex-v();
+			width: 100%;
+			.bc();
+			ul.contentBox{
+				.flex(1);
+				.d-flex-h();
+				color: #ffc;
+				font-size:0;
+				li{
+					.font-fm();
+					font-size: 2vh;
+					line-height: 5vh;
+				    margin-left: 1.7%;
+				    white-space: nowrap;
+				    overflow: hidden;
+				    text-overflow: ellipsis;
+				}
+				li:after{
+					content:'';
+					display:inline-block;
+					width:0;
+					height:100%;
+					vertical-align:middle;
+				}
+			}
+			ul:nth-child(even) {
+				background-color: #001149;
+			}
+		}
+		&.small{
+			margin: 0;
+			opacity: 0;
+			.goodsListContent{
+				.flex(8);
+			}
+		}
+	}
+	footer{
+		height: 5%;
+		.pager{
+			.maxBody(96%,100%);
+			&.small{
+				.maxBody();
+			}
+			.bc();
+			.d-flex-h();
+			background-color: #001149;
+			.pager-list{
+				.font-s(2vh);
+				.font-fm();
+				.d-flex-h();
+				.flex-hc();
+				.flex-vc();
+				.flex(1);
+				.page{
+					color:#fff;
+				}
+			}
+		}
+		.normalColor{
+			color:rgba(176, 34, 6, 0.2);
+			opacity: 0;
+		}
+		.chooseSelect{
+			color:#fff;
+			opacity: 0;
+		}
+	}
+}
+.none{
+	display: none;
+}

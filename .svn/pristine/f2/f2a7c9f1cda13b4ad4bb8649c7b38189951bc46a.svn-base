@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>农特产品全国需求热力分布</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/static/common/loading.min.js?v=161018"></script>
+</head>
+<body>
+	<div class="container">
+		<header id="headerContent"></header>
+		<canvas id="radarMap">
+		您的浏览器不支持canvas标签。
+		</canvas>
+	</div>
+	<script src="../build/ProvinceRadarChartDemand.min.js?v=161018"></script>
+</body>
+</html>

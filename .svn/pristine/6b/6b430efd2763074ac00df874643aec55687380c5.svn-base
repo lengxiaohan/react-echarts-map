@@ -1,0 +1,159 @@
+(function($) {
+
+	$.mapModule = function(setting, series,config) {
+
+		var setting = setting || {},
+			config = config || {},
+			series = series || [],
+			seriesData = [],
+			legendArr = [];
+
+		//	基本配置信息初始化
+		var option = {
+			color: [],
+			title: {},
+			series: setting.series || []
+		};
+
+		$.extend(true, option, setting);
+
+		updateEchartsMessageFun();
+
+		var cal = {
+			/**
+			 * 地图
+			 * @param len 行/列数据长度
+			 * @param d 行/列数据系列数组
+			 */
+			paintBrokenMap: function(len, d) {
+
+				if (len > 0) {
+					$.each(d, function(i, o) {
+						var data = {};
+						$.each(o, function(n,con){
+							data[n] = con;
+						});
+						seriesData.push(data);
+
+						$.each(o.data, function(ii, oo) {
+							legendArr.push(oo.name || '');
+						});
+						
+						// 合并series数据到option
+						$.extend(true, option.series, seriesData);
+
+						// 合并legend数据到option
+						option.legend ? $.extend(true, option.legend.data, legendArr) : '';
+					});
+				}
+			}
+		};
+		cal.paintBrokenMap(series.length, series);
+
+		function updateEchartsMessageFun() {
+
+			if ( config.color ) {
+				option.color = config.color;
+			};
+
+			if ( config.title ) {
+				option.title.text = config.title;
+			};
+
+			if ( config.title2 ) {
+				option.title.subtext = config.title2;
+			};
+
+		};
+		
+		return option;
+	};
+	
+	$.fn.pushMapEcharts = function(option,callpack) {
+		var el = this[0].id;
+		var myChart;
+		//	基于准备好的dom，初始化echarts图表
+		if ( callpack && typeof(callpack) === 'function' ) {
+			myChart = $.requireMapFun(callpack,echarts,el);
+		}else{
+			myChart = echarts.init(document.getElementById(el));
+		}
+		// 为echarts对象加载数据 
+		myChart.setOption(option);
+	};
+
+	$.fn.setEchartMap = function(option,config,callpack) {
+		var el = this[0].id;
+		config.id = el;
+		var myChart = false;
+		//	基于准备好的dom，初始化echarts图表
+		if ( callpack && typeof(callpack) === 'function' ) {
+			myChart = $.requireMapFun(callpack,echarts,el);
+		}
+		$.getSmallMap(config,option,myChart);
+	};
+	
+	$.requireMapFun = function(fun,ec,el) {
+		var myChart=null;
+		myChart=ec.init(document.getElementById(el));
+		//异步加载返回当前charts对象
+		fun(myChart);
+		return myChart;
+	}
+	
+	$.getSmallMap = function(config,setting,echart){
+		var setting = setting ? setting : {};
+		if(!config.id || !setting.series){
+			return false;
+		}
+		let cityArray = ['china','chinaShadow','world','南海诸岛','新疆','西藏','内蒙古','青海','四川','黑龙江','甘肃','云南','广西','湖南','陕西','广东','吉林','河北','湖北','贵州','山东','江西','河南','辽宁','山西','安徽','福建','浙江','江苏','重庆','宁夏','海南','台湾','北京','天津','上海','香港','澳门'];
+	    // 基于准备好的dom，初始化echarts图表
+	    var myChart = echart || echarts.init(document.getElementById(config.id));
+	    var areaName = config.parentName || false;
+	    if (!areaName) {
+	    	$.getAreaName(data => {
+				callBack(data['data'].name);
+			});
+	    }else{
+	    	callBack(areaName);
+	    }
+		
+		function callBack(named){
+			let name = config.setParent ? named : $.getUrlParam("name");
+			let mapType = 'default';
+			$.each(setting.series,(o,c)=>{
+				c.mapType = c.boxShadow ? 'cityShadow' : c.mapType || '';
+				mapType = c.mapType;
+				for (let i = 0; i < cityArray.length; i++) {
+					if (mapType == cityArray[i]) {
+						mapType = cityArray[i];
+						return false;
+					}
+				}
+				echarts.util.mapData.params.params[mapType] = {
+			        getGeoJson: function (callback) {
+			        	if (sessionStorage.getItem(name+'MAPJSON')) {
+			        		var data = JSON.parse(sessionStorage.getItem(name+'MAPJSON'));
+			        		callback(echarts.util.mapData.params.decode(data));
+			        	}else{
+			        		$.getJSON('/mapJson/'+ name +'.json', data => {
+				                // 压缩后的地图数据必须使用 decode 函数转换
+				                callback(echarts.util.mapData.params.decode(data));
+				                sessionStorage.setItem(name+'MAPJSON', JSON.stringify(data));
+				            });
+				            // $.getJSON($.getCtx() + '/js/guizhoujson/'+ name +'.json', data => {
+				            //     // 线上版
+				            //     callback(echarts.util.mapData.params.decode(data));
+				            // 	sessionStorage.setItem(name+'MAPJSON', JSON.stringify(data));
+				            // });
+			        	}
+			        }
+			    }
+			});
+			setTimeout(()=>{
+				myChart.setOption(setting);
+			});
+		}
+	}
+
+})(jQuery);

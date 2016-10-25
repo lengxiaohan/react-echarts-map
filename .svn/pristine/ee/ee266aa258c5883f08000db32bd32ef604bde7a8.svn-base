@@ -1,0 +1,132 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: onlineSaleCountyDistribution.less
+* createTime: 2016/09/27
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 市级网络零售额县域分布页css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	.b-sizing();
+	// background: #222;
+}
+#con{
+	opacity: 0;
+	.maxBody();
+	#content{
+		.maxBody();
+		.header{
+    		.maxBody(100%,7.5%);
+    		.b-sizing();
+    		.abs();
+    		// overflow: hidden;
+    		img{
+    			z-index: -2;
+    			.maxBody();
+				// margin: 0 0 50% 0;
+    		}
+    		p{
+    			.maxBody();
+    			color: #fff;
+    			text-align: center;
+    			font-size: 3.5vh;
+    			line-height: 2;
+    			z-index: 4;
+    			top: 0;
+    			.abs();
+    		}
+		}
+		.nav{
+			.maxBody(96.5%,4.5%);
+			.b-sizing();
+			.abs();
+			top: 8.5%;
+			left: 2.5555%;
+			img{
+    			.maxBody(auto,100%);
+    			max-width: 7%;
+			}
+			.header-imgone{
+				float: left;
+			}
+			.header-imgtwo{
+				float: right;
+			}
+			p{
+    			.maxBody(87%,100%);
+    			min-width: 85%;
+    			.b-sizing();
+    			.fl();
+    			color: #fff;
+    			text-align: center;
+    			font-size: 3vh;
+    			margin: 0 auto;
+    			line-height: 1.5;
+    			#sum{
+    				color:#ffdd00;
+    				.short-size-span{
+    					color:#fff;
+    				}
+    			}
+    			img{
+					.maxBody(auto,100%);
+				}
+    		}
+		}
+		.map{
+			top: 14%;
+		    .maxBody(100%,75%);
+		    position: absolute;
+		    #mainMapShadow{
+		    	.maxBody();
+		    	.abs();
+				top: 0;
+				left: 0;
+				z-index: 0;
+		    }
+		    #mainMap{
+		    	.maxBody();
+		    	.abs();
+				top: 0;
+				left: 0;
+				z-index: 1;
+		    }
+		}
+		.legend{
+		    .maxBody(18%,10%);
+		    .abs();
+		    .flex(1);
+		    bottom: 0%;
+		    .d-flex-v();
+		    div{
+		    	.d-flex-h();
+		    	.flex();
+		    	img{
+				    .maxBody(auto,100%);
+				    max-width: 10%;
+				    margin: 0 10px 0 0;
+		    	}
+		    	label{
+		    		color: #fff;
+				    .d-flex-h();
+				    .flex();
+				    font-size: 2vh;
+				    .flex-vc();
+				    .flex-hc(start);
+		    	}
+		    }
+		}
+	}
+}

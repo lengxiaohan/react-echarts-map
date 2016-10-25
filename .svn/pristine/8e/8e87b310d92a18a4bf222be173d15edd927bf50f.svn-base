@@ -1,0 +1,128 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: ChinaMonitorScatter.less
+* createTime: 2016/09/23
+* author : zhouxinjian
+* version: 1.0
+* modify: {}
+* description: 网络零售实时散点图
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+html,
+body{
+	.maxBody();
+	.b-sizing();
+	overflow: hidden;
+	// background: rgba(0,0,51,1);
+	#container{
+		.maxBody();
+		opacity: 0;
+	}
+}
+
+.con{
+	.maxBody();
+	.d-flex-v();
+	.header{
+		margin: auto;
+		.maxBody(98%,7.5%);
+		background:url("../img/timeline/top_ico.png") no-repeat;
+		background-size: 100% 200%;
+		color:#fff;
+		.d-flex-h();
+		.flex-hc();
+		.flex-vc();
+		font-size:3.5vh;
+		.font-fm();
+		font-weight:bold;
+		// letter-spacing:8px;
+	}
+	section {
+		margin: auto;
+		.maxBody(96.5%,82.5%);
+		.d-flex-v();
+		.flex(1);
+		.sec-title {
+			margin: 1% auto;
+			.font-fm();
+			font-size: 3vh;
+			.maxBody(96.5%,4.5%);
+			color: #fff;
+			.d-flex-h();
+			.flex-hc();
+			.flex-vc();
+			background:url("../img/timeline/top_ico.png") no-repeat;
+			background-size: 100% 200%;
+			background-position: 0 115%;
+			span{
+				position: relative;
+			}
+			.title {
+				text-align: center;
+				color: #fff;
+				margin-left: 9px;
+			}
+			.yuan {
+				text-align: center;
+				color: #fff;
+			}
+			.total_num {
+				color: #ffdd00;
+			}
+			.short-size-span{
+				color: #fff;
+				position: relative;
+				top: 0;
+			}
+		}
+		.sec-map {
+			.maxBody(100%,83.5%);
+			.flex(1);
+			position: relative;
+			div{
+				position: absolute;
+				.maxBody(100%,88%);
+				top: 0;
+				left: 0;
+			}
+		}
+	}
+	.legend{
+    	.maxBody(18%,10%);
+	    .abs();
+	    left: 2%;
+	    bottom: 1%;
+	    .d-flex-v();
+	    .flex();
+	    div{
+	    	.d-flex-h();
+		    .flex();
+		    color: #fff;
+		    font-size: 2vh;
+		    .flex-hc();
+		    .flex-vc();
+		    img{
+			    .maxBody(auto,100%);
+		    }
+		    label{
+		    	color: #fff;
+		    	.d-flex-h();
+			    .flex();
+			    font-size: 2vh;
+			    .flex-hc();
+			    .flex-vc();
+			    .font-fm();
+		    }
+	    }
+    }
+	.legendShow{
+		display: block;
+	}
+}

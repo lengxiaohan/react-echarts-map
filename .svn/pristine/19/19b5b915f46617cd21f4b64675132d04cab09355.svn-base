@@ -1,0 +1,302 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: expressDotDetails.less
+* createTime: 2016/09/14
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 快递物流网点分布详情页css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+.maxBody(@width: 100%, @height: 100%) {
+    width: @width;
+    height: @height;
+}
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	overflow: hidden;
+}
+.anchorBL{  
+   display:none;  
+}  
+#con{
+	opacity: 0;
+	.maxBody();
+	#content{
+		.maxBody();
+	    .abs();
+		.header{
+		    .maxBody(100%,6%);
+		    .rel();
+    		.abs();
+		    .head-left{
+			    .maxBody(15%,100%);
+			    .fl();
+			    .rel();
+			    margin-top: 1px;
+			    border-top: 1px rgba(0,153,255,0.5) solid;
+		    }
+		    .head-con{
+			    .maxBody(70%,100%);
+			    .fl();
+			    .b-sizing();
+			    .rel();
+			    img{
+				    .maxBody(100%,100%);
+				    .rel();
+				    z-index: 2;
+			    }
+			    p{
+			    	.abs();
+				    top: 0;
+				    .maxBody(100%,100%);
+				    margin: 0 auto;
+				    text-align: center;
+				    z-index: 4;
+				    color: #fff;
+				    font-size: 3.4vh;
+			    }
+		    }
+		    .head-right{
+			    .maxBody(15%,100%);
+			    .fl();
+			    .rel();
+			    margin-top: 1px;
+			    border-top: 1px rgba(0,153,255,0.5) solid;
+		    }
+		}
+	    .left{
+	    	.maxBody(40%,84%);
+	    	.abs();
+	    	top: 10%;
+	    	.count{
+		    	.maxBody(90%,40%);
+		    	.b-sizing();
+		    	margin: auto;
+				.express{
+					.b-sizing();
+					.maxBody(100%,90%);
+					background-image: url(/TJ-province/public/img/navBg.png);
+					background-size: 100% 100%;
+					.b-sizing();
+					.flex(1);
+					.d-flex-v();
+					div{
+						.maxBody(100%,50%);
+						.b-sizing();
+						margin:auto;
+						p{
+							text-align: center;
+							&:nth-child(1){
+								color:#ff3333;
+								font-size: 3.4vh;
+							}
+							&:nth-child(2){
+								color:#fff;
+								font-size: 4.4vh;
+							}
+							&:nth-child(3){
+								span{
+									color:#ffdd00;
+									font-size: 7.5vh;
+								}
+								color:#fff;
+								font-size: 4.4vh;
+							}
+						}
+					}
+				}
+		    }
+		    .map{
+				.maxBody(90%,60%);
+				margin: auto;
+				border:3px solid rgba(0,153,255,0.8);
+    			.b-sizing();
+			}
+			.legend{
+			    .maxBody(45%,3%);
+			    .abs();
+			    left: 50%;
+			    bottom: 3%;
+			    .d-flex-h();
+			    div{
+			    	.d-flex-h();
+			    	.flex();
+			    	img{
+					    .maxBody(auto,100%);
+					    margin: 0 10px 0 0;
+			    	}
+			    	label{
+			    		color: #fff;
+					    .d-flex-h();
+					    .flex();
+					    font-size: 2vh;
+					    .flex-vc();
+					    .flex-hc(start);
+			    	}
+			    }
+			}
+	    }
+		.list{
+			.maxBody(60%,84%);
+			.abs();
+			right: 0;
+			top: 10%;
+			.table{
+				.maxBody(96%,93%);
+				.d-flex-v();
+				.abs();
+				.thead{
+					.maxBody(100%,9.5%);
+					background-image: url(../img/titleBg.png);
+					background-size: auto 100%;
+				    ul{
+				    	.fl();
+					    .flex(1);
+					    .d-flex-h();
+					    .maxBody(100%,100%);
+					    li{
+						    font-size: 2.4vh;
+						    .flex-vc();
+						    .flex-hc(start);
+						    .d-flex-h();
+						    color: #fff;
+						    margin-right: 1.3%;
+						    &:nth-child(1){
+						    	margin-left: 1.3%;
+						   	 	.flex(11.8);
+						    }
+						    &:nth-child(2){
+						   	 	.flex(7.8);
+						    }
+						    &:nth-child(3){
+						   	 	.flex(9);
+						    }
+						    &:nth-child(4){
+						   	 	.flex(15.3);
+						    }
+						     &:nth-child(5){
+						   	 	.flex(7.3);
+						    }
+					    }
+				    }
+			    }
+				.tbody{
+					.d-flex-v();
+				    .flex(1);
+				    .maxBody(100%,90.5%);
+				    ul{
+				    	.fl();
+				    	.flex(1);
+				    	.d-flex-h();
+				    	.maxBody(100%,10%);
+				    	.flex-vc();
+					    li{
+						    .flex-vc();
+						    .flex-hc(start);
+						    .d-flex-h();
+						    font-size: 2vh;
+						    color: #ffffcc;
+						    padding-right: 1.3%;
+					        white-space: nowrap;
+    						overflow: hidden;
+    						text-overflow: ellipsis;
+    						display:inline-block;
+						    &:nth-child(1){
+						    	margin-left: 1.3%;
+						   	 	.flex(11.8);
+						    }
+						    &:nth-child(2){
+						   	 	.flex(7.8);
+						    }
+						    &:nth-child(3){
+						   	 	.flex(9);
+						    }
+						    &:nth-child(4){
+						   	 	.flex(15.3);
+						    }
+						     &:nth-child(5){
+						   	 	.flex(7.3);
+						    }
+					    }
+					 //    li:after{
+						// 	content:'';
+						// 	display:inline-block;
+						// 	.maxBody(0,100%);
+						// 	.flex-vc();
+						//     .flex-hc(start);
+						// 	vertical-align:middle;
+						// }
+				    }
+				    ul:nth-child(odd) {
+					    background-color: rgba(0,153,255,0.1);
+					}
+					.active-show{
+						transition: border linear .2s,box-shadow linear .5s;
+					    -moz-transition: border linear .2s,-moz-box-shadow linear .5s;
+					    // -moz-box-shadow: 0 0 20px rgba(255,255,255,.5);
+					    // -webkit-box-shadow: 0 0 20px rgba(255,255,255,.5);
+					    position: relative;
+					    // box-shadow: 1px 1px 5px #fff;
+					    li{
+					    	text-overflow: inherit;
+					    	span{
+					    		margin-right:30px;
+					    	}
+					    }
+					}
+					.active-show:after {
+					    .abs();
+					    .maxBody(100%,100%);
+					    .b-sizing();
+					    content: '';
+					    border: 4px solid #fff;
+					    left: 0;
+					    top: 0;
+					}
+			    }
+			}
+			footer{
+				.maxBody(96%,7%);
+				.abs();
+				bottom: 0;
+				.pager{
+				    .maxBody(100%,100%);
+				    margin-left: auto;
+				    margin-right: auto;
+				    .d-flex-h();
+				    background-color: rgba(0,153,255,0.1);
+				    .pager-list{
+				    	.font-s(2vh);
+						.font-fm();
+						.d-flex-h();
+						.flex-hc();
+						.flex-vc();
+						.flex(1);
+						.page{
+							color:#fff;
+						}
+				    }
+				}
+				.normalColor{
+					color:rgba(176, 34, 6, 0.2);
+					opacity: 0;
+				}
+				.chooseSelect{
+					color:#fff;
+					opacity: 0;
+				}
+			}
+		}
+	}
+}

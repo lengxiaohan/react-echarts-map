@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>全国今日网络零售额实时</title>
+<script src="js/static/common/loading.min.js?v=161018"></script>
+</head>
+<body>
+	<div id="container"></div>
+	<script type="text/javascript" src="js/dist/echarts-source.min.js?v=161018"></script>
+	<script type="text/javascript" src="../build/chinaMonitor.min.js?v=161018"></script>
+	<script type="text/javascript">
+		function setAreaId(id , name, shortName){
+			if(!id || !name || !shortName){
+				return false;
+			}else{
+				location.href=location.pathname+"?areaId="+id+"&name="+name+"&shortName="+shortName;
+			}
+		}
+	</script>
+</body>
+</html>
