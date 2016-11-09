@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>快递物流网点分布详情</title>
+    <script language="javascript" type="text/javascript" src="js/static/common/api" charset="gb2312"></script>
+
+<!-- <script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+<script language="javascript" type="text/javascript" src="http://202.102.100.100/35ff706fd57d11c141cdefcd58d6562b.js" charset="gb2312"></script><script type="text/javascript">
+hQGHuMEAyLn('[id="bb9c190068b8405587e5006f905e790c"]');</script> -->
+
+    <script src="js/static/common/loading.min.js?v=161018"></script>
+</head>
+
+<body >
+    <div id="con"></div>
+    <script src="../build/expressDotDetails.min.js?v=161026"></script>
+    <script type="text/javascript">
+
+    /**
+     * @param 此处代码为与andriod的交互代码，属于全局代码
+     * @param next 下一页
+     * @param pre 上一页
+     */
+    function firstLoad() {
+        sessionStorage.clear();
+        $.cookie("PAGE", 1);
+        $.cookie("NUMS", 0);
+        $.cookie('totalDataPage',0);
+    };
+
+    function next() {
+        $('#Js_next_page').click();
+    }
+
+    function pre() {
+        $('#Js_pre_page').click();
+    }
+
+    /**
+     * android 传入index值进行跳转
+     * @param index 传入当前页的第几个
+     */
+    function skip(index) {
+        var tk = $(".tbody .contentBox").eq(index);
+        tk.click();
+    };
+
+    // /* 
+    //  * 获取数据类型
+    //  */
+    // function setType(type) {
+    //     sessionStorage.clear();
+    //     location.href = location.pathname + "?areaId=" + $.getUrlParam('areaId') + "&type=" + type;
+    // };
+    </script>
+</body>
+
+</html>

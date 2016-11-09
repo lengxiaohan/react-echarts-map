@@ -64,8 +64,9 @@ class SectionComponent extends React.Component {
 		this.geoCoord = obj.geoCoordMap;
 		const dataAttr = ['onePointData', 'twoPointData', 'threePointData', 'fourPointData', 'fivePointData'];
 		const color = ['rgba(255, 240, 51,.4)', 'rgba(255, 240, 51,.5)', 'rgba(255, 240, 51,.6)', 'rgba(255, 240, 51,.8)', 'rgba(255, 240, 51,1)'];
-		const symbolSize = [2,4,6,8,10];
-		const symbolLen = [300,200,100,50,30];
+		const symbolSize = [2,4,6,7,8];
+		const symbolLen = [500,300,200,100,50];
+		
 		let series = [];
 
 		for (let s = 0; s < obj['fivePointData'].length; s++) {
@@ -129,6 +130,7 @@ class SectionComponent extends React.Component {
 								color: color[i]
 							}
 						},
+						overlapMap:true, // 2016-11-09新增接口
 						data : (() => {
 		                    var data = [];
 		                    var len = symbolLen[i];
@@ -136,9 +138,16 @@ class SectionComponent extends React.Component {
 							for (let index = 0; index < obj[dataAttr[i]].length; index++) {
 		                    	for (let k in this.geoCoord) {
 			                    	if (k == obj[dataAttr[i]][index].name) {
+			                    		let m = k;
+			                    		k = k.substring(0,2);
+			                    		if (k=="内蒙") {
+			                    			k="内蒙古";
+			                    		}else if(k=="黑龙"){
+			                    			k="黑龙江";
+			                    		}
 			                    		geoList.push({
 											name: k,
-											geoCoord: this.geoCoord[k]
+											geoCoord: window.setMapList[k].pos
 										})
 			                    	}
 									
@@ -146,11 +155,14 @@ class SectionComponent extends React.Component {
 							}
 		                    while(len--) {
 		                        var geoCoord = geoList[len % geoList.length].geoCoord;
+		                        var name = geoList[len % geoList.length].name;
+		                        var randomsX = Math.random()*window.setMapList[name].width*2-window.setMapList[name].width;
+		                        var randomsY = Math.random()*window.setMapList[name].height*2-window.setMapList[name].height;
 		                        data.push({
-		                            name : geoList[len % geoList.length].name,
+		                            name : name,
 		                            geoCoord : [
-		                                Number(geoCoord[0]) + Math.random() * 5 - 2.5,
-		                                Number(geoCoord[1]) + Math.random() * 3 - 1.5
+		                                geoCoord[0]+randomsX/2,
+		                                geoCoord[1]+randomsY/2
 		                            ]
 		                        })
 		                    }

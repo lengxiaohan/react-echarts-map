@@ -66,8 +66,8 @@ class SectionComponent extends React.Component {
 		this.geoCoord = obj.geoCoordMap;
 		const dataAttr = ['onePointData', 'twoPointData', 'threePointData', 'fourPointData', 'fivePointData'];
 		const color = ['rgba(255, 240, 51,.4)', 'rgba(255, 240, 51,.5)', 'rgba(255, 240, 51,.6)', 'rgba(255, 240, 51,.8)', 'rgba(255, 240, 51,1)'];
-		const symbolSize = [2,4,6,8,10];
-		const symbolLen = [100,60,40,30,20];
+		const symbolSize = [2,4,6,7,8];
+		const symbolLen = [500,300,200,100,50];
 		let series = [];
 		for (let s = 0; s < obj['fivePointData'].length; s++) {
 			let value = parseInt(obj['fivePointData'][s].value);
@@ -103,6 +103,7 @@ class SectionComponent extends React.Component {
 		}
 
 		let geoList = [];
+		
 		for (let i = dataAttr.length-1; i >= 0; i--) {
 			if (obj[dataAttr[i]].length) {
 				series.push({
@@ -112,6 +113,7 @@ class SectionComponent extends React.Component {
 					hoverable: false,
 					roam: false,
 					data: [],
+					geoCoord: this.geoCoord,
 					mapHide: true,
 					markPoint: {
 						symbol : 'diamond',
@@ -128,6 +130,7 @@ class SectionComponent extends React.Component {
 								color: color[i]
 							}
 						},
+						overlapMap:true,
 						data : (() => {
 		                    var data = [];
 		                    var len = symbolLen[i];
@@ -137,7 +140,7 @@ class SectionComponent extends React.Component {
 			                    	if (k == obj[dataAttr[i]][index].name) {
 			                    		geoList.push({
 											name: k,
-											geoCoord: this.geoCoord[k]
+											geoCoord: window.setMapList[k].pos
 										})
 			                    	}
 									
@@ -145,11 +148,14 @@ class SectionComponent extends React.Component {
 							}
 		                    while(len--) {
 		                        var geoCoord = geoList[len % geoList.length].geoCoord;
+		                        var name = geoList[len % geoList.length].name;
+		                        var randomsX = Math.random()*window.setMapList[name].width*2-window.setMapList[name].width;
+		                        var randomsY = Math.random()*window.setMapList[name].height*2-window.setMapList[name].height;
 		                        data.push({
-		                            name : geoList[len % geoList.length].name,
+		                            name : name,
 		                            geoCoord : [
-		                                Number(geoCoord[0]) + Math.random()/1.15 - 0.5,
-		                                Number(geoCoord[1]) + Math.random()/1.8 - 0.25
+		                                geoCoord[0]+randomsX/2,
+		                                geoCoord[1]+randomsY/2
 		                            ]
 		                        })
 		                    }
@@ -219,6 +225,7 @@ class SectionComponent extends React.Component {
 					}
 				}
 			},
+			nameMap:$.nameMap(),
 			data: selectData,
 			geoCoord: {}
 		}];

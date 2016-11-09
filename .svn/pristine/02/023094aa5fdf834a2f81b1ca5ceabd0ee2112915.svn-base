@@ -1,0 +1,565 @@
+/**
+ * Created by zhouxinjian on 2016/9/18.
+ * doubleCircle is a 双饼图虚线模块
+ */
+(function($) {
+	 /**
+	 * @name 该插件共有以下方法
+	 * @param init 初始化
+	 * @param getData 异步加载数据
+	 * @param setCicleMsg 计算绘制饼图的信息 位置 坐标 圆心 等
+	 * @param getEventPosition 获取当前鼠标所在canvas画布中的坐标
+	 * @param addEvent 添加监听事件
+	 * @param pushAniCircle 绘制动态态饼图
+	 * @param pushCircle 绘制动态饼图初始化绘制方法
+	 * @param setAniCircle 动态饼图模块
+	 * @param setPubCircle 静态饼图模块
+	 * @param pushLineShow 绘制虚线
+	 * @param setFontShow 添加文本模型
+	 * @param pushFontShow 绘制文本信息
+	 * @param clear 清除画布
+	 */
+	let doubleCircle = {
+		/**
+		 * @name init
+		 * @param 初始化方法
+		 */
+		init(obj) {
+			this.canvas = document.getElementById(obj.canvasId);
+			this.areaId = $.getUrlParam('areaId') || obj.areaId;
+			this.WIDTH = $('#'+obj.canvasId).width();
+			this.HEIGHT = $('#'+obj.canvasId).height();
+			this.canvas.width = this.WIDTH;
+			this.canvas.height = this.HEIGHT;
+			this.shortName = $.getUrlParam(obj.titleId);
+			this.datas = void 0;
+			this.ROTATENUMS = 0; //从逆时针0度开始画圆
+			this.DOMLENGTH = 0;
+			this.fillColor = obj.color || ['#ff7800', '#66cc00', '#ffdd00', '#C2651C', '#ff7800'];
+			this.font = obj.font;
+			this.canvasAttrBox = []; //存放扇形绘制数据
+			this.canvasDashBox = []; //存放虚线绘制数据
+			this.getDataErrorTimes = 0;
+			this.datas = {
+				max: [],
+				min: []
+			};
+			this.circleWidth = obj.circleWidth || "large";
+			this.canvasFontBox = {
+				max: [],
+				min: []
+			}; //存放文字说明数据
+			if (this.canvas.getContext) {
+				//获取对应的CanvasRenderingContext2D对象(画笔)
+				this.ctx = this.canvas.getContext("2d");
+				this.getData(obj.setUrl,obj.setUrlConfig,obj.title,obj.callbackSetData,obj.errorCallback); //获取数据
+			} else {
+				return false;
+			}
+
+		},
+
+		/**
+		 * @name getData
+		 * @param 异步获取数据
+		 */
+		getData(url,config,title,callbackSet,errorCall) {
+			const that = this;
+			function callback(data) {
+				let nums = 0;
+				if (data && data.datas[0] && data.code === 0) {
+					for (let k = 0; k < data.datas.length; k++) {
+						if (data.datas[k].parentId) {
+							that.datas.min.push({
+								name: data.datas[k].typeName,
+								value: parseInt(data.datas[k].numbers)
+							})
+						} else {
+							nums += parseInt(data.datas[k].numbers);
+							that.datas.max.push({
+								name: data.datas[k].typeName,
+								value: parseInt(data.datas[k].numbers),
+								desc: k == 0 ? 1 : 2 
+							})
+						}
+					}
+
+					if (title.show) {
+						$('.'+title.yearId).html(data.datatime && "&nbsp;"+data.datatime || "");
+						$('#'+title.numId).html(nums);
+					}
+					
+					that.setCicleMsg();
+					that.pushAniCircle();
+
+				} else {
+
+					that.ctx.beginPath();
+					that.ctx.font = "normal 20px arial"
+					that.ctx.fillStyle = '#fff';
+					that.ctx.textAlign = "center";
+					that.ctx.fillText('数据异常或无数据', that.WIDTH / 2, that.HEIGHT / 2 - 20);
+
+				}
+			};
+
+			$.GetAjax($.getCtx() + url, config, 'GET', true, (data, state) => {
+				if (state && data.code == 0) {
+					console.log('数据请求成功');
+					callbackSet(data,callback);
+				} else if (!state) {
+					setTimeout(() => {
+						this.getData(url,config,title);
+						console.log('主人，刚才服务器出了一下小差'); 
+						if ( this.getDataErrorTimes == 0 ) {
+							errorCall();
+						}
+						this.getDataErrorTimes ++;
+					}, 2000);
+				} else {
+					console.log('没有数据的请求');
+					$.noDataFunc();
+					errorCall();
+				}
+
+			});
+		},
+
+		/**
+		 * @name setCicleMsg
+		 * @param 计算饼图一些的信息
+		 */
+		setCicleMsg(newCanvas) {
+			let RSW = this.WIDTH / 2;
+			let RSH = this.HEIGHT / 2;
+			let radius_1 = void 0;
+			let radius_2 = void 0;
+			let central_large = void 0;
+			let central_small = void 0;
+			let firstCircle = 0;
+
+			let largeCircleArry = this.datas['max']; //获取大圆中的数据
+			let smallCircleArry = this.datas['min']; //获取小圆中的数据
+			let largeBox = []; //大圆百分比的转化数据
+			let smallBox = []; //小圆百分比的转化数据
+			let largeArray = []; //大圆数据缓存
+			let smallArray = []; //小圆数据缓存
+			let largeTotal = 0; //大圆总数据和
+			let smallTotal = 0; //小圆总数据和
+			let temp = 0; //中介参数
+			let ApplicationObj = {};
+
+			// 大圆半径
+			radius_1 = this.circleWidth == "large" ? (RSW / 2) - (RSW / 5) : (RSW / 2) - (RSW / 6);
+			// 小圆半径
+			// radius_2 = (RSW / 2) - (RSW / 3.5);
+			radius_1 = radius_1 <= 0 ? 10 : radius_1 >= RSH ? RSH - 10 : radius_1;
+			// 第一版区分大小圆
+			// radius_2 = radius_2 <= 0 ? 10 : radius_2 >= RSH - 10 ? RSH - 20 : radius_2;
+			// 第二版大小圆相等
+			radius_2 = radius_1;
+
+			// 大圆圆心
+			central_large = {
+				'w': RSW - radius_1*1.1,
+				'h': RSH
+			};
+			// 小圆圆心
+			central_small = {
+				'w': RSW + radius_2*1.1,
+				'h': RSH
+			}
+
+			// largeTotal为计算大圆的数据总和（目的：求各个数据对应的比例）
+			// largeArray为取出大圆的独立数据生成的数组（目的: 求和，求后面绘制扇形的弧度）
+			$.each(largeCircleArry, (i, o) => {
+				largeTotal += o['value'];
+				firstCircle = largeCircleArry[0].value;
+				largeArray.push(o['value']);
+			});
+
+			// smallTotal为计算小圆的数据总和（目的：求各个数据对应的比例）
+			// smallArray为取出小圆的独立数据生成的数组（目的: 求和，求后面绘制扇形的弧度）
+
+			$.each(smallCircleArry, (i, o) => {
+				smallTotal += o['value'];
+				smallArray.push(o['value']);
+				if (smallCircleArry.length-1 == i) {
+					smallArray.push('isNull');
+				}
+			});
+
+			// 此处计算大圆的旋转度数
+			$.each(largeArray, (i, o) => {
+				let t_sq = 0;
+				t_sq = firstCircle / largeTotal * 360; //计算得出第一个弧度位置的结束位置
+				this.ROTATENUMS = -(t_sq - t_sq / 2); //根据最大弧度计算出均分点进行旋转
+			});
+
+			// 求大圆弧度，求比例，绘制圆弧
+			$.each(largeArray, (i, o) => {
+				let t_sq = 0; //初始化要绘制弧度的结束点（就是结束弧度位置 注：总弧度为360度）
+				let attr = {};
+
+				temp += o; //叠加之前绘制的弧度（从上一个图形绘制结束点开始）
+				t_sq = temp / largeTotal * 360; //计算得出结束弧度位置
+
+				largeBox[i] = this.ROTATENUMS + t_sq; //this.ROTATENUMS点开始绘制，就是加上这个点的位置
+
+				attr.x = central_large.w;
+				attr.y = central_large.h;
+				attr.r = largeCircleArry[i].desc == 1 ? radius_1 : largeCircleArry[i].desc == 2 ? radius_1 - radius_1*0.2 : radius_1 - radius_1*0.4;
+				attr.color = this.fillColor[i];
+				attr.end = largeBox[i];
+
+				// 判断是不是刚开始绘制（有没有上一个位置）
+				if (largeBox[i - 1]) {
+					attr.start = largeBox[i - 1];
+				} else {
+					attr.start = this.ROTATENUMS;
+					ApplicationObj['start'] = this.ROTATENUMS;
+					ApplicationObj['end'] = attr.end;
+					ApplicationObj['total'] = attr.end-attr.start;
+				}
+				let starts = attr.start;
+				let ends = attr.end;
+				let tempHd = 0;
+				tempHd = i == 0 ? ends - (ends - starts) / 2 : i == 1 ? ends - starts > 15 ? ends - 15 : ends - (ends - starts) / 2 : ends - starts > 15 ? starts + 15 : ends - (ends - starts) / 2;
+				this.canvasFontBox['max'].push({
+					x: attr.x + ((attr.r-attr.r*0.3) * Math.cos(2 * Math.PI / 360 * tempHd)),
+					y: attr.y + ((attr.r-attr.r*0.3) * Math.sin(2 * Math.PI / 360 * tempHd)),
+					deg: tempHd,
+					parentX: attr.x,
+					parentY: attr.y,
+					parentR: attr.r
+				});
+
+				this.canvasAttrBox.push(attr);
+
+			});
+
+			// 初始化temp，继续绘制小圆
+			temp = 0;
+			// 求小圆弧度，求比例，绘制圆弧
+			$.each(smallArray, (i, o) => {
+				let t_sq = 0;
+				let length = 0;
+				let attr = {};
+				let ROTATENUMS = ApplicationObj['start']; // 小圆旋转度数
+				let totalRotate = ApplicationObj['total']; // 绘制总区域
+
+				// 计算大圆消耗了前几个颜色值
+				for (let k in this.datas['max']) {
+					length++;
+				}
+
+				temp += o;
+				t_sq = temp / smallTotal * totalRotate;
+
+				smallBox[i] = ROTATENUMS + t_sq;
+
+				attr.x = central_small.w;
+				attr.y = central_small.h;
+				attr.r = radius_2;
+				
+				
+
+				if (largeBox[i - 1]) {
+					attr.start = smallBox[i - 1];
+				} else {
+					attr.start = ROTATENUMS;
+				}
+
+				this.canvasAttrBox.push(attr);
+
+				if (o === 'isNull') {
+					attr.color = 'rgba(0,0,0,.2)';
+					attr.end = ApplicationObj['start'];
+					return false;
+				}else{
+					attr.color = this.fillColor[i + length];
+					attr.end = smallBox[i];
+				}
+
+				let starts = attr.start;
+				let ends = attr.end;
+				let tempHd = 0;
+				tempHd = i == 0 ? ends - (ends - starts) / 2 < -90 ? ends - 5 : ends - (ends - starts) / 2 : ends - (ends - starts) / 2 > 90 ? starts + 15 : ends - (ends - starts) / 2;
+
+				this.canvasFontBox['min'].push({
+					x: attr.x + ((attr.r-attr.r*0.3) * Math.cos(2 * Math.PI / 360 * tempHd)),
+					y: attr.y + ((attr.r-attr.r*0.3) * Math.sin(2 * Math.PI / 360 * tempHd)),
+					deg: tempHd,
+					parentX: attr.x,
+					parentY: attr.y,
+					parentR: attr.r
+				});
+
+			});
+
+			this.canvasDashBox.push({
+				fromX: central_large.w,
+				fromY: central_large.h - radius_1,
+				toX: central_small.w,
+				toY: central_small.h - radius_2,
+				pattern: 5,
+				color: this.fillColor[0]
+			}, {
+				fromX: central_large.w,
+				fromY: central_large.h + radius_1,
+				toX: central_small.w,
+				toY: central_small.h + radius_2,
+				pattern: 5,
+				color: this.fillColor[0]
+			});
+
+		},
+
+		/**
+		 * @name getEventPosition
+		 * @param 获取当前鼠标所在canvas中的位置
+		 */
+		getEventPosition(ev) {
+			let x, y;
+			if (ev.layerX || ev.layerX == 0) {
+				x = ev.layerX;
+				y = ev.layerY;
+			} else if (ev.offsetX || ev.offsetX == 0) { // Opera
+				x = ev.offsetX;
+				y = ev.offsetY;
+			}
+			return {
+				x: x,
+				y: y
+			};
+		},
+
+		/**
+		 * @name addEvent
+		 * @param canvas事件监听
+		 */
+		addEvent(x, y) {
+			this.canvas.addEventListener('mousemove', e =>{
+				let p = this.getEventPosition(e);
+				this.pushCircle(p.x, p.y);
+			}, false);
+		},
+
+		/**
+		 * @name pushAniCircle
+		 * @param 绘制动态饼图
+		 */
+		pushAniCircle() {
+			let circleArr = this.canvasAttrBox;
+			// 清除画布
+			this.clear();
+			// 再绘制饼图
+			for (let i = 0; i < circleArr.length; i++) {
+				this.setAniCircle(circleArr[i].x, circleArr[i].y, circleArr[i].r, circleArr[i].color, circleArr[i].start, circleArr[i].end);
+			}
+		},
+
+		/**
+		 * @name pushCircle
+		 * @param 具体图形的绘制
+		 */
+		pushCircle(x, y) {
+			let circleArr = this.canvasAttrBox;
+			// 清除画布
+			this.clear();
+			// 先绘制曲线
+			// this.pushLineShow();
+			// 再绘制饼图
+			for (let i = 0; i < circleArr.length; i++) {
+				this.setPubCircle(circleArr[i].x, circleArr[i].y, circleArr[i].r, circleArr[i].color, circleArr[i].start, circleArr[i].end);
+				if (this.ctx.isPointInPath(x, y)) {
+					this.setPubCircle(circleArr[i].x, circleArr[i].y, circleArr[i].r + 5, circleArr[i].color, circleArr[i].start, circleArr[i].end);
+					// this.ctx.fillStyle = '#333';
+
+					// TODO:此处可以获取到你当前移动上去的饼图的索引
+					// SO:
+				}
+				this.ctx.fill();
+			}
+			// 绘制文本
+			this.setFontShow();
+		},
+
+		/**
+		 * @name setAniCircle
+		 * @param 动态饼图模型canvas自带requestAnimationFrame动画(效率高些)
+		 */
+		setAniCircle(x, y, r, color, start, end) {
+			const that = this;
+			let num = start;
+			let FEED = 20;
+			requestAnimationFrame(animate);
+
+			function animate(time) {
+				num += (end - start < FEED ? (end - start) / 5 : FEED);
+				num >= end ? num = end : '';
+
+				that.ctx.fillStyle = color; //填充当前绘制区域颜色
+				that.ctx.sector(x, y, r, start, num).fill();
+				if (num >= end) {
+					that.DOMLENGTH++;
+					cancelAnimationFrame(animate);
+					if (that.DOMLENGTH == 5) {
+						that.addEvent();
+						setTimeout(()=>{
+							that.pushCircle();
+						},300);
+						
+					}
+				} else {
+					requestAnimationFrame(animate);
+				}
+			}
+		},
+
+		/**
+		 * @name setAniCircle2
+		 * @param 动态饼图模型setInterval方法(效率低些)
+		 */
+		setAniCircle2(x, y, r, color, start, end) {
+			let angle = start; //绘图初始起点值
+			let timer = null; //动画开启
+			let SPEED = 1; //绘制速度
+			let DEFAULT = 3; //一次绘制弧度
+			timer = setInterval(() => {
+				angle += DEFAULT;
+				this.ctx.fillStyle = color; //填充当前绘制区域颜色
+				this.ctx.sector(x, y, r, start, angle, color).fill();
+				// 结束当前绘制
+				if (angle >= end) {
+					clearInterval(timer);
+				}
+			}, SPEED);
+		},
+
+		/**
+		 * @name setPubCircle
+		 * @param 绘制静态饼图
+		 */
+		setPubCircle(x, y, r, color, start, end) {
+			this.ctx.beginPath();
+			this.ctx.fillStyle = color; //填充当前绘制区域颜色
+			this.ctx.sector(x, y, r, start, end);
+			this.ctx.closePath();
+		},
+
+		/**
+		 * @name pushLineShow
+		 * @param 绘制虚线方法
+		 */
+		pushLineShow() {
+			let daseArr = this.canvasDashBox;
+			// 绘制虚线
+			for (let i = 0; i < daseArr.length; i++) {
+				this.ctx.dashedLineTo(daseArr[i].fromX, daseArr[i].fromY, daseArr[i].toX, daseArr[i].toY, daseArr[i].pattern, '#f50');
+			}
+
+		},
+
+		/**
+		 * @name setFontShow
+		 * @param 填充文字和线条
+		 */
+		setFontShow() {
+			let attrs = this.canvasFontBox;
+			let maxAttr = attrs['max'];
+			let minAttr = attrs['min'];
+			let data = this.datas; //数据获取
+			let C_LENGTH = 0; //颜色填充使用情况
+			const NUMUSS = $(window).height()*0.06;
+			let LINEUM = this.circleWidth == "small" ? $(window).height()*0.012 : $(window).height()*0;
+			let LINEUM2 = $(window).height()*0.045;
+			let result = (attrs['max'][0].parentX - attrs['max'][0].parentR) * 0.4;
+			let fontColor = '#fff';
+			// 大圆中文字线条填充
+			$.each(maxAttr, (i, o) =>{
+				let color = this.fillColor[C_LENGTH];
+				C_LENGTH++;
+				let values = data['max'][i].value / 10000;
+
+				// 字符串拼接
+				values = values > 1 ? values.toFixed(2) + '万家' : data['max'][i].value + '家';
+				let left = o.parentX - (o.parentX - o.x) / 5;
+				let top = o.parentY;
+
+				// 线条文字填充
+				if (i == 0) {
+					this.pushFontShow('max', data['max'][i].name, left, top-LINEUM2/1.8+LINEUM, "#000");
+					this.pushFontShow('max', values, left,top+LINEUM2/1.8+LINEUM, "#000");
+				} else if (i == 1) {
+					this.ctx.dashedLineTo(o.x, o.y, o.x - NUMUSS, o.y + NUMUSS, 0.1, color);
+					this.ctx.dashedLineTo(o.x - NUMUSS, o.y + NUMUSS, result, o.y + NUMUSS, 0.1, color);
+					this.pushFontShow('max', data['max'][i].name, result, o.y - LINEUM, fontColor);
+					this.pushFontShow('max', values, result, o.y+LINEUM2, fontColor);
+				} else {
+					this.ctx.dashedLineTo(o.x, o.y, o.x - NUMUSS, o.y - NUMUSS, 0.1, color);
+					this.ctx.dashedLineTo(o.x - NUMUSS, o.y - NUMUSS, result, o.y - NUMUSS, 0.1, color);
+					this.pushFontShow('max', data['max'][i].name, result, o.y - 2*NUMUSS - LINEUM, fontColor);
+					this.pushFontShow('max', values, result, o.y - 2*NUMUSS+LINEUM2, fontColor);
+				}
+			});
+
+			// 小圆中文字线条填充
+			$.each(minAttr,(i, o) => {
+
+				let color = this.fillColor[C_LENGTH]; //同步饼图颜色
+				C_LENGTH++;
+
+				let values = data['min'][i].value / 10000; //获取到的value值
+				// 字符串拼接
+				values = values > 1 ? values.toFixed(2) + '万家' : data['min'][i].value + '家';
+
+				// 线条文字填充
+				if (i == 0) {
+					this.ctx.dashedLineTo(o.x, o.y, o.x + NUMUSS, o.y - NUMUSS, 0.1, color);
+					this.ctx.dashedLineTo(o.x + NUMUSS, o.y - NUMUSS, this.WIDTH - result, o.y - NUMUSS, 0.1, color);
+					this.pushFontShow('min', data['min'][i].name, this.WIDTH - result, o.y - 2*NUMUSS - LINEUM, fontColor);
+					this.pushFontShow('min', values, this.WIDTH - result, o.y - 2*NUMUSS+LINEUM2, fontColor);
+				} else {
+					this.ctx.dashedLineTo(o.x, o.y, o.x + NUMUSS, o.y + NUMUSS, 0.1, color);
+					this.ctx.dashedLineTo(o.x + NUMUSS, o.y + NUMUSS, this.WIDTH - result, o.y + NUMUSS, 0.1, color);
+					this.pushFontShow('min', data['min'][i].name, this.WIDTH - result, o.y - LINEUM, fontColor);
+					this.pushFontShow('min', values, this.WIDTH - result, o.y+LINEUM2, fontColor);
+				}
+			});
+		},
+
+		/**
+		 * @name pushFontShow
+		 * @param 绘制文本方法
+		 */
+		pushFontShow(type, text, x, y, color) {
+			let textWidth = 0;
+			let resultSize = this.circleWidth == "small" ? $(window).height()*0.05 : $(window).height()*0.034;
+			let fontSize = this.font && this.font['auto'] && this.font['auto'] ? resultSize : this.font && this.font['fontSize'] && this.font['fontSize'] || resultSize;
+			let fontFamilly = this.font && this.font['fontStyle'] || "微软雅黑";
+
+			// fontSize = fontSize > 16 ? 16 : fontSize;
+
+			//设置字体样式
+			this.ctx.font = fontSize + "px "+fontFamilly;
+			//设置字体填充颜色
+			this.ctx.fillStyle = this.font['auto'] && this.font['auto'] == true ? color : this.font && this.font['color'] || "#fff";
+			textWidth = this.ctx.measureText(text).width;
+			//从坐标点开始绘制文字
+			type == 'max' ? this.ctx.fillText(text, x, y) : this.ctx.fillText(text, x - textWidth, y);
+
+		},
+
+		/**
+		 * @name clear
+		 * @param 清除整个画布
+		 */
+		clear() {
+			this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
+		}
+	}
+
+	// doubleCircle.init();
+	module.exports = doubleCircle
+})(jQuery)

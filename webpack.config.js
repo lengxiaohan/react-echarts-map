@@ -20,7 +20,7 @@ const urlLess = "TJ-province/public/less";
 // const urlCss = "TJ-county/public/css";
 // const urlBuild = "TJ-county/";
 const TIME = new Date();
-const fileNamed = "chinaMonitor";
+const fileNamed = "cityMonitor";
 module.exports = {
     // devtool: "source-map", // 便于调试
     entry: urlList + "/static/"+fileNamed+".js",
@@ -32,7 +32,7 @@ module.exports = {
         // publicPath: "TJ-province/public/build/",
         // path: path.join(__dirname, "TJ-province/build"),
 
-        publicPath: urlBuild+"public/build/",
+        publicPath: "../build/",
         path: path.join(__dirname, urlBuild+"build"),
         filename: ""+fileNamed+".min.js"
     },
@@ -52,7 +52,7 @@ module.exports = {
                 test: /\.(png|jpg)$/,
                 loader: 'url?limit=30000&name=[hash].[ext]'
             }, {
-                test: /\.js?$/,
+                test: /\.jsx?$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {
@@ -78,13 +78,13 @@ module.exports = {
             }
         }), //去除警告
         // new webpack.optimize.CommonsChunkPlugin('common.js'),//提取多个页面之间的公共模块
-        new webpack.BannerPlugin('项目打包，' + TIME + ' zhouxinjian'), // 头部注释
+        new webpack.BannerPlugin('项目打包，' + TIME + ' zhouxinjian') // 头部注释
         // new ExtractTextPlugin(""+fileNamed+".min.css"),
 
         //全局引入，避免每个页面重复书写
-        new webpack.ProvidePlugin({
-            $: 'jquery'
-        })
+        // new webpack.ProvidePlugin({
+        //     $: 'jquery'
+        // })
 
     ],
     resolve: {

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>快递物流网点分布</title>
+    <script src="js/static/common/loading.min.js?v=161018"></script>
+</head>
+
+<body >
+    <div id="con"></div>
+    <!-- <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/data/points-sample-data.js"></script> -->
+    <!-- <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=p1HvozA9RVGAH0paTm61GRzRRAnfTeHQ&services=&t=20160913114210"></script> -->
+    <script src="../build/expressDot.min.js?v=161027"></script>
+</body>
+
+</html>

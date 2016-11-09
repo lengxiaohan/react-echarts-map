@@ -1,5 +1,6 @@
 (function(_global){
 var require, define;
+window.setMapList = new Object;
 (function () {
     var mods = {};
 
@@ -5269,7 +5270,6 @@ define('echarts/chart/map', ['require', './base', 'zrender/shape/Text', 'zrender
         _getProjectionData : function (mapType, mapData, mapSeries) {
             var normalProjection = this._mapDataMap[mapType].projection;
             var province = [];
-
             // bbox永远不变
             var bbox = this._mapDataMap[mapType].bbox
                        || normalProjection.getBbox(
@@ -5463,7 +5463,6 @@ define('echarts/chart/map', ['require', './base', 'zrender/shape/Text', 'zrender
                 textPosition[0] += textFixed[0];
                 textPosition[1] += textFixed[1];
             }
-
             path.name = this._nameChange(mapType, name);
             path.position = position;
             path.textX = textPosition[0];
@@ -5598,6 +5597,7 @@ define('echarts/chart/map', ['require', './base', 'zrender/shape/Text', 'zrender
 
             for (var i = 0, l = mapData.length; i < l; i++) {
                 style = zrUtil.clone(mapData[i]);
+
                 highlightStyle = {
                     name : style.name,
                     path : style.path,
@@ -5820,7 +5820,7 @@ define('echarts/chart/map', ['require', './base', 'zrender/shape/Text', 'zrender
                 else {
                     textShape.hoverable = shape.hoverable = false;
                 }
-
+                // textShape.hoverable = shape.hoverable = false;
                 ecData.pack(
                     textShape,
                     {
@@ -6470,7 +6470,7 @@ define('echarts/chart/map', ['require', './base', 'zrender/shape/Text', 'zrender
         },
 
         /**
-         * 平面坐标转经纬度
+         * 平面坐标转经纬度1234567
          */
         pos2geo : function (mapType, p) {
             if (!this._mapDataMap[mapType].transform) {
@@ -17082,7 +17082,14 @@ define('echarts/chart/base', ['require', 'zrender/shape/Image', '../util/shape/I
             var mpData;
             var pos;
             var markPoint = zrUtil.clone(serie.markPoint);
+
+            var overlapMap = markPoint.overlapMap || false;
+            // 1234567
             for (var i = 0, l = markPoint.data.length; i < l; i++) {
+                // 2016-11-09需求新增，overlapMap为true需要将坐标转换为经纬度
+                if ( overlapMap ) {
+                    markPoint.data[i].geoCoord = this.pos2geo(serie.mapType,markPoint.data[i].geoCoord);
+                }
                 mpData = markPoint.data[i];
                 pos = this.getMarkCoord(seriesIndex, mpData);
                 mpData.x = mpData.x != null ? mpData.x : pos[0];
@@ -17097,8 +17104,25 @@ define('echarts/chart/base', ['require', 'zrender/shape/Image', '../util/shape/I
                         || (zrArea.getTextWidth(pos[3], this.getFont()) / 2 + 5);
                 }
             }
-            
+            // 1111111111
+            // 2016-11-09需求新增，判断随机绘制的点是否在当前省市区域内，若不在则不绘制
             var shapeList = this._markPoint(seriesIndex, markPoint);
+            if ( overlapMap ) {
+                var isShapeList = shapeList[0].style.pointList || false;
+                for (var point = 0; point < isShapeList.length; point++) {
+                    for (var list = 1; list < this.shapeList.length; list+=2) {
+                        var shape = this.shapeList[list];
+                        if ( shape && isShapeList && shape.style.name == isShapeList[point].name ) {
+                            var x = isShapeList[point].x;
+                            var y = isShapeList[point].y;
+                            if (!shape.isCover(x, y)) {
+                                isShapeList[point] = {};
+                            }
+                        }
+                    }  
+                }
+            }
+            
             // console.log('标注');
             for (var i = 0, l = shapeList.length; i < l; i++) {
                 var tarShape = shapeList[i];
@@ -23774,7 +23798,6 @@ define('zrender/shape/Path', ['require', './Base', './util/PathProxy', '../tool/
             if (!data) {
                 return [];
             }
-
             // 平移
             x = x || 0;
             y = y || 0;
@@ -24108,10 +24131,20 @@ define('zrender/shape/Path', ['require', './Base', './util/PathProxy', '../tool/
             if (style.mapHide) {
                 return;
             }
+            if (style.shadow) {
+                window.setMapList[style.name] = {
+                    pos:style.cp,
+                    width:0,
+                    height:0
+                }
+                // console.log(style.name,style.cp);
+            }
+            
+            var opssi = style.shadow ? window.setMapList[style.name].pos : [];
             for (var i = 0, l = pathArray.length; i < l; i++) {
                 // TODO断点（绘制地图轮廓得断点）
                 var c = pathArray[i].command;
-                var p = pathArray[i].points;
+                var p = pathArray[i].points;  
                 switch (c) {
                     case 'L':
                         ctx.lineTo(p[0], p[1]);
@@ -24148,10 +24181,22 @@ define('zrender/shape/Path', ['require', './Base', './util/PathProxy', '../tool/
                         break;
                     case 'z':
                         if (style.shadow) {
+
                             ctx.shadowOffsetX = 0; // 阴影Y轴偏移
                             ctx.shadowOffsetY = 0; // 阴影X轴偏移
                             ctx.shadowBlur = 50; // 模糊尺寸
                             ctx.shadowColor = style.boxShadowColor || 'rgba(255, 255, 255, 0.8)'; // 颜色
+                            var getRects = this.getRect(style);
+                            window.setMapList[style.name].width = getRects.width;
+                            window.setMapList[style.name].height = getRects.height;
+
+                            // if (style.name=="广东") {
+                            //     window.setMapList[style.name].y = [getRects.width,getRects.height/2];
+                            //     window.setMapList[style.name].pos = [style.cp[0],style.cp[1]-10];
+                            // }else if (style.name=="江苏") {
+                            //     window.setMapList[style.name].x = [getRects.width/2,getRects.height];
+                            // }
+                            // 12345678
                         }
                         ctx.closePath();
                         break;
@@ -27078,7 +27123,6 @@ define('echarts/util/projection/normal', [], function () {
             return coordinates.join(',');
         },
         LineString: function (coordinates) {
-            // console.log('test');
             var str = '';
             var point;
             for (var i = 0, len = coordinates.length; i < len; i++) {
@@ -27242,6 +27286,8 @@ define('echarts/util/projection/normal', [], function () {
      */
     function pos2geo(obj, p) {
         // console.log('平面坐标转经纬度');
+        // console.log(obj);
+        // console.log(p);
         var x;
         var y;
         if (p instanceof Array) {
@@ -27265,6 +27311,8 @@ define('echarts/util/projection/normal', [], function () {
      */
     function geo2pos(obj, p) {
         // console.log('经纬度转平面坐标');
+        // console.log(obj);
+        // console.log(p);
         convertor.offset = obj.offset;
         convertor.scale = obj.scale;
         return p instanceof Array
@@ -44807,6 +44855,9 @@ define('zrender/Handler', ['require', './config', './tool/env', './tool/event', 
 
             var event = this._event;
             if (shape.isCover(x, y)) {
+                // 1111111111111111
+                // console.log(shape);
+                //  console.log(x,y);
                 if (shape.hoverable) {
                     this.storage.addHover(shape);
                 }

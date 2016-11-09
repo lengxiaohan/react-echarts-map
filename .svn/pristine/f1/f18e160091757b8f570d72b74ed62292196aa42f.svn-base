@@ -1,0 +1,167 @@
+@charset "utf-8";
+/*===================================
+* copyRight: TJ1.0省域版
+* fileName: expressDotDetails.less
+* createTime: 2016/09/14
+* author : yuyuting
+* version: 1.0
+* modify: {}
+* description: 快递物流网点分布详情页css样式
+===================================*/
+
+// 引入z.less库
+@import "plus/z";
+
+// 初始化页面
+.reset();
+
+.maxBody(@width: 100%, @height: 100%) {
+    width: @width;
+    height: @height;
+}
+
+html,
+body{
+	.maxBody();
+	.font-fm();
+	// background: rgba(0, 0, 51, 0.7);
+	.b-sizing();
+}
+.anchorBL{  
+   display:none;  
+}  
+#con{
+	
+	.maxBody();
+	#content{
+		.maxBody();
+		margin:auto;
+		.header{
+		    .maxBody(100%,8.4%);
+		    .rel();
+			.d-ib();
+			.abs();
+			background:url('../img/header-bg.png');
+		    background-size: auto 100%; 
+			// background: rgba(0,153,255,1);
+			// background: -ms-linear-gradient(top, rgba(0,153,255,1),  rgba(0,153,255,0.5));        /* IE 10 */
+			// background:-moz-linear-gradient(top,rgba(0,153,255,1),rgba(0,153,255,0.5));/*火狐*/ 
+			// background:-webkit-gradient(linear, 0% 0%, 0% 100%,from( rgba(0,153,255,1)), to(rgba(0,153,255,0.5)));/*谷歌*/ 
+			// background: -webkit-gradient(linear, 0% 0%, 0% 100%, from( rgba(0,153,255,1)), to(rgba(0,153,255,0.5)));      /* Safari 4-5, Chrome 1-9*/
+			// background: -webkit-linear-gradient(top, rgba(0,153,255,1), rgba(0,153,255,0.5));   /*Safari5.1 Chrome 10+*/
+			// background: -o-linear-gradient(top, rgba(0,153,255,1), rgba(0,153,255,0.5));  /*Opera 11.10+*/
+			.b-sizing();
+			p{
+				.maxBody(100%,100%);
+				text-align: center;
+			    color: #fff;
+			    font-size: 5.6vh;
+			    line-height: 1.4;
+			    .b-sizing();
+			}
+		}
+		.con{
+			opacity: 0;
+			// background: rgba(0, 0, 51, 0.7);
+			.maxBody(100%,88%);
+		    .abs();
+		    top: 12%;
+		    .nav{
+				.maxBody(100%,14%);
+				.d-ib();
+				.abs();
+				// top: 11%;
+				background-image: url(../img/titleBg.png);
+				background-size: auto 100%;
+				.b-sizing();
+				p{
+					.maxBody(100%,100%);
+					.b-sizing();
+					text-align: center;
+					color: #fff;
+				    font-size: 7vh;
+				    line-height: 1.6;
+					span{
+						&:nth-child(3){
+							color:#ff3333;
+						}
+					}
+				}
+			}
+		    .map{
+		    	.maxBody(100%,84%);
+		    	top:16%;
+		    	float:left;
+		    	border: 3px solid rgba(0,153,255,0.8);
+		    	.b-sizing();
+		    	.abs();
+		    	background-color:#000033;
+		    }
+		   //  .count{
+		   //  	.maxBody(40%,84%);
+		   //  	top:16%;
+		   //  	bottom: 0;
+			  //   position: absolute;
+		   //  	.fl();
+		   //  	.Logistical{
+					// .maxBody(95%,50%);
+				 //    background-image: url(/TJ-province/public/img/navBg.png);
+   		// 			background-size: 100% 100%;
+   		// 			.b-sizing();
+   		// 			.flex(1);
+   		// 			.d-flex-v();
+   		// 			float: right;
+   		// 			div{
+   		// 				.maxBody(100%,55%);
+					//     margin:auto;
+					//     .b-sizing();
+   		// 				p{
+   		// 					text-align: center;
+   		// 					&:nth-child(1){
+					// 			color:#fff;
+   		// 						font-size: 7vh;
+   		// 					}
+   		// 					&:nth-child(2){
+   		// 						color:#fff;
+   		// 						font-size: 5.5vh;
+   		// 						span{
+	   	// 							color:#ffdd00;
+	   	// 							font-size: 11vh;
+	   	// 						}
+   		// 					}
+   		// 				}
+   		// 			}
+		   //  	}
+		   //  	.express{
+					// .maxBody(95%,50%);
+					// margin:auto;
+					// background-image: url(/TJ-province/public/img/navBg.png);
+   		// 			background-size: 100% 100%;
+   		// 			.b-sizing();
+   		// 			.flex(1);
+   		// 			.d-flex-v();
+   		// 			float: right;
+   		// 			div{
+   		// 				.maxBody(100%,55%);
+					//     margin:auto;
+   		// 				p{
+					//     	text-align: center;
+   		// 					&:nth-child(1){
+					// 			color:#fff;
+   		// 						font-size: 7vh;
+   		// 					}
+   		// 					&:nth-child(2){
+   		// 						color:#fff;
+   		// 						font-size: 5.5vh;
+   		// 						span{
+	   	// 							color:#66cc00;
+	   	// 							font-size: 11vh;
+	   	// 						}
+   		// 					}
+   		// 				}
+   		// 			}
+		   //  	}
+		   //  }
+		}
+	}
+}

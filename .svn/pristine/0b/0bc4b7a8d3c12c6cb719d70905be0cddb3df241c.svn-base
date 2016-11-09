@@ -1,0 +1,178 @@
+html,
+body,
+.container-box{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height:100%;
+}
+
+.smallScreen .container{
+	height:92%;
+    width: 100%;
+	overflow: hidden;
+    opacity: 0;
+}
+
+.largeScreen .container{
+    height:94%;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.smallScreen header{
+    height: 8%;
+    color: #fff;
+    font-size: 5vh;
+    font-family: '微软雅黑';
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    -o-justify-content: center;
+    justify-content: center;
+    background:url('../img/header-bg.png');
+    background-size: auto 100%;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    position: relative;
+    top: -2px;
+}
+.large_header{
+    height: 6%;
+    color: #fff;
+    font-size: 5vh;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    -o-justify-content: center;
+    justify-content: center;
+}
+.large_header .head-left {
+    width: 15%;
+    height: 100%;
+    float: left;
+}
+.large_header .head-right {
+    width: 15%;
+    height: 100%;
+    float: left;
+}
+.large_header .head-con {
+    width: 70%;
+    height: 100%;
+    float: left;
+    position: relative;
+    top: -1px;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+}
+.large_header .head-con img {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+.large_header .head-con p {
+    width: 100%;
+    height: 90%;
+    font-size: 3.3vh;
+    font-family: '微软雅黑';
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    -o-justify-content: center;
+    justify-content: center;
+    color: #fff;
+    margin: 0; 
+    position: absolute;
+    top: 0;
+    z-index: 4;
+}
+.container .head_title{
+	background:url('../img/titleBg.png');
+	background-size:auto 100%;
+	font-family:'微软雅黑';
+	color:#fff;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    -o-justify-content: center;
+    justify-content: center;
+}
+.container .head_title .head-num{
+    color:#ff3333;
+}
+.smallScreen .container .myCanvas{
+    width: 100%;
+	height:87%;
+}
+
+.smallScreen .large_header{
+    display: none;
+}
+.smallScreen .container .head_title{
+    margin: 0.5% 0; 
+    height:12%;
+    font-size: 7vh;
+}
+.largeScreen header{
+    display: none;
+}
+.largeScreen .large_header{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+.largeScreen .container .head_title{
+    margin: 2% 2%; 
+    height: 6%;
+    font-size: 3.4vh;
+}
+.largeScreen .container .myCanvas{
+    width: 100%;
+    height:87%;
+}
