@@ -65,9 +65,10 @@ class SectionComponent extends React.Component {
 	getChinaMap(obj) {
 		this.geoCoord = obj.geoCoordMap;
 		const dataAttr = ['onePointData', 'twoPointData', 'threePointData', 'fourPointData', 'fivePointData'];
-		const color = ['rgba(255, 240, 51,.4)', 'rgba(255, 240, 51,.5)', 'rgba(255, 240, 51,.6)', 'rgba(255, 240, 51,.8)', 'rgba(255, 240, 51,1)'];
+		const color = ['rgba(246, 127, 4,1)','rgba(248, 152, 9, 1)','rgba(251, 188, 15, 1)','rgba(253, 224, 22, 1)','rgba(255, 249, 26, 1)'];
+		const colordiamond = ['rgba(255, 240, 51,.4)', 'rgba(255, 240, 51,.5)', 'rgba(255, 240, 51,.6)', 'rgba(255, 240, 51,.8)', 'rgba(255, 240, 51,1)'];
 		const symbolSize = [2,4,6,7,8];
-		const symbolLen = [500,300,200,100,50];
+		const symbolLen = [2000,600,200,100,50];
 		let series = [];
 		for (let s = 0; s < obj['fivePointData'].length; s++) {
 			let value = parseInt(obj['fivePointData'][s].value);
@@ -91,7 +92,7 @@ class SectionComponent extends React.Component {
 		                },
 		                itemStyle:{
 			                normal:{
-			                    color: color[4]
+			                    color: color[parseInt((sizeTemp*10)/2) >= 5 ? 4 : parseInt((sizeTemp*10)/2)]
 			                }
 			            },
 		                data: [obj['fivePointData'][s]]
@@ -127,7 +128,7 @@ class SectionComponent extends React.Component {
 								label: {
 									show: false
 								},
-								color: color[i]
+								color: colordiamond[i]
 							}
 						},
 						overlapMap:true,

@@ -231,8 +231,6 @@ var GetMapComponent = React.createClass({
             let dataMin=rowDatas[dataLen-1].value;
             let dataone=((dataMin+dataAverage)/2).toFixed(1);
             let datatwo=((dataMax+dataAverage)/2).toFixed(1);   
-            console.log(dataAverage);
-            console.log(dataone+"##"+datatwo);
             this.getCanvas({
                 data: that.data.datas,
                 id: dom,
@@ -348,9 +346,8 @@ var GetMapComponent = React.createClass({
                                      value = Number(value);
                                      let num1 = Number(obj.dataone);
                                     if( value>0 && value < num1){
-                                        console.log("弱包括："+areaName + len+":"+value);
                                         if(geoCoord==null||"null"==geoCoord){
-                                            return false;
+                                            continue;
                                         }else{
                                             passData.push({
                                                 name : areaName + len,
@@ -397,9 +394,8 @@ var GetMapComponent = React.createClass({
                                      let num1 = Number(obj.dataone);
                                      let num2 = Number(obj.datatwo);
                                     if(value >= num1 && value < num2 ){
-                                        console.log("中包括："+areaName + len+":"+value);
                                         if(geoCoord==null||"null"==geoCoord){
-                                            return false;
+                                            continue;
                                         }else{
                                             passData.push({
                                                 name : areaName + len,
@@ -443,9 +439,8 @@ var GetMapComponent = React.createClass({
                                      value= Number(value);
                                     let num2 = Number(obj.datatwo);
                                     if(value >= num2){
-                                        console.log("强包括："+areaName + len+":"+value);
                                         if(geoCoord==null||"null"==geoCoord){
-                                            return false;
+                                            continue;
                                         }else{
                                             passData.push({
                                                 name : areaName + len,

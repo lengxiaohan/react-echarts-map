@@ -1,0 +1,182 @@
+
+html,
+body{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0; 
+	overflow: hidden;
+}
+
+.container-animate{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 0;
+	background: url(../img/bg.png) center center no-repeat fixed;
+	background-size: cover;
+	overflow: hidden;
+}
+
+.container{
+	width: 70%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.5);
+	margin: auto;
+	position: relative;
+	z-index: 99;
+}
+.logo{
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	position: relative;
+}
+.logo img{
+	height: 30%;
+	position: absolute;
+	margin: auto;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+.centlogo{
+	position: absolute;
+	margin: auto;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	height: 0%;
+	width: 0px;
+	height: 0px;
+	border:1px solid #0362CA;
+	border-radius: 50%;
+	opacity: 0;
+	z-index: 99;
+	-webkit-animation:larges 1.5s linear infinite;
+    animation:larges 1.5s linear infinite;
+    background: -webkit-radial-gradient(rgba(3,98,202,.2) 20%, rgba(3,98,202,.1) 50%);
+}
+.list1{
+	-webkit-animation-delay: .1s;
+    animation-delay:.1s;
+}
+.list2{
+	-webkit-animation-delay: .25s;
+    animation-delay:.25s;
+}
+.list3{
+	-webkit-animation-delay: .4s;
+    animation-delay:.4s;
+}
+.list4{
+	-webkit-animation-delay: .56s;
+    animation-delay:.56s;
+}
+.list5{
+	-webkit-animation-delay: .66s;
+    animation-delay:.66s;
+}
+.list6{
+	-webkit-animation-delay: .72s;
+    animation-delay:.72s;
+}
+.list7{
+	-webkit-animation-delay: .8s;
+    animation-delay:.8s;
+}
+.list8{
+	-webkit-animation-delay: .93s;
+    animation-delay:.93s;
+}
+.list9{
+	-webkit-animation-delay: 1.1s;
+    animation-delay:1.1s;
+}
+.list10{
+	-webkit-animation-delay: 1.3s;
+    animation-delay:1.3s;
+}
+
+
+/*背景动画*/
+.animate-list{
+	position: absolute;
+	margin: auto;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 9;
+	opacity: 0;
+}
+.animate-list1{
+	height: 6%;
+	-webkit-animation:list1 1.1s linear infinite;
+    animation:list1 1.1s linear infinite;
+}
+.animate-list2{
+	height: 8%;
+	-webkit-animation:list2 1.8s linear infinite;
+    animation:list2 1.8s linear infinite;
+}
+.animate-list3{
+	height: 8%;
+	-webkit-animation:list3 1.5s linear infinite;
+    animation:list3 1.5s linear infinite;
+}
+.animate-list4{
+	height: 8%;
+	-webkit-animation:list4 2s linear infinite;
+    animation:list4 2s linear infinite;
+}
+.animate-list5{
+	height: 8%;
+	-webkit-animation:list5 1.7s linear infinite;
+    animation:list5 1.7s linear infinite;
+}
+.animate-list6{
+	height: 8%;
+	-webkit-animation:list6 1.4s linear infinite;
+    animation:list6 1.4s linear infinite;
+}
+.animate-list7{
+	height: 8%;
+	-webkit-animation:list7 1.8s linear infinite;
+    animation:list7 1.8s linear infinite;
+}
+.animate-list8{
+	height: 8%;
+	-webkit-animation:list8 2s linear infinite;
+    animation:list8 2s linear infinite;
+}
+.animate-list9{
+	height: 8%;
+	-webkit-animation:list9 3s linear infinite;
+    animation:list9 3s linear infinite;
+}
+.animate-list10{
+	height: 8%;
+	-webkit-animation:list10 2.2s linear infinite;
+    animation:list10 2.2s linear infinite;
+}
+.animate-list11{
+	height: 8%;
+	-webkit-animation:list11 1.6s linear infinite;
+    animation:list11 1.6s linear infinite;
+}
+.animate-list12{
+	height: 8%;
+	-webkit-animation:list12 1.8s linear infinite;
+    animation:list12 1.8s linear infinite;
+}
+.animate-list13{
+	height: 8%;
+	-webkit-animation:list13 1.5s linear infinite;
+    animation:list13 1.5s linear infinite;
+}
+
+
+

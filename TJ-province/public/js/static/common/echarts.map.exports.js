@@ -137,9 +137,10 @@
 			        		var data = JSON.parse(sessionStorage.getItem(name+'MAPJSON'));
 			        		callback(echarts.util.mapData.params.decode(data));
 			        	}else{
+			        		let url = '../../mapJson/'+ name +'.json';
 				            $.ajax({
 								//	请求配置
-								url: '../../../mapJson/'+ name +'.json',
+								url: url,
 								type: 'GET',
 								async: false,
 								success: function(data){
